@@ -34,8 +34,8 @@ import threading
 import logging
 from typing import Callable, List, Optional, Tuple
 
-from config import ExchangeType, WSMode
-from session import AngelSession, SessionTokens
+from broker.constants import ExchangeType, WSMode
+from broker.session import AngelSession, SessionTokens
 from utils import get_logger, paise_to_rupees, AngelOneAPIError
 
 _log = get_logger(__name__)
@@ -43,6 +43,12 @@ _log = get_logger(__name__)
 # Maximum seconds to wait between reconnect attempts
 MAX_RECONNECT_DELAY = 60
 INITIAL_RECONNECT_DELAY = 2
+RATE_LIMIT_RECONNECT_DELAY = 30   # 429: initial wait; doubles each attempt up to MAX
+RATE_LIMIT_MAX_DELAY      = 300  # 5 minutes max between 429 retries
+
+
+class _RateLimitError(Exception):
+    """Raised when the WebSocket server responds with HTTP 429."""
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -279,11 +285,29 @@ class MarketFeed:
         Internal reconnection loop.
         Runs in a background thread and handles exponential backoff reconnects.
         """
-        delay = INITIAL_RECONNECT_DELAY
+        delay      = INITIAL_RECONNECT_DELAY
+        rl_delay   = RATE_LIMIT_RECONNECT_DELAY
         while self._running:
             try:
                 self._connect()
-                delay = INITIAL_RECONNECT_DELAY   # reset on successful connect
+                delay    = INITIAL_RECONNECT_DELAY   # reset on successful connect
+                rl_delay = RATE_LIMIT_RECONNECT_DELAY
+            except _RateLimitError as e:
+                # 429: zombie connections still alive on the server; back off exponentially
+                _log.warning(
+                    "MarketFeed rate-limited (429) — waiting %ds for server to release "
+                    "old connections from previous runs...", rl_delay
+                )
+                if self._on_error:
+                    try:
+                        self._on_error(e)
+                    except Exception:
+                        pass
+                if not self._running:
+                    break
+                time.sleep(rl_delay)
+                rl_delay = min(rl_delay * 2, RATE_LIMIT_MAX_DELAY)
+                continue
             except Exception as e:
                 _log.error("MarketFeed connection error: %s", e)
                 if self._on_error:
@@ -304,6 +328,14 @@ class MarketFeed:
 
     def _connect(self) -> None:
         """Create and connect a SmartWebSocketV2 instance."""
+        # Explicitly close any previous instance before creating a new one
+        if self._ws is not None:
+            try:
+                self._ws.close_connection()
+            except Exception:
+                pass
+            self._ws = None
+
         tokens = self._session.tokens
         if not tokens:
             raise AngelOneAPIError("Session has no tokens — login first")
@@ -316,18 +348,38 @@ class MarketFeed:
             ) from e
 
         ws = SmartWebSocketV2(
-            tokens.jwt_token,
+            f"Bearer {tokens.jwt_token}",
             tokens.api_key,
             tokens.client_code,
             tokens.feed_token,
         )
+
+        # ── Intercept raw library callbacks before they are swallowed ─────────
+        import types as _types
+        _429_detected = threading.Event()
+        _orig_internal_on_error = ws._on_error.__func__
+        _orig_internal_on_close = ws._on_close.__func__
+
+        def _raw_on_error(self_ws, wsapp, error):
+            err_str = str(error)
+            _log.error("MarketFeed raw server error: [%s] %s", type(error).__name__, error)
+            if "429" in err_str:
+                _429_detected.set()
+                self_ws.RESUBSCRIBE_FLAG = False  # stop library's internal reconnect loop
+            _orig_internal_on_error(self_ws, wsapp, error)
+
+        def _patched_on_close(self_ws, wsapp, close_status_code=None, close_msg=None):
+            # websocket-client calls on_close(ws, code, msg) but library expects 1 arg
+            _orig_internal_on_close(self_ws, wsapp)
+
+        ws._on_error = _types.MethodType(_raw_on_error, ws)
+        ws._on_close = _types.MethodType(_patched_on_close, ws)
 
         # ── Bind callbacks ────────────────────────────────────────────────────
         def _on_open(wsapp):
             _log.info("MarketFeed WebSocket connected")
             if self._on_connect:
                 self._on_connect()
-            # Subscribe all registered instruments
             token_list = self._build_token_list()
             if token_list:
                 ws.subscribe(
@@ -364,6 +416,12 @@ class MarketFeed:
 
         self._ws = ws
         ws.connect()   # blocking until connection closes
+
+        if _429_detected.is_set():
+            raise _RateLimitError(
+                "429 Too Many Requests — server connection limit exceeded. "
+                "Old sessions from previous runs are still open. Waiting for them to expire."
+            )
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -430,6 +488,22 @@ class OrderFeed:
             try:
                 self._connect()
                 delay = INITIAL_RECONNECT_DELAY
+            except AngelOneAPIError as e:
+                err_str = str(e)
+                if "403" in err_str or "401" in err_str:
+                    _log.warning(
+                        "OrderFeed disabled — server rejected auth (403/401). "
+                        "Order fills will not be confirmed in real-time. "
+                        "Check AngelOne API plan or IP whitelist settings."
+                    )
+                    self._running = False
+                    break
+                _log.error("OrderFeed connection error: %s", e)
+                if self._on_error:
+                    try:
+                        self._on_error(e)
+                    except Exception:
+                        pass
             except Exception as e:
                 _log.error("OrderFeed connection error: %s", e)
                 if self._on_error:
@@ -460,21 +534,44 @@ class OrderFeed:
             ) from e
 
         client = SmartWebSocketOrderUpdate(
-            auth_token  = tokens.jwt_token,
+            auth_token  = f"Bearer {tokens.jwt_token}",
             api_key     = tokens.api_key,
             client_code = tokens.client_code,
             feed_token  = tokens.feed_token,
         )
 
-        # Monkey-patch the on_message handler
-        original_on_message = getattr(client, "on_message", None)
+        # Track permanent auth failures (403) so we don't retry forever
+        _auth_failed = threading.Event()
 
         def _on_message(ws, message):
             try:
+                import json
+                if isinstance(message, bytes):
+                    message = message.decode("utf-8")
+                if isinstance(message, str):
+                    message = json.loads(message)
+                if not isinstance(message, dict):
+                    return  # ignore non-dict messages (e.g. heartbeat pings)
                 self._on_order_update(message)
+            except (json.JSONDecodeError, UnicodeDecodeError):
+                pass  # ignore malformed or binary-only frames
             except Exception as e:
                 _log.warning("Error in on_order_update handler: %s", e)
 
+        def _on_error(wsapp, error):
+            err_str = str(error)
+            if "403" in err_str or "401" in err_str:
+                _auth_failed.set()
+            client.__class__.on_error(client, wsapp, error)
+
         client.on_message = _on_message
+        client.on_error   = _on_error
+
         _log.info("OrderFeed WebSocket connecting...")
-        client.connect()   # blocking
+        client.connect()   # blocking (library retries internally up to MAX_CONNECTION_RETRY_ATTEMPTS)
+
+        if _auth_failed.is_set():
+            raise AngelOneAPIError(
+                "OrderFeed auth rejected (403/401) — check AngelOne account permissions "
+                "or whether IP whitelisting is required for the order update socket"
+            )

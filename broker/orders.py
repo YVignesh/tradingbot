@@ -20,12 +20,12 @@ Dependencies:
 import requests
 from typing import Optional
 
-from config import (
+from broker.constants import (
     BASE_URL, ENDPOINTS, REQUEST_TIMEOUT,
     Variety, TransactionType, OrderType, ProductType, Duration, Exchange,
     GTTStatus,
 )
-from session import AngelSession
+from broker.session import AngelSession
 from utils import (
     get_logger, validate_response, AngelOneAPIError,
     order_rate_limiter, rupees_to_paise,

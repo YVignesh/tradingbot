@@ -27,8 +27,8 @@ import requests
 from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Optional
 
-from config import BASE_URL, ENDPOINTS, REQUEST_TIMEOUT, CandleInterval, MarketDataMode
-from session import AngelSession
+from broker.constants import BASE_URL, ENDPOINTS, REQUEST_TIMEOUT, CandleInterval, MarketDataMode
+from broker.session import AngelSession
 from utils import get_logger, validate_response, AngelOneAPIError, paise_to_rupees
 
 _log = get_logger(__name__)

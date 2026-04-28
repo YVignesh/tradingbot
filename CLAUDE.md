@@ -1,153 +1,185 @@
-# Trading Bot — Project Context for Claude Code Sessions
-
-> **How to use this file:** At the start of every new session, Claude reads this file to get full project context. At the end of each session (or after significant changes), Claude updates this file. This avoids re-spending context tokens re-discovering the codebase.
-
----
+# Trading Bot — Claude Code Context
 
 ## Project Overview
 
-**Name:** AngelOne SmartAPI Trading Bot Toolkit  
-**Package name:** `angelone_sdk`  
-**Version:** 1.0.0  
-**Language:** Python ≥ 3.10 (uses `int | float` union type hints)  
-**Platform:** Windows 11, `.venv` present at `.venv/`  
-**Purpose:** A modular Python SDK/toolkit for building algorithmic trading bots on top of AngelOne's SmartAPI (Indian stock market broker).
+**AngelOne SmartAPI Trading Bot** — modular algo trading on Indian stock market.  
+Python ≥ 3.10 | Linux | `.venv/` at project root | credentials in `.env`
 
 ---
 
-## File Map
-
-| File | Role |
-|------|------|
-| [config.py](config.py) | All constants: API endpoints, enums (order types, exchanges, intervals), charge rates (AngelOne, April 2026), rate limits |
-| [session.py](session.py) | `AngelSession` + `SessionTokens` — login (TOTP), token refresh, logout, context manager |
-| [instruments.py](instruments.py) | `InstrumentMaster` — downloads scrip master JSON, symbol↔token lookup |
-| [orders.py](orders.py) | Order helpers: `buy`, `sell`, `buy_limit`, `sell_limit`, SL, TP, bracket, GTT, OCO |
-| [portfolio.py](portfolio.py) | Holdings, positions, open P&L, RMS margin check, position conversion |
-| [market_data.py](market_data.py) | Historical candles, live quotes (LTP/OHLC/FULL), market open check |
-| [websocket_feed.py](websocket_feed.py) | `MarketFeed` (live ticks) + `OrderFeed` (order updates) via SmartWebSocketV2 |
-| [charges.py](charges.py) | `calculate_charges`, `breakeven_price`, `net_pnl_after_charges` — full brokerage + tax breakdown |
-| [utils.py](utils.py) | `get_logger`, `RateLimiter`, paise↔rupee conversion, `AngelOneAPIError`, header builder |
-| [__init__.py](__init__.py) | Package init — re-exports everything for `from angelone_sdk import ...` usage |
-| [bot_example.py](bot_example.py) | Full working bot skeleton: EMA(9/21) crossover on 5-min candles, DRY_RUN mode |
-| [requirements.txt](requirements.txt) | Dependencies (see below) |
-
----
-
-## Key Dependencies
+## Folder Structure
 
 ```
-smartapi-python >= 1.3.5   # AngelOne's official SDK (SmartConnect, SmartWebSocketV2)
-pyotp >= 2.9.0             # TOTP 6-digit code generation from QR secret
-requests >= 2.31.0         # REST API calls
-pandas >= 2.0.0            # candles_to_dataframe(), indicator logic
-numpy >= 1.24.0            # Array operations
-websocket-client >= 1.7.0  # Required by smartapi-python WebSocket modules
+tradingbot/
+├── main.py              # bot runner (Phase 2)
+├── backtest.py          # CLI backtester — fetches candles, replays signals, prints stats
+├── config.json          # all config: bot, strategy, risk, broker
+├── broker/
+│   ├── constants.py     # enums, endpoints, charge rates, rate limits
+│   ├── session.py       # AngelSession + SessionTokens (login/refresh/logout)
+│   ├── instruments.py   # InstrumentMaster — symbol↔token lookup
+│   ├── orders.py        # buy/sell/limit/SL/TP/bracket/GTT helpers
+│   ├── portfolio.py     # holdings, positions, P&L, margin
+│   ├── market_data.py   # candles, live quotes, market open check
+│   ├── websocket_feed.py# MarketFeed + OrderFeed via SmartWebSocketV2
+│   └── charges.py       # calculate_charges, breakeven_price, net_pnl_after_charges
+├── utils/
+│   └── __init__.py      # get_logger, paise↔rupee, date helpers, AngelOneAPIError
+├── indicators/          # pure TA functions: trend, momentum, volatility, volume (Phase 2)
+├── strategies/
+│   ├── base.py          # BaseStrategy ABC
+│   └── ema_crossover.py # EMA 9/21 crossover (Phase 2)
+├── risk/
+│   └── manager.py       # daily loss limit, position sizing, drawdown guard (Phase 2)
+└── data/cache/          # OHLCV cache for backtesting (gitignored)
 ```
 
 ---
 
 ## Architecture & Design Principles
 
-- **Session-centric:** Every helper function accepts an `AngelSession` instance (not raw credentials). Always call `session.login()` first.
-- **Env-var credentials (recommended):** `AngelSession.from_env()` reads `ANGEL_API_KEY`, `ANGEL_CLIENT_CODE`, `ANGEL_MPIN`, `ANGEL_TOTP_SECRET`. Optional: `ANGEL_PUBLIC_IP`, `ANGEL_LOCAL_IP`, `ANGEL_MAC_ADDRESS`.
-- **No global state in helpers:** All order/portfolio/market functions are pure functions taking `(session, ...)` args.
-- **Prices in paise from WebSocket:** `websocket_feed.py` and GTT prices use paise (integer). Always call `paise_to_rupees()` from `utils.py` before use.
-- **Rate limits:** 10 order API calls/sec per exchange/segment (`RateLimits` in `config.py`). `order_rate_limiter` in `utils.py` is a pre-wired `RateLimiter` instance.
-- **Sessions expire at midnight IST:** Call `session.refresh_if_needed()` (or `session.refresh()`) in a scheduler around 23:30 IST.
+- **Session-centric:** All helpers take `AngelSession` as first arg. Call `session.login()` before anything.
+- **Credentials via env:** `AngelSession.from_env()` reads `ANGEL_API_KEY`, `ANGEL_CLIENT_CODE`, `ANGEL_MPIN`, `ANGEL_TOTP_SECRET`. Optional: `ANGEL_PUBLIC_IP`, `ANGEL_LOCAL_IP`, `ANGEL_MAC_ADDRESS`.
+- **No global state in helpers:** All order/portfolio/market functions are pure `(session, ...)`.
+- **WebSocket prices in paise:** Always call `paise_to_rupees()` from `utils` before use.
+- **Rate limits:** 10 order API calls/sec per exchange/segment — `order_rate_limiter` in `utils` is pre-wired.
+- **Sessions expire midnight IST:** Call `session.refresh_if_needed()` around 23:30 IST.
 
 ---
 
-## Core Enums (from `config.py`)
+## Key Dependencies
 
-```python
-Variety:         NORMAL, AMO, STOPLOSS, ROBO
-TransactionType: BUY, SELL
-OrderType:       MARKET, LIMIT, STOPLOSS_LIMIT, STOPLOSS_MARKET
-ProductType:     DELIVERY, CARRYFORWARD, MARGIN, INTRADAY, BO
-Duration:        DAY, IOC
-Exchange:        NSE, BSE, NFO, CDS, MCX, NCDEX
-CandleInterval:  ONE_MINUTE, THREE_MINUTE, FIVE_MINUTE, TEN_MINUTE,
-                 FIFTEEN_MINUTE, THIRTY_MINUTE, ONE_HOUR, ONE_DAY
-ExchangeType:    NSE_CM=1, NSE_FO=2, BSE_CM=3, BSE_FO=4, MCX_FO=5, CDS_FO=13  (WebSocket codes)
-WSMode:          LTP=1, QUOTE=2, SNAP_QUOTE=3
-GTTStatus:       NEW, ACTIVE, CANCELLED, TRIGGERED, INVALID, ...
+```
+smartapi-python >= 1.3.5   # AngelOne SDK (SmartConnect, SmartWebSocketV2)
+pyotp >= 2.9.0             # TOTP generation
+requests >= 2.31.0
+pandas >= 2.0.0
+numpy >= 1.24.0
+websocket-client >= 1.7.0  # required by smartapi-python
 ```
 
----
-
-## API Endpoints (from `config.py`)
-
-Base URL: `https://apiconnect.angelone.in`
-
-Key endpoint keys in `ENDPOINTS` dict:
-- Auth: `login`, `refresh_token`, `profile`, `logout`, `rms`
-- Orders: `place_order`, `modify_order`, `cancel_order`, `order_book`, `trade_book`, `order_status`, `ltp`, `convert_position`, `positions`
-- Market: `market_data`, `candle_data`
-- Portfolio: `holdings`, `all_holdings`
-- GTT: `gtt_create`, `gtt_modify`, `gtt_cancel`, `gtt_details`, `gtt_list`
+> `requirements.txt` is UTF-16 encoded — appears double-spaced when read raw.
 
 ---
 
-## Charge Rates Summary (AngelOne, April 2026)
+## Charge Rates (AngelOne, April 2026)
 
 | Charge | Rate |
 |--------|------|
-| Brokerage (Delivery) | ₹0 (zero brokerage) |
-| Brokerage (Intraday/F&O) | min(₹20, 0.1%) — min ₹5 |
-| STT Equity Delivery | 0.1% both sides |
-| STT Equity Intraday | 0.025% sell side only |
+| Brokerage Delivery | ₹0 |
+| Brokerage Intraday/F&O | min(₹20, 0.1%) — min ₹5 |
+| STT Delivery | 0.1% both sides |
+| STT Intraday | 0.025% sell only |
 | GST | 18% on brokerage + exchange fees + SEBI |
-| Stamp Duty (Delivery) | 0.015% on buy |
-| Stamp Duty (Intraday) | 0.003% on buy |
+| Stamp Duty Delivery | 0.015% buy |
+| Stamp Duty Intraday | 0.003% buy |
 | DP Charge | ₹20 + GST per scrip, sell side, delivery only |
 
 ---
 
-## bot_example.py — Strategy & Structure
+## Known Issues / Constraints
 
-- **Strategy:** EMA(9) / EMA(21) crossover on 5-minute candles  
-  - EMA(9) crosses above EMA(21) → BUY  
-  - EMA(9) crosses below EMA(21) → SELL/exit  
-- **Symbol:** `SBIN-EQ` on NSE (configurable)  
-- **Product:** `INTRADAY` (MIS, auto square-off 3:20 PM)  
-- **DRY_RUN = True** by default — no real orders until explicitly set to `False`  
-- **Risk:** 1% of capital per trade, SL = ₹5, TP = ₹10  
-- **State dict** tracks `in_position`, `entry_price`, `entry_qty`, order IDs, tick buffer
+- **Static IP whitelisting required** — AngelOne SEBI mandate (Apr 2026): order endpoints reject unwhitelisted IPs. Set `ANGEL_PUBLIC_IP`.
+- **GTT = CNC/NRML only** — not for intraday. Use regular SL orders for intraday protection.
+- **`create_gtt_oco` is pseudo-OCO** — two independent GTT rules; bot must cancel the other when one fires.
+- **Holiday calendar not implemented** — `is_market_open()` is weekday-only; no NSE holiday awareness.
+- **OrderFeed gives 403** — `tns.angelone.in` rejects auth (account restriction or IP whitelist). Bot handles it cleanly with a single warning; order fills are not real-time.
 
 ---
 
-## Session History
+## Implementation Roadmap
 
-### Session 1 — 2026-04-26
-- Initial project exploration.
-- Verified full read/write access to all files.
-- Created this CLAUDE.md for persistent context across sessions.
-- No code changes made.
+Features planned in this order. Update status as each completes.
 
-### Session 2 — 2026-04-26
-- Full review of all 11 scripts. Codebase built by a previous Claude session via web-scraping of AngelOne API docs.
-- **3 bugs fixed:**
-  1. `instruments.py:36` — `DEFAULT_CACHE_PATH` used `/tmp/` which doesn't exist on Windows. Fixed to `Path(tempfile.gettempdir()) / "angelone_instruments.json"` so cache works cross-platform.
-  2. `orders.py:62` — `_get()` had no `session.tokens` guard before accessing `.headers`; would crash with `AttributeError` on unauthenticated calls. Added the same guard that already existed in `portfolio.py`'s `_get()`.
-  3. `orders.py:911` — `cancel_gtt()` accepted a `symbol` parameter but never included it in the API payload; AngelOne's cancel-GTT endpoint requires `tradingsymbol`. Added to payload.
-- Everything else reviewed and confirmed correct: charge rates, EMA crossover logic, WebSocket wiring, paise/rupee conversions, rate limiter, session lifecycle, GTT create/modify, all portfolio helpers.
+| # | Feature | Status | Notes |
+|---|---------|--------|-------|
+| 1 | **Trailing Stop Loss** | ✅ Done | `risk/trailing_sl.py` — software-side, tick-driven |
+| 2 | **Short Selling** | ✅ Done | 4-signal model: BUY/SELL/SHORT/COVER; TSL enabled for both directions |
+| 3 | **Indicators** | Pending | Complete stubs: ATR (needed by TSL), RSI, volume (needed by screener) |
+| 4 | **Trade Journal** | Pending | SQLite, persist every trade; needed before multi-stock analysis |
+| 5 | **Stock Screener** | Pending | `screener/` folder; pre-market once daily |
+| 6 | **Multi-symbol main loop** | Pending | Sequential N-strategy instances, shared RiskManager |
+| 7 | **Telegram Notifications** | Pending | `notifications/telegram.py`; fills, halts, daily P&L |
+| 8 | **Position Recovery** | Pending | Reconcile open positions from broker API on bot restart |
 
 ---
 
-## Open Tasks / Known Issues
+## Feature Design Notes
 
-- **No `.env` file present** — credentials must be set as environment variables before running (`ANGEL_API_KEY`, `ANGEL_CLIENT_CODE`, `ANGEL_MPIN`, `ANGEL_TOTP_SECRET`, `ANGEL_PUBLIC_IP`).
-- **Static IP whitelisting required** — AngelOne SEBI mandate (Apr 2026): order endpoints reject requests unless the public IP matches the IP whitelisted in the SmartAPI dashboard. Set `ANGEL_PUBLIC_IP` env var.
-- **GTT works for CNC/NRML only** — not for intraday (MIS). Use regular SL orders for intraday protection.
-- **`create_gtt_oco` is pseudo-OCO** — AngelOne has no native OCO. Two independent GTT rules are created; your bot must cancel the other when one fires (poll via `list_gtt(status=["TRIGGERED"])`).
-- **Holiday calendar not implemented** — `is_market_open()` checks weekdays only; does not account for NSE exchange holidays.
+### 1. Trailing Stop Loss (`risk/trailing_sl.py`)
+
+**Design:** Standalone stateful class, no AngelOne dependency. Software-side only (AngelOne has no native TSL).
+
+```
+TrailingSL(mode, value, activation_gap=0.0)
+  mode         : "points" | "pct" | "atr"
+  value        : trail distance (₹ points, % float, or ATR multiplier)
+  activation_gap: min profit (₹) before TSL activates — prevents noise stop-out at entry
+  .arm(entry_price, atr=None)  → call once on position open
+  .update(ltp)                 → call on every tick; returns True if SL is hit
+  .current_sl                  → readable property; 0.0 if not yet armed/activated
+```
+
+**Integration points:**
+- `strategies/ema_crossover.py` — arms TSL in `on_fill()` after BUY fill; calls `tsl.update(ltp)` in `on_tick()` to generate emergency SELL
+- `backtest.py` — simulate TSL on bar OHLC (use bar low as worst-case for longs)
+- `config.json` — new `"trailing_sl"` block under `"risk"`:
+  ```json
+  "trailing_sl": {
+    "enabled": true,
+    "mode": "points",
+    "value": 5.0,
+    "activation_gap": 3.0
+  }
+  ```
+
+**Short-sell note:** TSL logic flips for shorts — track price trough, SL trails above. `arm()` takes a `direction` arg (`"long"` / `"short"`).
+
+**Backtesting TSL simulation:**
+- On each bar: check if low ≤ current_sl (long hit) before checking TP
+- Update TSL peak using bar high (long) — conservative but correct for OHLC data
+
+**ATR mode:** ATR value is computed from the last N candles at entry time and passed to `arm()`. The TSL does not recompute ATR on every tick — it uses the entry-time ATR as a fixed trail distance. This keeps TSL predictable and backtestable.
+
+---
+
+### 2. Short Selling (planned)
+
+**Signal model:** `generate_signal()` returns `"BUY" | "SELL" | "SHORT" | "COVER" | None`  
+**Position state:** `direction: Literal["LONG", "SHORT", "FLAT"]` added to `BaseStrategy`  
+**AngelOne:** equity shorts require `INTRADAY` product (MIS) — already set in config.  
+**SL/TP flip:** for shorts, SL = entry + sl_points, TP = entry − tp_points.
+
+---
+
+### 3. Stock Screener (planned)
+
+**Folder:** `screener/` with `universe.py`, `filters.py`, `ranker.py`, `scheduler.py`  
+**Universe:** configurable `watchlist` in `config.json`; optional `"nifty50"` shorthand loads bundled CSV  
+**Timing:** pre-market once (9:00–9:10 AM IST); symbols locked for the day  
+**Filters:** min/max price, min avg volume (20-day), min/max ATR, circuit-breaker check  
+**Ranking:** momentum (5-day return) + volume spike → top-N symbols  
+**Capital:** `max_concurrent_positions` + `max_total_exposure_pct` added to `config.json risk`
 
 ---
 
 ## Notes for Claude
 
-- Always check `DRY_RUN` flag before touching any order logic — never suggest setting it to `False` without explicit user confirmation.
-- The `.venv` folder is at the project root — use it for dependency checks.
-- `requirements.txt` is UTF-16 encoded (appears spaced when read) — parse carefully.
-- When updating this file: add a new bullet under **Session History** with the date and a 2–3 line summary of what was done.
+- **Never suggest setting `DRY_RUN = False`** without explicit user confirmation.
+- Enums/endpoints are all in `broker/constants.py` — read it rather than relying on this file.
+- When updating this file: keep it short. Session history belongs in git log, not here.
+
+---
+
+## Session Log
+
+| Date | Summary |
+|------|---------|
+| 2026-04-26 | Initial exploration, created CLAUDE.md. |
+| 2026-04-26 | Reviewed all scripts; fixed 3 bugs (instruments cache path, orders auth guard, cancel_gtt payload). |
+| 2026-04-28 | Fixed login 400, websocket package conflict, OrderFeed 403 retry loop. Bot running end-to-end. |
+| 2026-04-28 | Restructured flat files → `broker/`, `utils/`, `indicators/`, `strategies/`, `risk/`. Added config.json, .gitignore, BaseStrategy ABC, stubs for Phase 2 files. |
+| 2026-04-28 | Implemented `backtest.py` — 60-day chunk fetching, EMA crossover replay, SL/TP simulation, real charges, stats output. |
+| 2026-04-28 | Designed roadmap: TSL, short sell, indicators, trade journal, screener, multi-symbol, notifications, position recovery. TSL implementation starting next. |
+| 2026-04-28 | Implemented Short Selling: 4-signal model (BUY/SELL/SHORT/COVER), bidirectional TSL (short trails above entry), reversed SL/TP/PnL for shorts in backtest, L/S column in trade table. |
+| 2026-04-28 | Implemented Trailing Stop Loss: `risk/trailing_sl.py` (points/pct/atr modes, activation_gap, simulate_bar for backtest). Integrated into `ema_crossover.py` (arm on fill, check in on_tick, priority in generate_signal) and `backtest.py` (bar simulation, --no-tsl flag). All unit tests pass. |

@@ -13,7 +13,7 @@ import threading
 from typing import Dict, Optional
 from datetime import datetime, timezone
 
-from config import PAISE_PER_RUPEE, RateLimits
+from broker.constants import PAISE_PER_RUPEE, RateLimits
 
 # ──────────────────────────────────────────────────────────────────────────────
 # LOGGING

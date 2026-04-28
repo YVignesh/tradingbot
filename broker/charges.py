@@ -32,7 +32,7 @@ Dependencies:
 from dataclasses import dataclass, field, asdict
 from typing import Optional
 
-from config import ChargeRates
+from broker.constants import ChargeRates
 from utils import get_logger, format_price
 
 _log = get_logger(__name__)

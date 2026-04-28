@@ -28,7 +28,7 @@ import requests
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-from config import INSTRUMENTS_MASTER_URL, REQUEST_TIMEOUT
+from broker.constants import INSTRUMENTS_MASTER_URL, REQUEST_TIMEOUT
 from utils import get_logger, AngelOneAPIError
 
 _log = get_logger(__name__)

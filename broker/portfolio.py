@@ -14,8 +14,8 @@ Dependencies:
 import requests
 from typing import List, Optional
 
-from config import BASE_URL, ENDPOINTS, REQUEST_TIMEOUT, Exchange, ProductType
-from session import AngelSession
+from broker.constants import BASE_URL, ENDPOINTS, REQUEST_TIMEOUT, Exchange, ProductType
+from broker.session import AngelSession
 from utils import get_logger, validate_response, AngelOneAPIError
 
 _log = get_logger(__name__)

@@ -22,7 +22,7 @@ from datetime import datetime, timedelta, timezone
 from dataclasses import dataclass, field
 from typing import Optional
 
-from config import BASE_URL, ENDPOINTS, REQUEST_TIMEOUT
+from broker.constants import BASE_URL, ENDPOINTS, REQUEST_TIMEOUT
 from utils import get_logger, build_headers, validate_response, AngelOneAPIError
 
 _log = get_logger(__name__)
@@ -182,11 +182,17 @@ class AngelSession:
             requests.RequestException on network failure
         """
         url = BASE_URL + ENDPOINTS[endpoint_key]
-        headers = self.tokens.headers if (auth and self.tokens) else {
-            "Content-Type": "application/json",
-            "Accept":       "application/json",
-            "X-PrivateKey": self._api_key,
-        }
+        if auth and self.tokens:
+            headers = self.tokens.headers
+        else:
+            headers = build_headers(
+                jwt_token   = "",
+                api_key     = self._api_key,
+                public_ip   = self._public_ip,
+                local_ip    = self._local_ip,
+                mac_address = self._mac_address,
+            )
+            headers.pop("Authorization", None)
         try:
             resp = requests.post(url, json=payload, headers=headers, timeout=REQUEST_TIMEOUT)
             resp.raise_for_status()
