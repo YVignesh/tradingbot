@@ -5,6 +5,7 @@ All strategies inherit from BaseStrategy and implement the required
 methods. main.py calls these methods uniformly regardless of strategy.
 """
 from abc import ABC, abstractmethod
+from datetime import datetime
 from typing import Optional
 
 
@@ -31,3 +32,17 @@ class BaseStrategy(ABC):
 
     def on_stop(self) -> None:
         """Called on graceful shutdown before logout."""
+
+    def pop_completed_trades(self) -> list[dict]:
+        """Return completed round-trips accumulated since the last call."""
+        return []
+
+    def recover_position(
+        self,
+        direction: str,
+        qty: int,
+        entry_price: float,
+        recovered_at: Optional[datetime] = None,
+        order_id: str = "RECOVERED",
+    ) -> None:
+        """Restore internal position state from broker-reported open positions."""

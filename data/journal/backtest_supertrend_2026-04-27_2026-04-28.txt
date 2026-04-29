@@ -1,0 +1,324 @@
+================================================================================
+  BACKTEST SESSION  |  supertrend  |  2026-04-27 → 2026-04-28
+  Capital: Rs100,000  |  Interval: FIFTEEN_MINUTE  |  Top-N: 5
+  SL: 5.0 pts  |  TP: 10.0 pts  |  TSL=atr:1.5 gap=Rs5.0
+  Warmup: 15 bars → 4 extra days fetched before start date
+  Journal: data/journal/backtest_supertrend_2026-04-27_2026-04-28.txt
+  Created: 2026-04-29 12:34:04 IST
+================================================================================
+
+================================================================================
+  DAY 1  |  2026-04-27  (Monday)  |  Pool: Rs100,000.00
+================================================================================
+
+  [SCREENER]  Walk-forward selection  |  Active: 3  |  Pool: Rs100,000
+  Rank  Symbol             Score     Close     ATR    Mom5d   VolSpike   Gap%       Alloc
+  ────────────────────────────────────────────────────────────────────────────────
+  1     TATASTEEL-EQ      -54.05  Rs  210.1    5.09   -0.97%      0.76x   0.40%  Rs  43,243
+  2     SHRIRAMFIN-EQ     -54.83  Rs 1011.3   41.37   -2.47%      1.09x   0.20%  Rs  32,432
+  3     INDUSINDBK-EQ     -55.56  Rs  848.0   26.59   -0.70%      0.48x   1.44%  Rs  24,324
+  ────────────────────────────────────────────────────────────────────────────────
+  09:15  INDUSINDBK-EQ            O:865.20 H:899.90 L:865.20 C:884.75 | st_line:856.66  atr:7.41 | → BUY
+  09:15  SHRIRAMFIN-EQ            O:1011.30 H:1012.00 L:973.35 C:978.20 | st_line:1032.14  atr:11.45 | → SHORT
+  09:15  TATASTEEL-EQ             O:211.00 H:214.00 L:210.93 C:213.96 | st_line:209.43  atr:0.96 | → BUY
+  ▶ ENTRY LONG   09:30  INDUSINDBK-EQ    Price:Rs884.50  Qty:27  SL:Rs879.50  TP:Rs894.50  Alloc:Rs24,324
+  ◀ EXIT  SL          09:30  INDUSINDBK-EQ    Price:Rs879.50  Qty:27  Gross:Rs-135.00  Charges:Rs55.58  Net:Rs-190.58  Pool:Rs99,809.42
+  ▶ ENTRY SHORT  09:30  SHRIRAMFIN-EQ    Price:Rs978.20  Qty:33  SL:Rs983.20  TP:Rs968.20  Alloc:Rs32,432
+  09:30  SHRIRAMFIN-EQ    [SHORT] O:978.20 H:981.50 L:971.35 C:975.15 | st_line:1014.99  atr:11.36 | → None
+  ▶ ENTRY LONG   09:30  TATASTEEL-EQ     Price:Rs213.96  Qty:202  SL:Rs208.96  TP:Rs223.96  Alloc:Rs43,243
+  09:30  TATASTEEL-EQ     [LONG]  O:213.96 H:214.20 L:213.10 C:213.52 | st_line:210.59  atr:0.97 | → None
+  09:45  INDUSINDBK-EQ            O:881.60 H:884.05 L:876.20 C:881.00 | st_line:856.66  atr:7.63 | → None
+  09:45  SHRIRAMFIN-EQ    [SHORT] O:975.15 H:982.50 L:975.15 C:978.20 | st_line:1014.99  atr:11.07 | → None
+  09:45  TATASTEEL-EQ     [LONG]  O:213.48 H:214.05 L:213.48 C:213.79 | st_line:210.84  atr:0.94 | → None
+  10:00  INDUSINDBK-EQ            O:880.95 H:883.75 L:880.00 C:880.70 | st_line:857.28  atr:7.35 | → None
+  ◀ EXIT  TP          10:00  SHRIRAMFIN-EQ    Price:Rs968.20  Qty:33  Gross:+Rs330.00  Charges:Rs58.57  Net:+Rs271.43  Pool:Rs100,080.85
+  10:00  TATASTEEL-EQ     [LONG]  O:213.79 H:213.88 L:213.50 C:213.55 | st_line:210.94  atr:0.90 | → None
+  10:15  INDUSINDBK-EQ            O:880.90 H:884.40 L:879.35 C:881.90 | st_line:858.22  atr:7.19 | → None
+  10:15  SHRIRAMFIN-EQ            O:966.00 H:972.00 L:965.75 C:967.35 | st_line:1004.45  atr:10.92 | → None
+  10:15  TATASTEEL-EQ     [LONG]  O:213.55 H:214.45 L:213.52 C:214.40 | st_line:211.24  atr:0.91 | → None
+  10:30  INDUSINDBK-EQ            O:881.95 H:882.15 L:877.00 C:879.90 | st_line:858.22  atr:7.04 | → None
+  10:30  SHRIRAMFIN-EQ            O:967.20 H:975.60 L:963.75 C:975.50 | st_line:1004.45  atr:10.99 | → None
+  10:30  TATASTEEL-EQ     [LONG]  O:214.40 H:214.75 L:213.55 C:214.69 | st_line:211.31  atr:0.93 | → None
+  10:45  INDUSINDBK-EQ            O:879.90 H:882.50 L:879.50 C:881.65 | st_line:859.55  atr:6.75 | → None
+  10:45  SHRIRAMFIN-EQ            O:975.20 H:979.60 L:974.85 C:977.75 | st_line:1004.45  atr:10.54 | → None
+  10:45  TATASTEEL-EQ     [LONG]  O:214.75 H:214.90 L:214.14 C:214.32 | st_line:211.74  atr:0.91 | → None
+  11:00  INDUSINDBK-EQ            O:881.55 H:887.85 L:879.00 C:879.40 | st_line:861.47  atr:6.90 | → None
+  11:00  SHRIRAMFIN-EQ            O:977.75 H:980.00 L:975.00 C:977.10 | st_line:1004.45  atr:10.15 | → None
+  11:00  TATASTEEL-EQ     [LONG]  O:214.33 H:214.78 L:214.15 C:214.50 | st_line:211.77  atr:0.89 | → None
+  11:15  INDUSINDBK-EQ            O:879.40 H:880.80 L:875.90 C:876.25 | st_line:861.47  atr:6.76 | → None
+  11:15  SHRIRAMFIN-EQ            O:976.85 H:979.00 L:975.00 C:975.70 | st_line:1004.45  atr:9.71 | → None
+  11:15  TATASTEEL-EQ     [LONG]  O:214.50 H:215.00 L:214.43 C:214.65 | st_line:212.12  atr:0.87 | → None
+  11:30  INDUSINDBK-EQ            O:876.20 H:876.50 L:873.40 C:874.55 | st_line:861.47  atr:6.50 | → None
+  11:30  SHRIRAMFIN-EQ            O:975.70 H:975.90 L:972.10 C:975.35 | st_line:1001.81  atr:9.29 | → None
+  11:30  TATASTEEL-EQ     [LONG]  O:214.65 H:214.67 L:212.81 C:212.89 | st_line:212.12  atr:0.94 | → None
+  11:45  INDUSINDBK-EQ            O:874.55 H:877.90 L:874.00 C:877.25 | st_line:861.47  atr:6.31 | → None
+  11:45  SHRIRAMFIN-EQ            O:975.35 H:977.80 L:974.45 C:975.90 | st_line:1001.81  atr:8.86 | → None
+  11:45  TATASTEEL-EQ     [LONG]  O:212.86 H:213.55 L:212.57 C:213.50 | st_line:212.12  atr:0.94 | → None
+  12:00  INDUSINDBK-EQ            O:877.30 H:880.00 L:874.20 C:879.10 | st_line:861.47  atr:6.28 | → None
+  12:00  SHRIRAMFIN-EQ            O:975.70 H:975.95 L:972.50 C:973.95 | st_line:998.69  atr:8.48 | → None
+  12:00  TATASTEEL-EQ     [LONG]  O:213.50 H:213.50 L:212.90 C:213.36 | st_line:212.12  atr:0.92 | → None
+  12:15  INDUSINDBK-EQ            O:879.45 H:882.60 L:877.60 C:881.00 | st_line:861.48  atr:6.18 | → None
+  12:15  SHRIRAMFIN-EQ            O:973.80 H:974.60 L:968.80 C:969.30 | st_line:995.46  atr:8.28 | → None
+  12:15  TATASTEEL-EQ     [LONG]  O:213.36 H:214.00 L:213.30 C:213.78 | st_line:212.12  atr:0.90 | → None
+  12:30  INDUSINDBK-EQ            O:881.20 H:886.00 L:880.10 C:881.30 | st_line:864.52  atr:6.16 | → None
+  12:30  SHRIRAMFIN-EQ            O:969.30 H:972.95 L:968.95 C:970.00 | st_line:993.53  atr:7.98 | → None
+  12:30  TATASTEEL-EQ     [LONG]  O:213.82 H:214.10 L:213.67 C:214.03 | st_line:212.12  atr:0.87 | → None
+  12:45  INDUSINDBK-EQ            O:881.05 H:883.90 L:880.80 C:881.90 | st_line:864.74  atr:5.95 | → None
+  12:45  SHRIRAMFIN-EQ            O:969.95 H:970.95 L:969.25 C:969.70 | st_line:990.93  atr:7.53 | → None
+  12:45  TATASTEEL-EQ     [LONG]  O:214.03 H:214.10 L:213.75 C:213.90 | st_line:212.12  atr:0.83 | → None
+  13:00  INDUSINDBK-EQ            O:881.85 H:891.40 L:881.85 C:891.40 | st_line:867.91  atr:6.20 | → None
+  13:00  SHRIRAMFIN-EQ            O:969.70 H:970.95 L:969.20 C:970.60 | st_line:989.35  atr:7.12 | → None
+  13:00  TATASTEEL-EQ     [LONG]  O:213.90 H:214.05 L:213.80 C:214.00 | st_line:212.12  atr:0.79 | → None
+  13:15  INDUSINDBK-EQ            O:891.10 H:896.70 L:889.10 C:895.50 | st_line:873.78  atr:6.30 | → None
+  13:15  SHRIRAMFIN-EQ            O:970.55 H:970.90 L:969.00 C:969.90 | st_line:987.87  atr:6.74 | → None
+  13:15  TATASTEEL-EQ     [LONG]  O:214.00 H:214.19 L:213.85 C:214.15 | st_line:212.12  atr:0.76 | → None
+  13:30  INDUSINDBK-EQ            O:895.50 H:903.50 L:894.45 C:898.30 | st_line:879.05  atr:6.50 | → None
+  13:30  SHRIRAMFIN-EQ            O:969.90 H:976.50 L:969.50 C:974.30 | st_line:987.87  atr:6.76 | → None
+  13:30  TATASTEEL-EQ     [LONG]  O:214.17 H:214.35 L:213.95 C:214.25 | st_line:212.12  atr:0.73 | → None
+  13:45  INDUSINDBK-EQ            O:898.45 H:899.90 L:896.05 C:897.95 | st_line:879.05  atr:6.31 | → None
+  13:45  SHRIRAMFIN-EQ            O:974.30 H:975.90 L:971.10 C:974.50 | st_line:987.87  atr:6.62 | → None
+  13:45  TATASTEEL-EQ     [LONG]  O:214.25 H:214.30 L:213.47 C:213.90 | st_line:212.12  atr:0.74 | → None
+  14:00  INDUSINDBK-EQ            O:897.95 H:899.60 L:893.85 C:895.70 | st_line:879.05  atr:6.27 | → None
+  14:00  SHRIRAMFIN-EQ            O:974.50 H:975.50 L:971.35 C:975.40 | st_line:987.87  atr:6.45 | → None
+  14:00  TATASTEEL-EQ     [LONG]  O:213.90 H:214.18 L:213.85 C:214.00 | st_line:212.12  atr:0.71 | → None
+  14:15  INDUSINDBK-EQ            O:896.00 H:902.60 L:894.25 C:900.25 | st_line:879.05  atr:6.42 | → None
+  14:15  SHRIRAMFIN-EQ            O:975.30 H:975.45 L:972.50 C:973.05 | st_line:987.87  atr:6.20 | → None
+  14:15  TATASTEEL-EQ     [LONG]  O:214.01 H:214.10 L:213.88 C:213.95 | st_line:212.15  atr:0.68 | → None
+  14:30  INDUSINDBK-EQ            O:900.00 H:901.60 L:895.65 C:896.10 | st_line:879.27  atr:6.38 | → None
+  14:30  SHRIRAMFIN-EQ            O:972.95 H:978.35 L:971.30 C:977.15 | st_line:987.87  atr:6.26 | → None
+  14:30  TATASTEEL-EQ     [LONG]  O:213.95 H:214.10 L:213.33 C:213.96 | st_line:212.15  atr:0.68 | → None
+  14:45  INDUSINDBK-EQ            O:896.10 H:900.25 L:895.90 C:899.45 | st_line:879.35  atr:6.24 | → None
+  14:45  SHRIRAMFIN-EQ            O:977.00 H:979.60 L:976.10 C:976.80 | st_line:987.87  atr:6.06 | → None
+  14:45  TATASTEEL-EQ     [LONG]  O:213.96 H:214.08 L:213.78 C:213.96 | st_line:212.15  atr:0.66 | → None
+  15:00  INDUSINDBK-EQ            O:899.15 H:900.75 L:897.35 C:899.85 | st_line:881.18  atr:6.04 | → None
+  15:00  SHRIRAMFIN-EQ            O:976.65 H:977.45 L:972.90 C:973.45 | st_line:987.87  atr:5.95 | → None
+  15:00  TATASTEEL-EQ     [LONG]  O:213.96 H:214.04 L:213.00 C:213.19 | st_line:212.15  atr:0.68 | → None
+  15:15  INDUSINDBK-EQ            O:900.15 H:902.90 L:899.00 C:900.45 | st_line:883.70  atr:5.88 | → None
+  15:15  SHRIRAMFIN-EQ            O:973.50 H:977.00 L:970.50 C:974.00 | st_line:987.87  atr:5.99 | → None
+  ◀ EXIT  SQUAREOFF   15:15  TATASTEEL-EQ     Price:Rs213.28  Qty:202  Gross:Rs-137.36  Charges:Rs62.41  Net:Rs-199.77  Pool:Rs99,881.08
+
+  ────────────────────────────────────────────────────────────────────────────────
+  END OF DAY 2026-04-27  |  Trades:3  W:1  L:2
+  Day net P&L: Rs-118.92  |  Pool: Rs99,881.08  (was Rs100,000.00)
+  ────────────────────────────────────────────────────────────────────────────────
+  Per-symbol:
+    INDUSINDBK-EQ        1 trade(s)  Rs-190.58
+    SHRIRAMFIN-EQ        1 trade(s)  +Rs271.43
+    TATASTEEL-EQ         1 trade(s)  Rs-199.77
+
+================================================================================
+  DAY 2  |  2026-04-28  (Tuesday)  |  Pool: Rs99,881.08
+================================================================================
+
+  [SCREENER]  Walk-forward selection  |  Active: 5  |  Pool: Rs99,881
+  Rank  Symbol             Score     Close     ATR    Mom5d   VolSpike   Gap%       Alloc
+  ────────────────────────────────────────────────────────────────────────────────
+  1     ONGC-EQ           -45.92  Rs  285.9    7.35   +0.90%      0.31x   0.39%  Rs  32,740
+  2     BAJFINANCE-EQ     -54.94  Rs  921.8   29.01   +0.44%      0.77x   0.03%  Rs  24,555
+  3     TATASTEEL-EQ      -55.23  Rs  213.3    5.08   +0.73%      1.13x   1.52%  Rs  18,416
+  4     COALINDIA-EQ      -57.82  Rs  452.5   11.32   +2.43%      0.54x   0.77%  Rs  13,812
+  5     SBIN-EQ           -62.55  Rs 1111.8   29.71   +0.36%      0.62x   0.98%  Rs  10,359
+  ────────────────────────────────────────────────────────────────────────────────
+  09:15  BAJFINANCE-EQ            O:921.80 H:929.80 L:914.35 C:929.40 | st_line:916.35  atr:4.52 | → None
+  09:15  COALINDIA-EQ             O:456.20 H:470.00 L:456.20 C:469.25 | st_line:453.66  atr:2.77 | → BUY
+  09:15  ONGC-EQ                  O:286.25 H:291.60 L:286.00 C:289.70 | st_line:285.39  atr:1.03 | → BUY
+  09:15  SBIN-EQ                  O:1102.30 H:1104.00 L:1096.00 C:1100.45 | st_line:1114.02  atr:4.46 | → SHORT
+  09:15  TATASTEEL-EQ             O:213.20 H:216.10 L:212.20 C:215.31 | st_line:212.15  atr:0.92 | → None
+  09:30  BAJFINANCE-EQ            O:929.45 H:929.90 L:925.00 C:926.10 | st_line:916.35  atr:4.55 | → None
+  ▶ ENTRY LONG   09:30  COALINDIA-EQ     Price:Rs469.20  Qty:29  SL:Rs464.20  TP:Rs479.20  Alloc:Rs13,812
+  09:30  COALINDIA-EQ     [LONG]  O:469.20 H:473.90 L:468.05 C:473.00 | st_line:460.72  atr:2.99 | → None
+  ▶ ENTRY LONG   09:30  ONGC-EQ          Price:Rs289.80  Qty:112  SL:Rs284.80  TP:Rs299.80  Alloc:Rs32,740
+  09:30  ONGC-EQ          [LONG]  O:289.80 H:291.90 L:289.60 C:291.60 | st_line:286.99  atr:1.12 | → None
+  ▶ ENTRY SHORT  09:30  SBIN-EQ          Price:Rs1100.85  Qty:9  SL:Rs1105.85  TP:Rs1090.85  Alloc:Rs10,359
+  ◀ EXIT  SL          09:30  SBIN-EQ          Price:Rs1105.85  Qty:9  Gross:Rs-45.00  Charges:Rs26.93  Net:Rs-71.93  Pool:Rs99,809.15
+  09:30  TATASTEEL-EQ             O:215.35 H:216.97 L:215.18 C:216.96 | st_line:212.90  atr:0.98 | → None
+  09:45  BAJFINANCE-EQ            O:926.30 H:927.90 L:923.95 C:925.30 | st_line:916.35  atr:4.51 | → None
+  09:45  COALINDIA-EQ     [LONG]  O:473.10 H:473.20 L:469.80 C:470.35 | st_line:461.25  atr:3.02 | → None
+  09:45  ONGC-EQ          [LONG]  O:291.60 H:293.80 L:291.45 C:292.85 | st_line:288.54  atr:1.21 | → None
+  09:45  SBIN-EQ                  O:1103.45 H:1109.45 L:1101.65 C:1108.70 | st_line:1114.02  atr:4.88 | → None
+  09:45  TATASTEEL-EQ             O:216.97 H:217.70 L:216.70 C:216.88 | st_line:214.05  atr:0.98 | → None
+  10:00  BAJFINANCE-EQ            O:925.10 H:928.00 L:923.70 C:924.55 | st_line:916.35  atr:4.49 | → None
+  10:00  COALINDIA-EQ     [LONG]  O:470.50 H:472.20 L:468.55 C:471.95 | st_line:461.25  atr:3.07 | → None
+  10:00  ONGC-EQ          [LONG]  O:292.85 H:294.30 L:291.35 C:293.90 | st_line:288.54  atr:1.34 | → None
+  10:00  SBIN-EQ                  O:1109.00 H:1110.50 L:1105.50 C:1105.50 | st_line:1114.02  atr:4.89 | → None
+  10:00  TATASTEEL-EQ             O:216.88 H:217.79 L:216.40 C:217.78 | st_line:214.05  atr:1.01 | → None
+  10:15  BAJFINANCE-EQ            O:924.75 H:926.15 L:924.35 C:925.45 | st_line:916.35  atr:4.30 | → None
+  10:15  COALINDIA-EQ     [LONG]  O:472.00 H:472.30 L:470.00 C:470.35 | st_line:461.25  atr:3.01 | → None
+  ◀ EXIT  TSL         10:15  ONGC-EQ          Price:Rs293.16  Qty:112  Gross:+Rs376.73  Charges:Rs58.75  Net:+Rs317.98  Pool:Rs100,127.13
+  10:15  SBIN-EQ                  O:1105.65 H:1107.70 L:1105.00 C:1106.30 | st_line:1114.02  atr:4.73 | → None
+  10:15  TATASTEEL-EQ             O:217.78 H:218.24 L:217.31 C:217.50 | st_line:214.57  atr:1.00 | → None
+  10:30  BAJFINANCE-EQ            O:925.35 H:926.20 L:924.25 C:925.55 | st_line:916.35  atr:4.13 | → None
+  10:30  COALINDIA-EQ     [LONG]  O:470.25 H:472.40 L:470.10 C:471.90 | st_line:461.58  atr:2.96 | → None
+  10:30  ONGC-EQ                  O:293.35 H:294.35 L:292.80 C:293.50 | st_line:289.34  atr:1.38 | → None
+  10:30  SBIN-EQ                  O:1106.25 H:1107.10 L:1105.00 C:1106.70 | st_line:1114.02  atr:4.54 | → None
+  10:30  TATASTEEL-EQ             O:217.50 H:217.70 L:216.25 C:216.41 | st_line:214.57  atr:1.04 | → None
+  10:45  BAJFINANCE-EQ            O:925.65 H:927.00 L:924.50 C:925.00 | st_line:916.35  atr:4.02 | → None
+  10:45  COALINDIA-EQ     [LONG]  O:471.95 H:472.45 L:470.10 C:470.20 | st_line:461.87  atr:2.92 | → None
+  10:45  ONGC-EQ                  O:293.50 H:293.85 L:293.30 C:293.45 | st_line:289.34  atr:1.32 | → None
+  10:45  SBIN-EQ                  O:1106.70 H:1109.75 L:1105.90 C:1108.50 | st_line:1114.02  atr:4.49 | → None
+  10:45  TATASTEEL-EQ             O:216.48 H:216.85 L:216.34 C:216.81 | st_line:214.57  atr:1.00 | → None
+  11:00  BAJFINANCE-EQ            O:925.10 H:925.15 L:922.00 C:923.15 | st_line:916.35  atr:3.95 | → None
+  11:00  COALINDIA-EQ     [LONG]  O:470.25 H:470.45 L:469.00 C:469.70 | st_line:461.87  atr:2.81 | → None
+  11:00  ONGC-EQ                  O:293.55 H:295.90 L:293.25 C:295.75 | st_line:289.88  atr:1.41 | → None
+  11:00  SBIN-EQ                  O:1108.75 H:1109.20 L:1105.00 C:1106.80 | st_line:1114.02  atr:4.47 | → None
+  11:00  TATASTEEL-EQ             O:216.85 H:216.92 L:216.08 C:216.50 | st_line:214.57  atr:0.99 | → None
+  11:15  BAJFINANCE-EQ            O:923.15 H:924.30 L:920.60 C:921.40 | st_line:916.35  atr:3.94 | → None
+  11:15  COALINDIA-EQ     [LONG]  O:469.70 H:471.20 L:468.80 C:469.55 | st_line:461.87  atr:2.78 | → None
+  11:15  ONGC-EQ                  O:295.75 H:295.80 L:294.55 C:295.55 | st_line:290.57  atr:1.40 | → None
+  11:15  SBIN-EQ                  O:1106.80 H:1106.80 L:1102.50 C:1102.65 | st_line:1114.02  atr:4.46 | → None
+  11:15  TATASTEEL-EQ             O:216.50 H:217.00 L:216.30 C:216.52 | st_line:214.57  atr:0.97 | → None
+  11:30  BAJFINANCE-EQ            O:921.45 H:921.70 L:918.20 C:919.20 | st_line:916.35  atr:3.90 | → None
+  11:30  COALINDIA-EQ     [LONG]  O:469.65 H:472.00 L:468.95 C:470.15 | st_line:461.87  atr:2.80 | → None
+  11:30  ONGC-EQ                  O:295.65 H:296.25 L:295.20 C:295.60 | st_line:291.27  atr:1.38 | → None
+  11:30  SBIN-EQ                  O:1102.95 H:1103.00 L:1098.45 C:1101.20 | st_line:1114.02  atr:4.47 | → None
+  11:30  TATASTEEL-EQ             O:216.53 H:216.97 L:216.23 C:216.34 | st_line:214.57  atr:0.95 | → None
+  11:45  BAJFINANCE-EQ            O:919.20 H:921.90 L:918.00 C:918.10 | st_line:916.35  atr:3.90 | → None
+  11:45  COALINDIA-EQ     [LONG]  O:470.20 H:470.60 L:469.10 C:469.40 | st_line:461.87  atr:2.71 | → None
+  11:45  ONGC-EQ                  O:295.65 H:295.90 L:295.40 C:295.60 | st_line:291.49  atr:1.31 | → None
+  11:45  SBIN-EQ                  O:1101.65 H:1101.80 L:1096.70 C:1096.70 | st_line:1112.98  atr:4.51 | → None
+  11:45  TATASTEEL-EQ             O:216.39 H:216.70 L:216.10 C:216.43 | st_line:214.57  atr:0.93 | → None
+  12:00  BAJFINANCE-EQ            O:918.10 H:920.25 L:916.65 C:919.75 | st_line:916.35  atr:3.88 | → None
+  12:00  COALINDIA-EQ     [LONG]  O:469.45 H:469.65 L:466.30 C:468.15 | st_line:461.87  atr:2.76 | → None
+  12:00  ONGC-EQ                  O:295.65 H:296.60 L:295.05 C:296.50 | st_line:291.61  atr:1.33 | → None
+  12:00  SBIN-EQ                  O:1097.15 H:1097.55 L:1095.00 C:1095.60 | st_line:1109.40  atr:4.37 | → None
+  12:00  TATASTEEL-EQ             O:216.40 H:216.58 L:215.95 C:216.34 | st_line:214.57  atr:0.90 | → None
+  12:15  BAJFINANCE-EQ            O:919.75 H:921.20 L:918.55 C:919.40 | st_line:916.35  atr:3.79 | → None
+  12:15  COALINDIA-EQ     [LONG]  O:468.20 H:468.80 L:466.00 C:466.70 | st_line:461.87  atr:2.76 | → None
+  12:15  ONGC-EQ                  O:296.50 H:297.80 L:296.40 C:297.70 | st_line:292.89  atr:1.34 | → None
+  12:15  SBIN-EQ                  O:1095.60 H:1097.35 L:1093.10 C:1094.80 | st_line:1108.31  atr:4.36 | → None
+  12:15  TATASTEEL-EQ             O:216.34 H:216.58 L:215.80 C:216.08 | st_line:214.57  atr:0.90 | → None
+  12:30  BAJFINANCE-EQ            O:919.45 H:922.55 L:918.40 C:921.90 | st_line:916.35  atr:3.82 | → None
+  12:30  COALINDIA-EQ     [LONG]  O:466.70 H:467.65 L:466.00 C:466.70 | st_line:461.87  atr:2.68 | → None
+  12:30  ONGC-EQ                  O:297.70 H:297.85 L:296.50 C:297.45 | st_line:292.98  atr:1.34 | → None
+  12:30  SBIN-EQ                  O:1094.80 H:1095.70 L:1093.20 C:1094.10 | st_line:1106.98  atr:4.23 | → None
+  12:30  TATASTEEL-EQ             O:216.16 H:216.64 L:215.90 C:216.54 | st_line:214.57  atr:0.88 | → None
+  12:45  BAJFINANCE-EQ            O:922.00 H:925.50 L:921.35 C:922.95 | st_line:916.35  atr:3.84 | → None
+  12:45  COALINDIA-EQ     [LONG]  O:466.70 H:468.50 L:465.50 C:468.15 | st_line:461.87  atr:2.70 | → None
+  12:45  ONGC-EQ                  O:297.45 H:297.70 L:296.80 C:297.30 | st_line:293.21  atr:1.31 | → None
+  12:45  SBIN-EQ                  O:1094.15 H:1095.65 L:1091.80 C:1092.25 | st_line:1106.15  atr:4.20 | → None
+  12:45  TATASTEEL-EQ             O:216.54 H:216.63 L:215.81 C:215.85 | st_line:214.57  atr:0.88 | → None
+  13:00  BAJFINANCE-EQ            O:923.00 H:923.65 L:920.55 C:922.15 | st_line:916.35  atr:3.79 | → None
+  13:00  COALINDIA-EQ     [LONG]  O:468.20 H:468.85 L:465.10 C:465.60 | st_line:461.87  atr:2.78 | → None
+  13:00  ONGC-EQ                  O:297.30 H:297.70 L:297.00 C:297.15 | st_line:293.50  atr:1.26 | → None
+  13:00  SBIN-EQ                  O:1092.25 H:1093.40 L:1091.00 C:1092.00 | st_line:1104.11  atr:4.07 | → None
+  13:00  TATASTEEL-EQ             O:215.86 H:216.00 L:215.56 C:215.74 | st_line:214.57  atr:0.85 | → None
+  13:15  BAJFINANCE-EQ            O:922.15 H:925.95 L:921.00 C:924.15 | st_line:916.35  atr:3.87 | → None
+  13:15  COALINDIA-EQ     [LONG]  O:465.65 H:467.30 L:465.60 C:466.80 | st_line:461.87  atr:2.70 | → None
+  13:15  ONGC-EQ                  O:297.20 H:298.50 L:297.00 C:298.40 | st_line:293.83  atr:1.28 | → None
+  13:15  SBIN-EQ                  O:1092.10 H:1095.15 L:1091.80 C:1093.45 | st_line:1104.11  atr:4.02 | → None
+  13:15  TATASTEEL-EQ             O:215.74 H:215.89 L:215.49 C:215.55 | st_line:214.57  atr:0.82 | → None
+  13:30  BAJFINANCE-EQ            O:924.20 H:925.85 L:921.30 C:921.95 | st_line:916.35  atr:3.92 | → None
+  13:30  COALINDIA-EQ     [LONG]  O:466.80 H:467.50 L:466.00 C:466.80 | st_line:461.87  atr:2.61 | → None
+  13:30  ONGC-EQ                  O:298.45 H:298.55 L:298.00 C:298.30 | st_line:294.59  atr:1.23 | → None
+  13:30  SBIN-EQ                  O:1093.70 H:1093.75 L:1090.70 C:1092.25 | st_line:1103.69  atr:3.95 | → None
+  13:30  TATASTEEL-EQ             O:215.60 H:215.75 L:215.02 C:215.15 | st_line:214.57  atr:0.81 | → None
+  13:45  BAJFINANCE-EQ            O:921.90 H:924.85 L:921.65 C:924.35 | st_line:916.35  atr:3.87 | → None
+  13:45  COALINDIA-EQ     [LONG]  O:466.80 H:467.95 L:466.45 C:467.35 | st_line:461.87  atr:2.53 | → None
+  13:45  ONGC-EQ                  O:298.35 H:298.50 L:298.10 C:298.50 | st_line:294.86  atr:1.17 | → None
+  13:45  SBIN-EQ                  O:1092.35 H:1095.45 L:1091.50 C:1093.80 | st_line:1103.69  atr:3.95 | → None
+  13:45  TATASTEEL-EQ             O:215.18 H:215.60 L:215.05 C:215.28 | st_line:214.57  atr:0.79 | → None
+  14:00  BAJFINANCE-EQ            O:924.40 H:925.45 L:923.30 C:924.15 | st_line:916.35  atr:3.75 | → None
+  14:00  COALINDIA-EQ     [LONG]  O:467.45 H:467.45 L:465.50 C:465.65 | st_line:461.87  atr:2.49 | → None
+  14:00  ONGC-EQ                  O:298.50 H:298.60 L:297.55 C:297.95 | st_line:294.86  atr:1.16 | → None
+  14:00  SBIN-EQ                  O:1094.00 H:1095.00 L:1092.05 C:1092.65 | st_line:1103.69  atr:3.88 | → None
+  14:00  TATASTEEL-EQ             O:215.25 H:215.45 L:214.85 C:214.85 | st_line:214.57  atr:0.78 | → None
+  14:15  BAJFINANCE-EQ            O:924.15 H:927.80 L:924.05 C:926.55 | st_line:916.35  atr:3.75 | → None
+  14:15  COALINDIA-EQ     [LONG]  O:465.75 H:465.75 L:464.70 C:464.90 | st_line:461.87  atr:2.39 | → None
+  14:15  ONGC-EQ                  O:297.95 H:299.30 L:297.95 C:298.95 | st_line:295.15  atr:1.17 | → None
+  14:15  SBIN-EQ                  O:1092.65 H:1093.25 L:1090.00 C:1090.35 | st_line:1102.71  atr:3.84 | → None
+  14:15  TATASTEEL-EQ             O:214.90 H:215.10 L:214.57 C:215.06 | st_line:214.57  atr:0.76 | → None
+  14:30  BAJFINANCE-EQ            O:926.75 H:928.70 L:925.05 C:926.85 | st_line:916.35  atr:3.74 | → None
+  ◀ EXIT  SL          14:30  COALINDIA-EQ     Price:Rs464.20  Qty:29  Gross:Rs-145.00  Charges:Rs36.70  Net:Rs-181.70  Pool:Rs99,945.43
+  14:30  ONGC-EQ                  O:299.00 H:299.50 L:298.80 C:299.15 | st_line:295.81  atr:1.14 | → None
+  14:30  SBIN-EQ                  O:1090.40 H:1093.60 L:1089.40 C:1093.30 | st_line:1102.71  atr:3.86 | → None
+  14:30  TATASTEEL-EQ             O:215.10 H:215.70 L:214.97 C:215.45 | st_line:214.57  atr:0.76 | → None
+  14:45  BAJFINANCE-EQ            O:927.00 H:928.55 L:926.05 C:928.25 | st_line:916.64  atr:3.65 | → None
+  14:45  COALINDIA-EQ             O:464.95 H:467.65 L:464.65 C:467.20 | st_line:461.87  atr:2.41 | → None
+  14:45  ONGC-EQ                  O:299.25 H:301.40 L:299.15 C:301.10 | st_line:296.60  atr:1.22 | → None
+  14:45  SBIN-EQ                  O:1093.30 H:1094.00 L:1091.45 C:1092.80 | st_line:1102.71  atr:3.77 | → None
+  14:45  TATASTEEL-EQ             O:215.45 H:215.87 L:215.35 C:215.60 | st_line:214.57  atr:0.74 | → None
+  15:00  BAJFINANCE-EQ            O:928.25 H:928.90 L:923.65 C:924.35 | st_line:916.64  atr:3.77 | → None
+  15:00  COALINDIA-EQ             O:467.20 H:467.20 L:465.30 C:465.55 | st_line:461.87  atr:2.38 | → None
+  15:00  ONGC-EQ                  O:301.00 H:301.50 L:299.90 C:301.25 | st_line:296.91  atr:1.25 | → None
+  15:00  SBIN-EQ                  O:1092.55 H:1093.10 L:1089.65 C:1092.20 | st_line:1102.20  atr:3.75 | → None
+  15:00  TATASTEEL-EQ             O:215.60 H:215.68 L:214.81 C:215.04 | st_line:214.57  atr:0.75 | → None
+  15:15  BAJFINANCE-EQ            O:924.35 H:925.00 L:919.50 C:920.00 | st_line:916.64  atr:3.89 | → None
+  15:15  COALINDIA-EQ             O:465.60 H:468.80 L:465.25 C:467.40 | st_line:461.87  atr:2.46 | → None
+  15:15  ONGC-EQ                  O:301.30 H:302.40 L:300.90 C:302.00 | st_line:297.79  atr:1.26 | → None
+  15:15  SBIN-EQ                  O:1092.20 H:1093.80 L:1089.15 C:1093.40 | st_line:1102.20  atr:3.81 | → None
+  15:15  TATASTEEL-EQ             O:215.04 H:216.00 L:214.70 C:215.58 | st_line:214.57  atr:0.79 | → None
+
+  ────────────────────────────────────────────────────────────────────────────────
+  END OF DAY 2026-04-28  |  Trades:3  W:1  L:2
+  Day net P&L: +Rs64.35  |  Pool: Rs99,945.43  (was Rs99,881.08)
+  ────────────────────────────────────────────────────────────────────────────────
+  Per-symbol:
+    BAJFINANCE-EQ        0 trade(s)  +Rs0.00
+    COALINDIA-EQ         1 trade(s)  Rs-181.70
+    ONGC-EQ              1 trade(s)  +Rs317.98
+    SBIN-EQ              1 trade(s)  Rs-71.93
+    TATASTEEL-EQ         0 trade(s)  +Rs0.00
+
+================================================================================
+  FINAL AGGREGATE  |  supertrend
+================================================================================
+  Opening capital    : Rs  100,000.00
+  Final pool         : Rs   99,945.43
+  Total return       : -0.05%
+  Total net P&L      : Rs-54.57
+  Total gross P&L    : Rs+244.37
+  Total charges      : Rs298.94
+  Total trades       : 6
+  Win rate           : 33.3%
+────────────────────────────────────────────────────────────────────────────────
+  Per-symbol (sorted by net P&L):
+    ONGC-EQ                1 trades  WR=100%  +Rs+317.98
+    SHRIRAMFIN-EQ          1 trades  WR=100%  +Rs+271.43
+    ADANIENT-EQ            0 trades  WR=0%  +Rs+0.00
+    ADANIPORTS-EQ          0 trades  WR=0%  +Rs+0.00
+    APOLLOHOSP-EQ          0 trades  WR=0%  +Rs+0.00
+    ASIANPAINT-EQ          0 trades  WR=0%  +Rs+0.00
+    AXISBANK-EQ            0 trades  WR=0%  +Rs+0.00
+    BAJAJ-AUTO-EQ          0 trades  WR=0%  +Rs+0.00
+    BAJAJFINSV-EQ          0 trades  WR=0%  +Rs+0.00
+    BAJFINANCE-EQ          0 trades  WR=0%  +Rs+0.00
+    BEL-EQ                 0 trades  WR=0%  +Rs+0.00
+    BHARTIARTL-EQ          0 trades  WR=0%  +Rs+0.00
+    BPCL-EQ                0 trades  WR=0%  +Rs+0.00
+    BRITANNIA-EQ           0 trades  WR=0%  +Rs+0.00
+    CIPLA-EQ               0 trades  WR=0%  +Rs+0.00
+    DRREDDY-EQ             0 trades  WR=0%  +Rs+0.00
+    EICHERMOT-EQ           0 trades  WR=0%  +Rs+0.00
+    ETERNAL-EQ             0 trades  WR=0%  +Rs+0.00
+    GRASIM-EQ              0 trades  WR=0%  +Rs+0.00
+    HCLTECH-EQ             0 trades  WR=0%  +Rs+0.00
+    HDFCBANK-EQ            0 trades  WR=0%  +Rs+0.00
+    HDFCLIFE-EQ            0 trades  WR=0%  +Rs+0.00
+    HEROMOTOCO-EQ          0 trades  WR=0%  +Rs+0.00
+    HINDALCO-EQ            0 trades  WR=0%  +Rs+0.00
+    HINDUNILVR-EQ          0 trades  WR=0%  +Rs+0.00
+    ICICIBANK-EQ           0 trades  WR=0%  +Rs+0.00
+    INFY-EQ                0 trades  WR=0%  +Rs+0.00
+    ITC-EQ                 0 trades  WR=0%  +Rs+0.00
+    JSWSTEEL-EQ            0 trades  WR=0%  +Rs+0.00
+    KOTAKBANK-EQ           0 trades  WR=0%  +Rs+0.00
+    LT-EQ                  0 trades  WR=0%  +Rs+0.00
+    M&M-EQ                 0 trades  WR=0%  +Rs+0.00
+    MARUTI-EQ              0 trades  WR=0%  +Rs+0.00
+    NESTLEIND-EQ           0 trades  WR=0%  +Rs+0.00
+    NTPC-EQ                0 trades  WR=0%  +Rs+0.00
+    POWERGRID-EQ           0 trades  WR=0%  +Rs+0.00
+    RELIANCE-EQ            0 trades  WR=0%  +Rs+0.00
+    SBILIFE-EQ             0 trades  WR=0%  +Rs+0.00
+    SUNPHARMA-EQ           0 trades  WR=0%  +Rs+0.00
+    TATACONSUM-EQ          0 trades  WR=0%  +Rs+0.00
+    TCS-EQ                 0 trades  WR=0%  +Rs+0.00
+    TECHM-EQ               0 trades  WR=0%  +Rs+0.00
+    TITAN-EQ               0 trades  WR=0%  +Rs+0.00
+    ULTRACEMCO-EQ          0 trades  WR=0%  +Rs+0.00
+    WIPRO-EQ               0 trades  WR=0%  +Rs+0.00
+    SBIN-EQ                1 trades  WR=0%  Rs-71.93
+    COALINDIA-EQ           1 trades  WR=0%  Rs-181.70
+    INDUSINDBK-EQ          1 trades  WR=0%  Rs-190.58
+    TATASTEEL-EQ           1 trades  WR=0%  Rs-199.77
+================================================================================

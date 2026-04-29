@@ -84,16 +84,19 @@ class RiskManager:
             if self._halted:
                 return False, f"Bot halted — {self._halt_reason}"
 
-            if self._daily_pnl <= -self.daily_loss_limit:
+            if self.daily_loss_limit > 0 and self._daily_pnl <= -self.daily_loss_limit:
                 self._halt(f"daily loss limit ₹{self.daily_loss_limit:.0f} breached")
                 return False, self._halt_reason
 
-            if self._trades_today >= self.max_trades_per_day:
+            if self.max_trades_per_day > 0 and self._trades_today >= self.max_trades_per_day:
                 return False, (
                     f"max trades/day reached ({self._trades_today}/{self.max_trades_per_day})"
                 )
 
-            if self._consecutive_losses >= self.max_consecutive_losses:
+            if (
+                self.max_consecutive_losses > 0 and
+                self._consecutive_losses >= self.max_consecutive_losses
+            ):
                 return False, (
                     f"{self._consecutive_losses} consecutive losses — "
                     f"cool-down until next session"
@@ -131,29 +134,33 @@ class RiskManager:
         return qty
 
     def record_trade(self, pnl: float) -> None:
-        """
-        Record a completed round-trip trade (BUY → SELL).
+        self.record_realized_pnl(pnl, close_round_trip=True)
 
-        Updates daily P&L, trade count, and consecutive loss streak.
-        Automatically halts the bot if the daily loss limit is breached.
+    def record_realized_pnl(self, pnl: float, close_round_trip: bool = False) -> None:
+        """
+        Record realised P&L from one or more fills.
+
+        `close_round_trip=True` should be used only when the position is fully
+        closed and the trade count / consecutive-loss streak should advance.
+        Partial exits can book realised P&L without consuming a full trade.
 
         Args:
             pnl : net P&L of the trade in ₹ (negative = loss)
-
-        Call this AFTER the exit fill is confirmed, before strategy.on_fill().
+            close_round_trip : whether this fill closed the position
         """
         with self._lock:
             self._maybe_reset_daily()
             self._daily_pnl    += pnl
-            self._trades_today += 1
 
-            if pnl < 0:
-                self._consecutive_losses += 1
-            else:
-                self._consecutive_losses = 0
+            if close_round_trip:
+                self._trades_today += 1
+                if pnl < 0:
+                    self._consecutive_losses += 1
+                else:
+                    self._consecutive_losses = 0
 
             _log.info(
-                "Trade recorded: P&L=₹%.2f  |  "
+                "Realised P&L recorded: P&L=₹%.2f  |  "
                 "day_pnl=₹%.2f  trades=%d/%d  consec_losses=%d/%d",
                 pnl,
                 self._daily_pnl,
@@ -161,7 +168,7 @@ class RiskManager:
                 self._consecutive_losses, self.max_consecutive_losses,
             )
 
-            if self._daily_pnl <= -self.daily_loss_limit:
+            if self.daily_loss_limit > 0 and self._daily_pnl <= -self.daily_loss_limit:
                 self._halt(f"daily loss limit ₹{self.daily_loss_limit:.0f} breached")
 
     def sync_from_portfolio(self, session) -> None:
@@ -204,7 +211,7 @@ class RiskManager:
         with self._lock:
             used_pct = (
                 abs(self._daily_pnl) / self.daily_loss_limit * 100
-                if self._daily_pnl < 0 else 0.0
+                if self.daily_loss_limit > 0 and self._daily_pnl < 0 else 0.0
             )
             return {
                 "daily_pnl":          round(self._daily_pnl, 2),

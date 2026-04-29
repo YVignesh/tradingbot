@@ -2,23 +2,41 @@
   "bot": {
     "dry_run": true,
     "log_level": "INFO",
-    "loop_interval_sec": 15
+    "loop_interval_sec": 15,
+    "execution": {
+      "entry_order_timeout_sec": 45,
+      "exit_order_timeout_sec": 30,
+      "status_poll_interval_sec": 5,
+      "max_place_retries": 2,
+      "retry_backoff_sec": 2,
+      "max_consecutive_api_failures": 5,
+      "broker_circuit_cooldown_sec": 300
+    }
   },
   "strategy": {
-    "name": "ema_crossover",
-    "symbol": "IDEA-EQ",
+    "name": "supertrend",
+    "supertrend_period": 10,
+    "supertrend_multiplier": 3.0,
+    "symbol": "SBIN-EQ",
     "exchange": "NSE",
-    "interval": "FIVE_MINUTE",
-    "ema_fast": 9,
-    "ema_slow": 21
+    "interval": "FIFTEEN_MINUTE",
+    "trend_ema": 50,
+    "macd_fast": 12,
+    "macd_slow": 26,
+    "macd_signal": 9,
+    "rsi_period": 14,
+    "rsi_long_threshold": 55,
+    "rsi_short_threshold": 45,
+    "rsi_exit_long": 50,
+    "rsi_exit_short": 50
   },
   "risk": {
-    "capital": 10000,
+    "capital": 100000,
     "max_risk_pct": 10.0,
     "daily_loss_limit": 1000,
     "sl_points": 5,
     "tp_points": 10,
-    "max_qty": 100,
+    "max_qty": 1000,
     "max_trades_per_day": 10,
     "max_consecutive_losses": 3,
     "trailing_sl": {
@@ -32,5 +50,46 @@
   "broker": {
     "product": "INTRADAY",
     "squareoff_time": "15:15"
+  },
+  "trade_journal": {
+    "enabled": true,
+    "path": "data/journal/trades.sqlite3"
+  },
+  "notifications": {
+    "telegram": {
+      "enabled": false,
+      "bot_token": "",
+      "chat_id": "",
+      "timeout_sec": 10
+    }
+  },
+  "screener": {
+    "enabled": true,
+    "strategy": "vcp",
+    "watchlist": ["nifty50"],
+    "default_exchange": "NSE",
+    "top_n": 5,
+    "lookback_days": 45,
+    "min_price": 100,
+    "max_price": 2000,
+    "min_avg_volume": 500000,
+    "min_atr": 3,
+    "max_atr": 60,
+    "max_gap_pct": 9.5,
+    "run_window_start": "09:00",
+    "run_window_end": "09:10",
+    "rsi_threshold": 40,
+    "pct_below_sma": 0,
+    "pct_near_high": 3.0,
+    "vol_expansion_min": 1.2
+  },
+  "allocation": {
+    "strategy": "rank_decay",
+    "rank_decay_factor": 0.75,
+    "kelly_win_rate": 0.5,
+    "kelly_avg_win": 100,
+    "kelly_avg_loss": 80,
+    "kelly_max_frac": 0.5,
+    "kelly_fraction": 0.5
   }
 }

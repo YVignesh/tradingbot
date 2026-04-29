@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 GEMINI_API_KEY = "AIzaSyD4dVUStb3XqKzJn_o_bOVhMYSYx9yjCyg"
 # For the full Nifty 200, you'd load a CSV. Here's a sample subset:
 TICKERS = ["RELIANCE.NS", "TCS.NS", "HDFCBANK.NS", "INFY.NS", "TATAMOTORS.NS", "ITC.NS"]
-MODEL_ID = "gemini-2.5-flash" # Use Flash for speed and cost-efficiency
+MODEL_ID = "gemini-3-pro" # Use Flash for speed and cost-efficiency
 
 client = genai.Client(api_key=GEMINI_API_KEY)
 

@@ -163,24 +163,23 @@ class ChargeRates:
     """
 
     # ── Brokerage ────────────────────────────────────────────────────────────
-    # Equity Delivery: ₹0 (zero brokerage) — statutory charges still apply
-    BROKERAGE_EQUITY_DELIVERY       = 0.0
+    # Equity cash segments: lower of ₹20 flat OR 0.1% of trade value (min ₹5)
+    BROKERAGE_CASH_FLAT_MAX         = 20.0    # ₹20 per executed order
+    BROKERAGE_CASH_PERCENT          = 0.001   # 0.1% of turnover
+    BROKERAGE_CASH_MIN              = 5.0     # ₹5 minimum brokerage
 
-    # Equity Intraday / F&O / Currency / Commodity:
-    # lower of ₹20 flat OR 0.1% of trade value (min ₹5)
-    BROKERAGE_FLAT_MAX              = 20.0    # ₹20 per executed order
-    BROKERAGE_PERCENT               = 0.001   # 0.1% of turnover
-    BROKERAGE_MIN                   = 5.0     # ₹5 minimum brokerage
+    # Derivatives / currency / commodity: flat ₹20 per executed order
+    BROKERAGE_DERIVATIVES_FLAT      = 20.0
 
     # ── Securities Transaction Tax (STT) ─────────────────────────────────────
     # Equity delivery: 0.1% on BOTH buy and sell sides
     STT_EQUITY_DELIVERY             = 0.001   # both sides
     # Equity intraday: 0.025% on SELL side only
     STT_EQUITY_INTRADAY_SELL        = 0.00025
-    # Equity futures: 0.02% on SELL side
-    STT_FUTURES_SELL                = 0.0002
-    # Equity options: 0.1% on SELL side (on premium value)
-    STT_OPTIONS_SELL_PREMIUM        = 0.001
+    # Equity futures: 0.05% on SELL side
+    STT_FUTURES_SELL                = 0.0005
+    # Equity options: 0.15% on SELL side (on premium value)
+    STT_OPTIONS_SELL_PREMIUM        = 0.0015
 
     # ── Exchange Transaction Charges (NSE) ───────────────────────────────────
     # NSE Equity Delivery & Intraday: 0.0030699% of turnover (buy + sell)
@@ -189,6 +188,14 @@ class ChargeRates:
     TXN_NSE_FUTURES                 = 0.000018299
     # NSE Options: 0.03552% of premium turnover
     TXN_NSE_OPTIONS                 = 0.0003552
+    # NSE Currency Futures: 0.00035% of turnover
+    TXN_NSE_CURRENCY_FUTURES        = 0.0000035
+    # NSE Currency Options: 0.0311% of premium turnover
+    TXN_NSE_CURRENCY_OPTIONS        = 0.000311
+    # MCX commodity futures: 0.00210% of turnover
+    TXN_MCX_COMMODITY_FUTURES       = 0.000021
+    # MCX commodity options: 0.0418% of premium turnover
+    TXN_MCX_COMMODITY_OPTIONS       = 0.000418
 
     # BSE Equity: varies by scrip group; use NSE rate as approximation for NSE stocks
     TXN_BSE_EQUITY                  = 0.0000375      # 0.00375% approximation
@@ -198,7 +205,7 @@ class ChargeRates:
     SEBI_TURNOVER_RATE              = 0.0000001      # per rupee of turnover
 
     # ── GST ──────────────────────────────────────────────────────────────────
-    # 18% on (brokerage + exchange transaction charges + SEBI fees)
+    # 18% on (brokerage + exchange transaction charges + SEBI fees + IPFT)
     GST_RATE                        = 0.18
 
     # ── Stamp Duty ───────────────────────────────────────────────────────────
@@ -211,6 +218,17 @@ class ChargeRates:
     STAMP_DUTY_FUTURES              = 0.00002
     # Options: 0.003% of buy premium turnover
     STAMP_DUTY_OPTIONS              = 0.00003
+    # Currency futures: 0.0001% of buy turnover
+    STAMP_DUTY_CURRENCY_FUTURES     = 0.000001
+    # Currency options: 0.003% of buy premium turnover
+    STAMP_DUTY_CURRENCY_OPTIONS     = 0.00003
+
+    # Investor Protection Fund Trust (IPFT)
+    IPFT_EQUITY_RATE                = 0.000000001   # 0.0000001%
+    IPFT_FUTURES_OPTIONS_RATE       = 0.000000001   # 0.0000001%
+    IPFT_CURRENCY_FUTURES_RATE      = 0.0000005     # 0.00005%
+    IPFT_CURRENCY_OPTIONS_RATE      = 0.00002       # 0.002%
+    IPFT_COMMODITY_RATE             = 0.0
 
     # ── DP (Depository Participant) Charges ──────────────────────────────────
     # ₹20 + GST per scrip per transaction, on SELL side of Equity Delivery only

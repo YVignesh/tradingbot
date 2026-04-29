@@ -1,0 +1,1090 @@
+================================================================================
+  BACKTEST SESSION  |  supertrend  |  2026-01-27 → 2026-04-28
+  Capital: Rs100,000  |  Interval: FIFTEEN_MINUTE  |  Top-N: 5
+  SL: 5.0 pts  |  TP: 10.0 pts  |  TSL=atr:1.5 gap=Rs5.0
+  Warmup: 15 bars → 4 extra days fetched before start date
+  Journal: data/journal/backtest_supertrend_2026-01-27_2026-04-28.txt
+  Created: 2026-04-29 12:36:13 IST
+================================================================================
+
+================================================================================
+  DAY 1  |  2026-02-18  (Wednesday)  |  Pool: Rs100,000.00
+================================================================================
+
+  [SCREENER]  Walk-forward selection  |  Active: 4  |  Pool: Rs100,000
+  Rank  Symbol             Score     Close     ATR    Mom5d   VolSpike   Gap%       Alloc
+  ────────────────────────────────────────────────────────────────────────────────
+  1     SUNPHARMA-EQ      -37.19  Rs 1717.1   31.64   +0.54%      0.37x   0.98%  Rs  36,571
+  2     AXISBANK-EQ       -48.20  Rs 1357.2   31.00   +0.04%      0.57x   0.08%  Rs  27,429
+  3     NTPC-EQ           -51.19  Rs  368.4    7.74   +0.41%      0.41x   0.19%  Rs  20,571
+  4     ICICIBANK-EQ      -56.59  Rs 1407.5   24.11   +0.07%      0.80x   0.29%  Rs  15,429
+  ────────────────────────────────────────────────────────────────────────────────
+  09:15  AXISBANK-EQ              O:1363.00 H:1364.00 L:1355.50 C:1357.90 | st_line:1349.80  atr:3.72 | → None
+  09:15  ICICIBANK-EQ             O:1410.10 H:1412.30 L:1401.30 C:1402.30 | st_line:1410.02  atr:4.43 | → None
+  09:15  NTPC-EQ                  O:368.45 H:369.10 L:367.60 C:368.20 | st_line:369.31  atr:1.02 | → None
+  09:15  SUNPHARMA-EQ             O:1720.40 H:1725.00 L:1717.90 C:1724.90 | st_line:1709.31  atr:4.04 | → None
+  09:30  AXISBANK-EQ              O:1357.90 H:1360.80 L:1357.30 C:1359.80 | st_line:1349.80  atr:3.70 | → None
+  09:30  ICICIBANK-EQ             O:1402.30 H:1406.50 L:1402.10 C:1405.80 | st_line:1410.02  atr:4.43 | → None
+  09:30  NTPC-EQ                  O:368.40 H:370.30 L:367.75 C:370.00 | st_line:365.54  atr:1.13 | → BUY
+  09:30  SUNPHARMA-EQ             O:1724.80 H:1727.10 L:1722.10 C:1725.00 | st_line:1712.18  atr:4.11 | → None
+  09:45  AXISBANK-EQ              O:1359.80 H:1359.80 L:1353.80 C:1354.50 | st_line:1349.80  atr:3.87 | → None
+  09:45  ICICIBANK-EQ             O:1405.80 H:1406.00 L:1402.30 C:1402.90 | st_line:1410.02  atr:4.37 | → None
+  ▶ ENTRY LONG   09:45  NTPC-EQ          Price:Rs370.10  Qty:55  SL:Rs365.10  TP:Rs380.10  Alloc:Rs20,571
+  09:45  NTPC-EQ          [LONG]  O:370.10 H:370.35 L:369.10 C:369.25 | st_line:366.12  atr:1.13 | → None
+  09:45  SUNPHARMA-EQ             O:1725.60 H:1726.50 L:1722.40 C:1723.20 | st_line:1712.18  atr:4.11 | → None
+  10:00  AXISBANK-EQ              O:1354.50 H:1359.50 L:1354.30 C:1356.50 | st_line:1349.80  atr:3.96 | → None
+  10:00  ICICIBANK-EQ             O:1402.40 H:1403.50 L:1401.30 C:1401.80 | st_line:1410.02  atr:4.22 | → None
+  10:00  NTPC-EQ          [LONG]  O:369.35 H:370.20 L:369.00 C:369.95 | st_line:366.12  atr:1.14 | → None
+  10:00  SUNPHARMA-EQ             O:1723.20 H:1723.40 L:1718.90 C:1721.10 | st_line:1712.18  atr:4.14 | → None
+  10:15  AXISBANK-EQ              O:1356.50 H:1358.40 L:1355.40 C:1355.80 | st_line:1349.80  atr:3.89 | → None
+  10:15  ICICIBANK-EQ             O:1401.80 H:1402.90 L:1401.00 C:1401.30 | st_line:1410.02  atr:4.05 | → None
+  10:15  NTPC-EQ          [LONG]  O:369.95 H:370.25 L:369.50 C:370.20 | st_line:366.41  atr:1.11 | → None
+  10:15  SUNPHARMA-EQ             O:1721.80 H:1723.70 L:1718.80 C:1719.60 | st_line:1712.18  atr:4.19 | → None
+  10:30  AXISBANK-EQ              O:1355.90 H:1359.70 L:1355.60 C:1358.80 | st_line:1349.80  atr:3.91 | → None
+  10:30  ICICIBANK-EQ             O:1401.50 H:1402.00 L:1400.00 C:1401.00 | st_line:1410.02  atr:3.91 | → None
+  10:30  NTPC-EQ          [LONG]  O:370.20 H:370.70 L:369.75 C:369.95 | st_line:366.82  atr:1.10 | → None
+  10:30  SUNPHARMA-EQ             O:1719.60 H:1722.30 L:1718.10 C:1721.10 | st_line:1712.18  atr:4.19 | → None
+  10:45  AXISBANK-EQ              O:1358.80 H:1364.90 L:1358.50 C:1364.30 | st_line:1349.80  atr:4.09 | → None
+  10:45  ICICIBANK-EQ             O:1401.00 H:1402.00 L:1400.60 C:1402.00 | st_line:1410.02  atr:3.73 | → None
+  10:45  NTPC-EQ          [LONG]  O:369.95 H:370.25 L:369.65 C:370.00 | st_line:366.82  atr:1.06 | → None
+  10:45  SUNPHARMA-EQ             O:1721.10 H:1721.10 L:1718.20 C:1719.50 | st_line:1712.18  atr:4.10 | → None
+  11:00  AXISBANK-EQ              O:1364.70 H:1368.10 L:1363.00 C:1364.80 | st_line:1352.52  atr:4.16 | → None
+  11:00  ICICIBANK-EQ             O:1402.00 H:1402.00 L:1401.00 C:1401.20 | st_line:1410.02  atr:3.53 | → None
+  11:00  NTPC-EQ          [LONG]  O:370.15 H:370.50 L:369.70 C:369.75 | st_line:366.94  atr:1.05 | → None
+  11:00  SUNPHARMA-EQ             O:1719.90 H:1720.30 L:1717.10 C:1720.20 | st_line:1712.18  atr:4.04 | → None
+  11:15  AXISBANK-EQ              O:1364.90 H:1364.90 L:1362.00 C:1363.60 | st_line:1352.52  atr:4.07 | → None
+  11:15  ICICIBANK-EQ             O:1401.20 H:1402.10 L:1398.90 C:1400.00 | st_line:1410.02  atr:3.51 | → None
+  11:15  NTPC-EQ          [LONG]  O:369.85 H:370.00 L:369.20 C:369.30 | st_line:366.94  atr:1.03 | → None
+  11:15  SUNPHARMA-EQ             O:1720.20 H:1722.80 L:1719.00 C:1721.50 | st_line:1712.18  atr:4.02 | → None
+  11:30  AXISBANK-EQ              O:1363.70 H:1365.10 L:1363.10 C:1364.60 | st_line:1352.52  atr:3.92 | → None
+  11:30  ICICIBANK-EQ             O:1400.30 H:1401.50 L:1399.50 C:1400.00 | st_line:1410.02  atr:3.40 | → None
+  11:30  NTPC-EQ          [LONG]  O:369.40 H:369.50 L:368.55 C:368.80 | st_line:366.94  atr:1.02 | → None
+  11:30  SUNPHARMA-EQ             O:1720.90 H:1724.60 L:1720.70 C:1723.80 | st_line:1712.18  atr:4.01 | → None
+  11:45  AXISBANK-EQ              O:1364.70 H:1370.90 L:1364.60 C:1370.00 | st_line:1355.12  atr:4.09 | → None
+  11:45  ICICIBANK-EQ             O:1400.00 H:1400.70 L:1399.10 C:1399.90 | st_line:1409.02  atr:3.27 | → None
+  11:45  NTPC-EQ          [LONG]  O:368.80 H:369.30 L:368.50 C:369.10 | st_line:366.94  atr:1.01 | → None
+  11:45  SUNPHARMA-EQ             O:1723.80 H:1729.30 L:1722.90 C:1729.00 | st_line:1713.42  atr:4.18 | → None
+  12:00  AXISBANK-EQ              O:1369.70 H:1370.70 L:1368.10 C:1369.00 | st_line:1357.25  atr:3.98 | → None
+  12:00  ICICIBANK-EQ             O:1400.00 H:1401.40 L:1399.80 C:1400.10 | st_line:1409.02  atr:3.15 | → None
+  12:00  NTPC-EQ          [LONG]  O:369.25 H:369.30 L:368.10 C:368.30 | st_line:366.94  atr:1.02 | → None
+  12:00  SUNPHARMA-EQ             O:1728.80 H:1730.60 L:1725.70 C:1730.00 | st_line:1715.27  atr:4.23 | → None
+  12:15  AXISBANK-EQ              O:1369.50 H:1370.30 L:1368.60 C:1369.50 | st_line:1358.01  atr:3.82 | → None
+  12:15  ICICIBANK-EQ             O:1400.10 H:1400.70 L:1399.10 C:1399.30 | st_line:1408.20  atr:3.04 | → None
+  12:15  NTPC-EQ          [LONG]  O:368.40 H:368.55 L:367.90 C:368.15 | st_line:366.94  atr:0.99 | → None
+  12:15  SUNPHARMA-EQ             O:1730.20 H:1730.60 L:1727.00 C:1728.50 | st_line:1716.13  atr:4.19 | → None
+  12:30  AXISBANK-EQ              O:1369.50 H:1374.50 L:1369.00 C:1372.70 | st_line:1359.80  atr:3.94 | → None
+  12:30  ICICIBANK-EQ             O:1399.60 H:1402.00 L:1399.10 C:1401.50 | st_line:1408.20  atr:3.03 | → None
+  12:30  NTPC-EQ          [LONG]  O:368.15 H:368.50 L:367.80 C:368.00 | st_line:366.94  atr:0.97 | → None
+  12:30  SUNPHARMA-EQ             O:1728.50 H:1730.50 L:1725.30 C:1727.00 | st_line:1716.13  atr:4.26 | → None
+  12:45  AXISBANK-EQ              O:1372.70 H:1374.00 L:1372.10 C:1374.00 | st_line:1361.73  atr:3.79 | → None
+  12:45  ICICIBANK-EQ             O:1401.50 H:1402.00 L:1400.00 C:1401.40 | st_line:1408.20  atr:2.96 | → None
+  12:45  NTPC-EQ          [LONG]  O:368.00 H:368.25 L:367.75 C:368.00 | st_line:366.94  atr:0.94 | → None
+  12:45  SUNPHARMA-EQ             O:1727.00 H:1729.30 L:1726.30 C:1728.50 | st_line:1716.13  atr:4.17 | → None
+  13:00  AXISBANK-EQ              O:1374.00 H:1374.20 L:1372.20 C:1373.90 | st_line:1362.41  atr:3.67 | → None
+  13:00  ICICIBANK-EQ             O:1401.40 H:1402.80 L:1400.00 C:1400.30 | st_line:1408.20  atr:2.95 | → None
+  13:00  NTPC-EQ          [LONG]  O:368.10 H:368.15 L:367.65 C:368.00 | st_line:366.94  atr:0.91 | → None
+  13:00  SUNPHARMA-EQ             O:1728.50 H:1729.20 L:1723.40 C:1725.20 | st_line:1716.13  atr:4.29 | → None
+  13:15  AXISBANK-EQ              O:1374.10 H:1374.20 L:1371.30 C:1371.90 | st_line:1362.41  atr:3.61 | → None
+  13:15  ICICIBANK-EQ             O:1400.30 H:1402.90 L:1399.30 C:1400.30 | st_line:1408.20  atr:2.99 | → None
+  13:15  NTPC-EQ          [LONG]  O:368.00 H:368.15 L:367.65 C:367.90 | st_line:366.94  atr:0.88 | → None
+  13:15  SUNPHARMA-EQ             O:1725.20 H:1726.00 L:1723.70 C:1724.70 | st_line:1716.13  atr:4.15 | → None
+  13:30  AXISBANK-EQ              O:1372.00 H:1373.00 L:1369.90 C:1372.80 | st_line:1362.41  atr:3.58 | → None
+  13:30  ICICIBANK-EQ             O:1400.50 H:1400.90 L:1399.90 C:1400.20 | st_line:1408.20  atr:2.85 | → None
+  13:30  NTPC-EQ          [LONG]  O:367.90 H:368.05 L:367.70 C:367.95 | st_line:366.94  atr:0.84 | → None
+  13:30  SUNPHARMA-EQ             O:1724.70 H:1724.80 L:1721.00 C:1722.40 | st_line:1716.13  atr:4.12 | → None
+  13:45  AXISBANK-EQ              O:1372.90 H:1373.70 L:1371.30 C:1372.20 | st_line:1362.41  atr:3.49 | → None
+  13:45  ICICIBANK-EQ             O:1400.70 H:1402.40 L:1400.10 C:1402.10 | st_line:1408.20  atr:2.81 | → None
+  13:45  NTPC-EQ          [LONG]  O:367.95 H:368.00 L:367.40 C:367.50 | st_line:366.94  atr:0.82 | → None
+  13:45  SUNPHARMA-EQ             O:1722.40 H:1723.70 L:1718.40 C:1721.50 | st_line:1716.13  atr:4.20 | → None
+  14:00  AXISBANK-EQ              O:1372.40 H:1373.00 L:1371.50 C:1372.80 | st_line:1362.68  atr:3.35 | → None
+  14:00  ICICIBANK-EQ             O:1402.30 H:1404.10 L:1400.80 C:1403.90 | st_line:1408.20  atr:2.85 | → None
+  14:00  NTPC-EQ          [LONG]  O:367.70 H:367.95 L:367.40 C:367.90 | st_line:366.94  atr:0.80 | → None
+  14:00  SUNPHARMA-EQ             O:1721.50 H:1723.50 L:1720.00 C:1723.10 | st_line:1716.13  atr:4.15 | → None
+  14:15  AXISBANK-EQ              O:1372.80 H:1376.30 L:1372.10 C:1374.40 | st_line:1364.33  atr:3.41 | → None
+  14:15  ICICIBANK-EQ             O:1404.00 H:1408.30 L:1403.20 C:1407.90 | st_line:1408.20  atr:3.01 | → None
+  14:15  NTPC-EQ          [LONG]  O:367.90 H:368.40 L:367.70 C:368.30 | st_line:366.94  atr:0.80 | → None
+  14:15  SUNPHARMA-EQ             O:1723.10 H:1724.70 L:1722.00 C:1723.60 | st_line:1716.13  atr:4.05 | → None
+  14:30  AXISBANK-EQ              O:1374.50 H:1375.40 L:1373.50 C:1374.20 | st_line:1365.00  atr:3.30 | → None
+  14:30  ICICIBANK-EQ             O:1407.90 H:1409.00 L:1407.20 C:1409.00 | st_line:1399.72  atr:2.92 | → BUY
+  14:30  NTPC-EQ          [LONG]  O:368.15 H:368.35 L:367.90 C:368.20 | st_line:366.94  atr:0.77 | → None
+  14:30  SUNPHARMA-EQ             O:1723.70 H:1725.00 L:1722.00 C:1723.00 | st_line:1716.13  atr:3.98 | → None
+  14:45  AXISBANK-EQ              O:1374.20 H:1376.80 L:1374.20 C:1376.10 | st_line:1366.21  atr:3.25 | → None
+  ▶ ENTRY LONG   14:45  ICICIBANK-EQ     Price:Rs1408.90  Qty:10  SL:Rs1403.90  TP:Rs1418.90  Alloc:Rs15,429
+  14:45  ICICIBANK-EQ     [LONG]  O:1408.90 H:1409.80 L:1407.30 C:1407.90 | st_line:1400.26  atr:2.89 | → None
+  14:45  NTPC-EQ          [LONG]  O:368.20 H:368.75 L:367.80 C:368.50 | st_line:366.94  atr:0.78 | → None
+  14:45  SUNPHARMA-EQ             O:1723.70 H:1725.00 L:1721.90 C:1723.10 | st_line:1716.13  atr:3.91 | → None
+  15:00  AXISBANK-EQ              O:1376.20 H:1377.70 L:1375.80 C:1377.70 | st_line:1367.82  atr:3.16 | → None
+  15:00  ICICIBANK-EQ     [LONG]  O:1408.00 H:1410.00 L:1407.50 C:1407.90 | st_line:1400.54  atr:2.86 | → None
+  15:00  NTPC-EQ          [LONG]  O:368.60 H:369.05 L:368.10 C:368.20 | st_line:366.94  atr:0.80 | → None
+  15:00  SUNPHARMA-EQ             O:1723.10 H:1726.50 L:1722.90 C:1723.60 | st_line:1716.13  atr:3.89 | → None
+  15:15  AXISBANK-EQ              O:1377.60 H:1378.50 L:1374.40 C:1376.30 | st_line:1367.82  atr:3.22 | → None
+  ◀ EXIT  SQUAREOFF   15:15  ICICIBANK-EQ     Price:Rs1406.00  Qty:10  Gross:Rs-29.00  Charges:Rs38.17  Net:Rs-67.17  Pool:Rs99,932.83
+  ◀ EXIT  SQUAREOFF   15:15  NTPC-EQ          Price:Rs368.00  Qty:55  Gross:Rs-115.50  Charges:Rs54.34  Net:Rs-169.84  Pool:Rs99,762.99
+  15:15  SUNPHARMA-EQ             O:1723.50 H:1726.00 L:1722.40 C:1725.50 | st_line:1716.13  atr:3.87 | → None
+
+  ────────────────────────────────────────────────────────────────────────────────
+  END OF DAY 2026-02-18  |  Trades:2  W:0  L:2
+  Day net P&L: Rs-237.01  |  Pool: Rs99,762.99  (was Rs100,000.00)
+  ────────────────────────────────────────────────────────────────────────────────
+  Per-symbol:
+    AXISBANK-EQ          0 trade(s)  +Rs0.00
+    ICICIBANK-EQ         1 trade(s)  Rs-67.17
+    NTPC-EQ              1 trade(s)  Rs-169.84
+    SUNPHARMA-EQ         0 trade(s)  +Rs0.00
+
+================================================================================
+  DAY 2  |  2026-02-19  (Thursday)  |  Pool: Rs99,762.99
+================================================================================
+
+  [SCREENER]  Walk-forward selection  |  Active: 4  |  Pool: Rs99,763
+  Rank  Symbol             Score     Close     ATR    Mom5d   VolSpike   Gap%       Alloc
+  ────────────────────────────────────────────────────────────────────────────────
+  1     SUNPHARMA-EQ      -36.14  Rs 1724.4   30.34   +0.78%      0.47x   0.43%  Rs  36,485
+  2     NTPC-EQ           -45.39  Rs  368.4    7.42   -0.01%      0.45x   0.00%  Rs  27,364
+  3     AXISBANK-EQ       -48.20  Rs 1377.0   30.55   +2.20%      0.70x   1.46%  Rs  20,523
+  4     ICICIBANK-EQ      -55.10  Rs 1408.2   23.35   +0.15%      0.34x   0.05%  Rs  15,392
+  ────────────────────────────────────────────────────────────────────────────────
+  09:15  AXISBANK-EQ              O:1381.10 H:1382.80 L:1369.60 C:1370.90 | st_line:1367.82  atr:3.94 | → None
+  09:15  ICICIBANK-EQ             O:1408.50 H:1412.30 L:1403.50 C:1404.50 | st_line:1400.54  atr:3.30 | → None
+  09:15  NTPC-EQ                  O:367.00 H:370.90 L:366.70 C:369.45 | st_line:366.94  atr:1.03 | → None
+  09:15  SUNPHARMA-EQ             O:1722.20 H:1725.50 L:1717.20 C:1724.90 | st_line:1716.13  atr:4.19 | → None
+  09:30  AXISBANK-EQ              O:1371.60 H:1374.40 L:1370.50 C:1372.00 | st_line:1367.82  atr:3.93 | → None
+  09:30  ICICIBANK-EQ             O:1404.50 H:1405.80 L:1404.00 C:1405.00 | st_line:1400.54  atr:3.19 | → None
+  09:30  NTPC-EQ                  O:369.45 H:369.70 L:368.10 C:368.20 | st_line:366.94  atr:1.07 | → None
+  09:30  SUNPHARMA-EQ             O:1724.90 H:1725.00 L:1720.00 C:1720.70 | st_line:1716.13  atr:4.24 | → None
+  09:45  AXISBANK-EQ              O:1372.00 H:1373.50 L:1368.40 C:1368.90 | st_line:1367.82  atr:4.02 | → None
+  09:45  ICICIBANK-EQ             O:1405.00 H:1406.80 L:1403.60 C:1404.30 | st_line:1400.54  atr:3.19 | → None
+  09:45  NTPC-EQ                  O:368.20 H:368.50 L:367.10 C:367.30 | st_line:366.94  atr:1.10 | → None
+  09:45  SUNPHARMA-EQ             O:1720.70 H:1723.00 L:1720.10 C:1722.60 | st_line:1716.13  atr:4.15 | → None
+  10:00  AXISBANK-EQ              O:1368.90 H:1370.50 L:1367.90 C:1370.00 | st_line:1367.82  atr:3.92 | → None
+  10:00  ICICIBANK-EQ             O:1404.30 H:1405.60 L:1403.00 C:1403.40 | st_line:1400.54  atr:3.15 | → None
+  10:00  NTPC-EQ                  O:367.30 H:367.35 L:365.25 C:365.40 | st_line:369.90  atr:1.17 | → SHORT
+  10:00  SUNPHARMA-EQ             O:1722.60 H:1725.00 L:1721.30 C:1723.70 | st_line:1716.13  atr:4.12 | → None
+  10:15  AXISBANK-EQ              O:1370.00 H:1372.60 L:1368.80 C:1371.30 | st_line:1367.82  atr:3.91 | → None
+  10:15  ICICIBANK-EQ             O:1403.40 H:1403.70 L:1401.80 C:1402.00 | st_line:1400.54  atr:3.06 | → None
+  ▶ ENTRY SHORT  10:15  NTPC-EQ          Price:Rs365.40  Qty:74  SL:Rs370.40  TP:Rs355.40  Alloc:Rs27,364
+  10:15  NTPC-EQ          [SHORT] O:365.40 H:365.75 L:364.25 C:364.75 | st_line:368.86  atr:1.19 | → None
+  10:15  SUNPHARMA-EQ             O:1723.80 H:1725.00 L:1721.80 C:1723.60 | st_line:1716.13  atr:4.05 | → None
+  10:30  AXISBANK-EQ              O:1371.50 H:1373.40 L:1369.80 C:1370.60 | st_line:1367.82  atr:3.88 | → None
+  10:30  ICICIBANK-EQ             O:1402.20 H:1402.20 L:1398.40 C:1401.70 | st_line:1400.54  atr:3.11 | → None
+  10:30  NTPC-EQ          [SHORT] O:364.80 H:365.65 L:364.60 C:365.40 | st_line:368.86  atr:1.18 | → None
+  10:30  SUNPHARMA-EQ             O:1723.50 H:1723.50 L:1719.30 C:1721.10 | st_line:1716.13  atr:4.07 | → None
+  10:45  AXISBANK-EQ              O:1370.60 H:1374.40 L:1369.90 C:1372.40 | st_line:1367.82  atr:3.93 | → None
+  10:45  ICICIBANK-EQ             O:1401.70 H:1402.10 L:1399.50 C:1400.60 | st_line:1400.54  atr:3.08 | → None
+  10:45  NTPC-EQ          [SHORT] O:365.40 H:365.90 L:365.05 C:365.65 | st_line:368.86  atr:1.16 | → None
+  10:45  SUNPHARMA-EQ             O:1721.10 H:1723.50 L:1720.00 C:1721.20 | st_line:1716.13  atr:4.03 | → None
+  11:00  AXISBANK-EQ              O:1372.60 H:1375.00 L:1371.60 C:1374.40 | st_line:1367.82  atr:3.89 | → None
+  11:00  ICICIBANK-EQ             O:1400.60 H:1401.70 L:1399.10 C:1399.50 | st_line:1409.42  atr:3.04 | → SHORT
+  11:00  NTPC-EQ          [SHORT] O:365.75 H:366.40 L:365.65 C:365.95 | st_line:368.86  atr:1.13 | → None
+  11:00  SUNPHARMA-EQ             O:1721.70 H:1722.60 L:1719.40 C:1720.10 | st_line:1716.13  atr:3.97 | → None
+  11:15  AXISBANK-EQ              O:1374.10 H:1374.70 L:1371.90 C:1372.90 | st_line:1367.82  atr:3.81 | → None
+  ▶ ENTRY SHORT  11:15  ICICIBANK-EQ     Price:Rs1399.40  Qty:10  SL:Rs1404.40  TP:Rs1389.40  Alloc:Rs15,392
+  11:15  ICICIBANK-EQ     [SHORT] O:1399.40 H:1399.80 L:1396.30 C:1397.60 | st_line:1407.22  atr:3.07 | → None
+  11:15  NTPC-EQ          [SHORT] O:366.05 H:366.15 L:365.35 C:365.55 | st_line:368.86  atr:1.11 | → None
+  11:15  SUNPHARMA-EQ             O:1720.70 H:1722.80 L:1719.70 C:1721.80 | st_line:1716.13  atr:3.91 | → None
+  11:30  AXISBANK-EQ              O:1372.60 H:1372.80 L:1370.40 C:1372.00 | st_line:1367.82  atr:3.72 | → None
+  11:30  ICICIBANK-EQ     [SHORT] O:1397.60 H:1397.60 L:1395.20 C:1396.00 | st_line:1405.37  atr:3.03 | → None
+  11:30  NTPC-EQ          [SHORT] O:365.55 H:365.70 L:364.95 C:365.30 | st_line:368.62  atr:1.08 | → None
+  11:30  SUNPHARMA-EQ             O:1721.50 H:1723.60 L:1719.40 C:1723.10 | st_line:1716.13  atr:3.93 | → None
+  11:45  AXISBANK-EQ              O:1372.00 H:1372.00 L:1368.80 C:1369.80 | st_line:1367.82  atr:3.68 | → None
+  11:45  ICICIBANK-EQ     [SHORT] O:1395.90 H:1396.00 L:1394.30 C:1395.20 | st_line:1403.73  atr:2.93 | → None
+  11:45  NTPC-EQ          [SHORT] O:365.30 H:365.30 L:364.70 C:364.90 | st_line:368.15  atr:1.05 | → None
+  11:45  SUNPHARMA-EQ             O:1723.10 H:1725.00 L:1721.00 C:1724.00 | st_line:1716.13  atr:3.93 | → None
+  12:00  AXISBANK-EQ              O:1369.80 H:1370.00 L:1365.50 C:1365.60 | st_line:1378.97  atr:3.74 | → SHORT
+  12:00  ICICIBANK-EQ     [SHORT] O:1395.10 H:1395.20 L:1392.00 C:1392.10 | st_line:1402.28  atr:2.95 | → None
+  12:00  NTPC-EQ          [SHORT] O:365.10 H:365.60 L:364.90 C:365.00 | st_line:368.15  atr:1.02 | → None
+  12:00  SUNPHARMA-EQ             O:1724.00 H:1727.00 L:1719.30 C:1721.00 | st_line:1716.13  atr:4.20 | → None
+  ▶ ENTRY SHORT  12:15  AXISBANK-EQ      Price:Rs1366.20  Qty:15  SL:Rs1371.20  TP:Rs1356.20  Alloc:Rs20,523
+  12:15  AXISBANK-EQ      [SHORT] O:1366.20 H:1368.30 L:1364.00 C:1364.00 | st_line:1377.53  atr:3.78 | → None
+  12:15  ICICIBANK-EQ     [SHORT] O:1392.10 H:1393.80 L:1390.50 C:1392.90 | st_line:1400.96  atr:2.98 | → None
+  12:15  NTPC-EQ          [SHORT] O:365.00 H:366.25 L:365.00 C:366.10 | st_line:368.15  atr:1.04 | → None
+  12:15  SUNPHARMA-EQ             O:1721.00 H:1722.40 L:1719.60 C:1721.40 | st_line:1716.13  atr:4.10 | → None
+  12:30  AXISBANK-EQ      [SHORT] O:1364.60 H:1365.40 L:1361.40 C:1362.30 | st_line:1374.85  atr:3.80 | → None
+  12:30  ICICIBANK-EQ     [SHORT] O:1392.70 H:1392.80 L:1390.20 C:1391.10 | st_line:1400.24  atr:2.96 | → None
+  12:30  NTPC-EQ          [SHORT] O:366.10 H:366.30 L:365.10 C:365.35 | st_line:368.15  atr:1.05 | → None
+  12:30  SUNPHARMA-EQ             O:1721.30 H:1722.10 L:1718.30 C:1720.50 | st_line:1716.13  atr:4.08 | → None
+  12:45  AXISBANK-EQ      [SHORT] O:1362.30 H:1364.60 L:1361.00 C:1362.50 | st_line:1374.18  atr:3.78 | → None
+  ◀ EXIT  TSL         12:45  ICICIBANK-EQ     Price:Rs1394.81  Qty:10  Gross:+Rs45.89  Charges:Rs37.90  Net:+Rs7.99  Pool:Rs99,770.98
+  12:45  NTPC-EQ          [SHORT] O:365.25 H:365.75 L:365.20 C:365.45 | st_line:368.15  atr:1.01 | → None
+  12:45  SUNPHARMA-EQ             O:1720.20 H:1722.00 L:1719.10 C:1721.90 | st_line:1716.13  atr:4.00 | → None
+  13:00  AXISBANK-EQ      [SHORT] O:1362.50 H:1366.20 L:1361.90 C:1365.60 | st_line:1374.18  atr:3.82 | → None
+  13:00  ICICIBANK-EQ             O:1393.60 H:1395.60 L:1392.00 C:1393.00 | st_line:1400.24  atr:3.12 | → None
+  13:00  NTPC-EQ          [SHORT] O:365.45 H:367.10 L:365.45 C:366.95 | st_line:368.15  atr:1.06 | → None
+  13:00  SUNPHARMA-EQ             O:1721.90 H:1723.60 L:1720.00 C:1723.50 | st_line:1716.13  atr:3.97 | → None
+  13:15  AXISBANK-EQ      [SHORT] O:1365.60 H:1365.60 L:1360.00 C:1360.00 | st_line:1374.18  atr:3.95 | → None
+  13:15  ICICIBANK-EQ             O:1393.00 H:1396.30 L:1391.60 C:1394.70 | st_line:1400.24  atr:3.23 | → None
+  13:15  NTPC-EQ          [SHORT] O:366.90 H:367.00 L:366.30 C:366.55 | st_line:368.15  atr:1.03 | → None
+  13:15  SUNPHARMA-EQ             O:1723.60 H:1724.80 L:1721.20 C:1722.70 | st_line:1716.13  atr:3.94 | → None
+  13:30  AXISBANK-EQ      [SHORT] O:1360.70 H:1360.80 L:1358.00 C:1359.10 | st_line:1371.09  atr:3.86 | → None
+  13:30  ICICIBANK-EQ             O:1394.70 H:1394.80 L:1392.40 C:1393.70 | st_line:1400.24  atr:3.17 | → None
+  13:30  NTPC-EQ          [SHORT] O:366.35 H:366.55 L:365.35 C:365.60 | st_line:368.15  atr:1.05 | → None
+  13:30  SUNPHARMA-EQ             O:1722.70 H:1724.50 L:1719.10 C:1723.60 | st_line:1716.13  atr:4.05 | → None
+  ◀ EXIT  TP          13:45  AXISBANK-EQ      Price:Rs1356.20  Qty:15  Gross:+Rs150.00  Charges:Rs54.40  Net:+Rs95.60  Pool:Rs99,866.58
+  13:45  ICICIBANK-EQ             O:1393.70 H:1394.20 L:1390.20 C:1391.70 | st_line:1400.24  atr:3.23 | → None
+  13:45  NTPC-EQ          [SHORT] O:365.50 H:366.15 L:365.10 C:365.10 | st_line:368.15  atr:1.05 | → None
+  13:45  SUNPHARMA-EQ             O:1723.80 H:1724.60 L:1720.40 C:1721.80 | st_line:1716.13  atr:4.06 | → None
+  14:00  AXISBANK-EQ              O:1356.60 H:1359.70 L:1355.50 C:1359.20 | st_line:1369.30  atr:3.87 | → None
+  14:00  ICICIBANK-EQ             O:1391.30 H:1392.80 L:1390.40 C:1392.80 | st_line:1400.24  atr:3.17 | → None
+  14:00  NTPC-EQ          [SHORT] O:365.10 H:365.20 L:363.15 C:363.20 | st_line:367.62  atr:1.12 | → None
+  14:00  SUNPHARMA-EQ             O:1721.80 H:1722.60 L:1720.00 C:1721.70 | st_line:1716.13  atr:3.95 | → None
+  14:15  AXISBANK-EQ              O:1359.70 H:1361.60 L:1357.80 C:1358.00 | st_line:1369.30  atr:3.87 | → None
+  14:15  ICICIBANK-EQ             O:1392.60 H:1395.90 L:1392.00 C:1393.10 | st_line:1400.24  atr:3.22 | → None
+  14:15  NTPC-EQ          [SHORT] O:363.20 H:364.20 L:363.00 C:363.30 | st_line:367.06  atr:1.12 | → None
+  14:15  SUNPHARMA-EQ             O:1721.70 H:1724.50 L:1721.70 C:1722.30 | st_line:1716.13  atr:3.87 | → None
+  14:30  AXISBANK-EQ              O:1358.60 H:1360.00 L:1355.10 C:1355.30 | st_line:1369.30  atr:3.94 | → None
+  14:30  ICICIBANK-EQ             O:1393.10 H:1394.40 L:1390.30 C:1390.70 | st_line:1400.24  atr:3.29 | → None
+  14:30  NTPC-EQ          [SHORT] O:363.25 H:364.40 L:363.15 C:363.50 | st_line:367.06  atr:1.13 | → None
+  14:30  SUNPHARMA-EQ             O:1722.30 H:1723.90 L:1719.00 C:1720.30 | st_line:1716.13  atr:3.94 | → None
+  14:45  AXISBANK-EQ              O:1355.30 H:1356.90 L:1353.00 C:1355.40 | st_line:1366.90  atr:3.94 | → None
+  14:45  ICICIBANK-EQ             O:1390.80 H:1391.40 L:1389.00 C:1389.00 | st_line:1399.97  atr:3.22 | → None
+  14:45  NTPC-EQ          [SHORT] O:363.50 H:364.45 L:363.45 C:364.10 | st_line:367.06  atr:1.12 | → None
+  14:45  SUNPHARMA-EQ             O:1720.30 H:1720.50 L:1716.10 C:1717.70 | st_line:1716.13  atr:3.98 | → None
+  15:00  AXISBANK-EQ              O:1356.00 H:1358.60 L:1355.20 C:1358.50 | st_line:1366.90  atr:3.90 | → None
+  15:00  ICICIBANK-EQ             O:1389.10 H:1393.70 L:1385.70 C:1387.20 | st_line:1399.97  atr:3.56 | → None
+  15:00  NTPC-EQ          [SHORT] O:364.15 H:364.15 L:363.15 C:363.50 | st_line:367.05  atr:1.11 | → None
+  15:00  SUNPHARMA-EQ             O:1717.70 H:1719.00 L:1711.90 C:1713.10 | st_line:1728.29  atr:4.20 | → SHORT
+  15:15  AXISBANK-EQ              O:1358.50 H:1358.80 L:1351.00 C:1351.00 | st_line:1366.90  atr:4.18 | → None
+  15:15  ICICIBANK-EQ             O:1387.20 H:1389.00 L:1384.80 C:1388.70 | st_line:1398.23  atr:3.61 | → None
+  ◀ EXIT  SQUAREOFF   15:15  NTPC-EQ          Price:Rs363.20  Qty:74  Gross:+Rs162.80  Charges:Rs56.74  Net:+Rs106.06  Pool:Rs99,972.64
+  15:15  SUNPHARMA-EQ             O:1713.00 H:1714.00 L:1710.00 C:1710.10 | st_line:1724.75  atr:4.19 | → None
+
+  ────────────────────────────────────────────────────────────────────────────────
+  END OF DAY 2026-02-19  |  Trades:3  W:3  L:0
+  Day net P&L: +Rs209.65  |  Pool: Rs99,972.64  (was Rs99,762.99)
+  ────────────────────────────────────────────────────────────────────────────────
+  Per-symbol:
+    AXISBANK-EQ          1 trade(s)  +Rs95.60
+    ICICIBANK-EQ         1 trade(s)  +Rs7.99
+    NTPC-EQ              1 trade(s)  +Rs106.06
+    SUNPHARMA-EQ         0 trade(s)  +Rs0.00
+
+================================================================================
+  DAY 3  |  2026-02-20  (Friday)  |  Pool: Rs99,972.64
+================================================================================
+
+  [SCREENER]  Walk-forward selection  |  Active: 4  |  Pool: Rs99,973
+  Rank  Symbol             Score     Close     ATR    Mom5d   VolSpike   Gap%       Alloc
+  ────────────────────────────────────────────────────────────────────────────────
+  1     SUNPHARMA-EQ      -36.36  Rs 1713.4   29.39   -0.09%      0.43x   0.64%  Rs  36,561
+  2     NTPC-EQ           -46.62  Rs  363.2    7.51   -1.37%      0.50x   1.41%  Rs  27,421
+  3     AXISBANK-EQ       -49.61  Rs 1356.6   30.64   +1.24%      0.35x   1.48%  Rs  20,566
+  4     ICICIBANK-EQ      -57.19  Rs 1388.8   23.64   -2.88%      1.05x   1.38%  Rs  15,424
+  ────────────────────────────────────────────────────────────────────────────────
+  09:15  AXISBANK-EQ              O:1351.00 H:1359.50 L:1351.00 C:1357.20 | st_line:1366.90  atr:4.49 | → None
+  09:15  ICICIBANK-EQ             O:1388.50 H:1395.70 L:1384.00 C:1389.50 | st_line:1398.23  atr:4.19 | → None
+  09:15  NTPC-EQ                  O:362.80 H:366.35 L:362.70 C:364.35 | st_line:366.34  atr:1.31 | → None
+  09:15  SUNPHARMA-EQ             O:1710.10 H:1715.00 L:1708.10 C:1709.60 | st_line:1724.75  atr:4.38 | → None
+  09:30  AXISBANK-EQ              O:1357.20 H:1362.50 L:1356.60 C:1361.90 | st_line:1366.90  atr:4.59 | → None
+  09:30  ICICIBANK-EQ             O:1389.50 H:1393.10 L:1388.40 C:1392.40 | st_line:1398.23  atr:4.22 | → None
+  09:30  NTPC-EQ                  O:364.50 H:367.00 L:364.30 C:366.70 | st_line:361.05  atr:1.41 | → BUY
+  09:30  SUNPHARMA-EQ             O:1709.20 H:1721.20 L:1708.60 C:1720.60 | st_line:1724.75  atr:4.97 | → None
+  09:45  AXISBANK-EQ              O:1361.70 H:1366.30 L:1361.20 C:1363.90 | st_line:1366.90  atr:4.62 | → None
+  09:45  ICICIBANK-EQ             O:1392.40 H:1396.40 L:1392.20 C:1395.80 | st_line:1398.23  atr:4.22 | → None
+  ▶ ENTRY LONG   09:45  NTPC-EQ          Price:Rs366.85  Qty:74  SL:Rs361.85  TP:Rs376.85  Alloc:Rs27,421
+  09:45  NTPC-EQ          [LONG]  O:366.85 H:367.55 L:366.65 C:367.30 | st_line:362.69  atr:1.37 | → None
+  09:45  SUNPHARMA-EQ             O:1720.60 H:1722.10 L:1719.80 C:1721.10 | st_line:1724.75  atr:4.78 | → None
+  10:00  AXISBANK-EQ              O:1364.00 H:1365.00 L:1360.50 C:1363.10 | st_line:1366.90  atr:4.61 | → None
+  10:00  ICICIBANK-EQ             O:1395.80 H:1399.00 L:1395.00 C:1398.10 | st_line:1398.23  atr:4.21 | → None
+  10:00  NTPC-EQ          [LONG]  O:367.30 H:367.80 L:366.75 C:367.05 | st_line:362.99  atr:1.35 | → None
+  10:00  SUNPHARMA-EQ             O:1721.10 H:1721.40 L:1716.10 C:1716.10 | st_line:1724.75  atr:4.81 | → None
+  10:15  AXISBANK-EQ              O:1363.50 H:1369.00 L:1363.10 C:1367.80 | st_line:1351.22  atr:4.71 | → BUY
+  10:15  ICICIBANK-EQ             O:1398.00 H:1402.00 L:1397.50 C:1400.80 | st_line:1386.28  atr:4.23 | → BUY
+  10:15  NTPC-EQ          [LONG]  O:367.10 H:368.25 L:367.05 C:367.95 | st_line:363.43  atr:1.34 | → None
+  10:15  SUNPHARMA-EQ             O:1716.10 H:1721.70 L:1716.10 C:1719.90 | st_line:1724.75  atr:4.87 | → None
+  ▶ ENTRY LONG   10:30  AXISBANK-EQ      Price:Rs1367.80  Qty:15  SL:Rs1362.80  TP:Rs1377.80  Alloc:Rs20,566
+  10:30  AXISBANK-EQ      [LONG]  O:1367.80 H:1368.80 L:1365.50 C:1368.30 | st_line:1352.82  atr:4.61 | → None
+  ▶ ENTRY LONG   10:30  ICICIBANK-EQ     Price:Rs1400.80  Qty:11  SL:Rs1395.80  TP:Rs1410.80  Alloc:Rs15,424
+  10:30  ICICIBANK-EQ     [LONG]  O:1400.80 H:1403.70 L:1398.80 C:1402.40 | st_line:1387.65  atr:4.28 | → None
+  10:30  NTPC-EQ          [LONG]  O:368.00 H:369.90 L:367.95 C:369.80 | st_line:364.55  atr:1.38 | → None
+  10:30  SUNPHARMA-EQ             O:1719.60 H:1722.00 L:1719.10 C:1721.00 | st_line:1724.75  atr:4.73 | → None
+  10:45  AXISBANK-EQ      [LONG]  O:1368.40 H:1371.30 L:1367.80 C:1370.60 | st_line:1355.60  atr:4.53 | → None
+  10:45  ICICIBANK-EQ     [LONG]  O:1402.40 H:1402.60 L:1400.30 C:1401.40 | st_line:1388.52  atr:4.13 | → None
+  10:45  NTPC-EQ          [LONG]  O:369.85 H:369.90 L:369.00 C:369.25 | st_line:365.24  atr:1.35 | → None
+  10:45  SUNPHARMA-EQ             O:1721.30 H:1722.00 L:1719.60 C:1720.40 | st_line:1724.75  atr:4.56 | → None
+  11:00  AXISBANK-EQ      [LONG]  O:1370.60 H:1371.40 L:1368.20 C:1369.00 | st_line:1356.28  atr:4.43 | → None
+  11:00  ICICIBANK-EQ     [LONG]  O:1401.40 H:1402.60 L:1398.60 C:1398.70 | st_line:1388.52  atr:4.12 | → None
+  11:00  NTPC-EQ          [LONG]  O:369.25 H:370.50 L:369.20 C:369.85 | st_line:365.67  atr:1.35 | → None
+  11:00  SUNPHARMA-EQ             O:1720.20 H:1721.50 L:1716.20 C:1720.40 | st_line:1724.75  atr:4.62 | → None
+  11:15  AXISBANK-EQ      [LONG]  O:1369.10 H:1372.20 L:1369.10 C:1370.50 | st_line:1357.53  atr:4.34 | → None
+  11:15  ICICIBANK-EQ     [LONG]  O:1398.90 H:1400.00 L:1397.90 C:1398.10 | st_line:1388.52  atr:3.98 | → None
+  11:15  NTPC-EQ          [LONG]  O:369.85 H:370.50 L:369.75 C:370.50 | st_line:366.14  atr:1.30 | → None
+  11:15  SUNPHARMA-EQ             O:1720.30 H:1721.90 L:1719.10 C:1720.70 | st_line:1724.75  atr:4.49 | → None
+  11:30  AXISBANK-EQ      [LONG]  O:1370.90 H:1371.90 L:1370.00 C:1370.40 | st_line:1358.57  atr:4.17 | → None
+  11:30  ICICIBANK-EQ     [LONG]  O:1398.20 H:1400.00 L:1397.40 C:1398.80 | st_line:1388.52  atr:3.88 | → None
+  11:30  NTPC-EQ          [LONG]  O:370.45 H:370.60 L:370.00 C:370.15 | st_line:366.53  atr:1.25 | → None
+  11:30  SUNPHARMA-EQ             O:1720.70 H:1721.70 L:1718.50 C:1721.40 | st_line:1724.75  atr:4.39 | → None
+  11:45  AXISBANK-EQ      [LONG]  O:1370.90 H:1372.50 L:1370.00 C:1371.10 | st_line:1359.36  atr:4.05 | → None
+  11:45  ICICIBANK-EQ     [LONG]  O:1398.90 H:1399.20 L:1397.80 C:1397.80 | st_line:1388.52  atr:3.70 | → None
+  11:45  NTPC-EQ          [LONG]  O:370.20 H:371.20 L:370.10 C:370.70 | st_line:366.93  atr:1.24 | → None
+  11:45  SUNPHARMA-EQ             O:1721.10 H:1721.70 L:1718.10 C:1719.80 | st_line:1724.75  atr:4.34 | → None
+  12:00  AXISBANK-EQ      [LONG]  O:1371.40 H:1371.40 L:1369.20 C:1370.00 | st_line:1359.36  atr:3.92 | → None
+  12:00  ICICIBANK-EQ     [LONG]  O:1398.00 H:1398.30 L:1396.50 C:1397.00 | st_line:1388.52  atr:3.57 | → None
+  12:00  NTPC-EQ          [LONG]  O:370.65 H:371.35 L:370.45 C:371.05 | st_line:367.28  atr:1.22 | → None
+  12:00  SUNPHARMA-EQ             O:1719.50 H:1720.80 L:1717.60 C:1720.70 | st_line:1724.75  atr:4.26 | → None
+  12:15  AXISBANK-EQ      [LONG]  O:1370.00 H:1375.80 L:1369.60 C:1374.00 | st_line:1360.61  atr:4.08 | → None
+  12:15  ICICIBANK-EQ     [LONG]  O:1397.00 H:1399.10 L:1396.90 C:1398.60 | st_line:1388.52  atr:3.47 | → None
+  12:15  NTPC-EQ          [LONG]  O:370.90 H:371.40 L:370.85 C:371.20 | st_line:367.70  atr:1.17 | → None
+  12:15  SUNPHARMA-EQ             O:1720.40 H:1722.00 L:1719.30 C:1721.40 | st_line:1724.75  atr:4.14 | → None
+  12:30  AXISBANK-EQ      [LONG]  O:1374.90 H:1375.00 L:1370.80 C:1371.60 | st_line:1360.76  atr:4.09 | → None
+  ◀ EXIT  SL          12:30  ICICIBANK-EQ     Price:Rs1395.80  Qty:11  Gross:Rs-55.00  Charges:Rs41.71  Net:Rs-96.71  Pool:Rs99,875.93
+  12:30  NTPC-EQ          [LONG]  O:371.20 H:371.55 L:371.05 C:371.10 | st_line:368.07  atr:1.12 | → None
+  12:30  SUNPHARMA-EQ             O:1721.10 H:1722.00 L:1719.20 C:1720.30 | st_line:1724.75  atr:4.05 | → None
+  ◀ EXIT  TSL         12:45  AXISBANK-EQ      Price:Rs1368.89  Qty:15  Gross:Rs16.36  Charges:Rs54.44  Net:Rs-38.08  Pool:Rs99,837.85
+  12:45  ICICIBANK-EQ             O:1395.10 H:1396.40 L:1393.30 C:1395.40 | st_line:1388.52  atr:3.47 | → None
+  12:45  NTPC-EQ          [LONG]  O:371.10 H:371.45 L:371.05 C:371.35 | st_line:368.22  atr:1.07 | → None
+  12:45  SUNPHARMA-EQ             O:1719.80 H:1722.30 L:1718.90 C:1721.30 | st_line:1724.75  atr:4.00 | → None
+  13:00  AXISBANK-EQ              O:1368.70 H:1369.20 L:1365.00 C:1368.50 | st_line:1360.76  atr:4.14 | → None
+  13:00  ICICIBANK-EQ             O:1395.50 H:1396.70 L:1393.50 C:1394.90 | st_line:1388.52  atr:3.45 | → None
+  13:00  NTPC-EQ          [LONG]  O:371.40 H:371.85 L:370.35 C:371.15 | st_line:368.22  atr:1.10 | → None
+  13:00  SUNPHARMA-EQ             O:1721.20 H:1722.00 L:1719.10 C:1721.50 | st_line:1724.75  atr:3.92 | → None
+  13:15  AXISBANK-EQ              O:1368.50 H:1375.10 L:1367.10 C:1372.80 | st_line:1360.76  atr:4.41 | → None
+  13:15  ICICIBANK-EQ             O:1395.00 H:1396.20 L:1392.20 C:1395.10 | st_line:1388.52  atr:3.49 | → None
+  13:15  NTPC-EQ          [LONG]  O:371.20 H:371.40 L:370.50 C:370.65 | st_line:368.22  atr:1.09 | → None
+  13:15  SUNPHARMA-EQ             O:1721.20 H:1721.50 L:1719.40 C:1720.90 | st_line:1724.75  atr:3.79 | → None
+  13:30  AXISBANK-EQ              O:1372.90 H:1374.00 L:1371.10 C:1373.00 | st_line:1360.76  atr:4.31 | → None
+  13:30  ICICIBANK-EQ             O:1395.70 H:1398.90 L:1394.40 C:1395.20 | st_line:1388.52  atr:3.56 | → None
+  13:30  NTPC-EQ          [LONG]  O:370.80 H:372.35 L:370.75 C:372.30 | st_line:368.23  atr:1.13 | → None
+  13:30  SUNPHARMA-EQ             O:1720.90 H:1722.80 L:1720.50 C:1722.20 | st_line:1724.75  atr:3.69 | → None
+  13:45  AXISBANK-EQ              O:1373.40 H:1376.50 L:1372.40 C:1375.70 | st_line:1361.48  atr:4.29 | → None
+  13:45  ICICIBANK-EQ             O:1395.20 H:1396.50 L:1394.00 C:1395.70 | st_line:1388.52  atr:3.48 | → None
+  13:45  NTPC-EQ          [LONG]  O:372.30 H:372.50 L:371.95 C:372.20 | st_line:369.07  atr:1.09 | → None
+  13:45  SUNPHARMA-EQ             O:1722.20 H:1724.80 L:1722.20 C:1724.70 | st_line:1724.75  atr:3.61 | → None
+  14:00  AXISBANK-EQ              O:1375.80 H:1376.30 L:1372.50 C:1374.50 | st_line:1361.59  atr:4.26 | → None
+  14:00  ICICIBANK-EQ             O:1395.70 H:1397.70 L:1395.00 C:1397.00 | st_line:1388.52  atr:3.43 | → None
+  14:00  NTPC-EQ          [LONG]  O:372.25 H:372.50 L:371.70 C:372.10 | st_line:369.07  atr:1.07 | → None
+  14:00  SUNPHARMA-EQ             O:1724.20 H:1725.00 L:1722.40 C:1724.10 | st_line:1724.75  atr:3.54 | → None
+  14:15  AXISBANK-EQ              O:1374.50 H:1375.50 L:1372.40 C:1372.90 | st_line:1361.59  atr:4.17 | → None
+  14:15  ICICIBANK-EQ             O:1397.50 H:1398.90 L:1395.30 C:1396.40 | st_line:1388.52  atr:3.44 | → None
+  14:15  NTPC-EQ          [LONG]  O:372.10 H:373.20 L:372.10 C:372.80 | st_line:369.55  atr:1.07 | → None
+  14:15  SUNPHARMA-EQ             O:1724.10 H:1725.30 L:1722.60 C:1724.00 | st_line:1724.75  atr:3.48 | → None
+  14:30  AXISBANK-EQ              O:1373.00 H:1373.40 L:1370.20 C:1371.40 | st_line:1361.59  atr:4.10 | → None
+  14:30  ICICIBANK-EQ             O:1396.20 H:1398.00 L:1395.30 C:1396.80 | st_line:1388.52  atr:3.39 | → None
+  14:30  NTPC-EQ          [LONG]  O:372.80 H:373.10 L:372.50 C:372.90 | st_line:369.83  atr:1.04 | → None
+  14:30  SUNPHARMA-EQ             O:1724.00 H:1726.70 L:1723.00 C:1725.60 | st_line:1714.97  atr:3.49 | → BUY
+  14:45  AXISBANK-EQ              O:1372.00 H:1374.00 L:1370.30 C:1372.60 | st_line:1361.59  atr:4.08 | → None
+  14:45  ICICIBANK-EQ             O:1396.80 H:1399.10 L:1396.50 C:1397.70 | st_line:1388.52  atr:3.33 | → None
+  14:45  NTPC-EQ          [LONG]  O:372.95 H:373.65 L:372.80 C:373.35 | st_line:370.29  atr:1.02 | → None
+  ▶ ENTRY LONG   14:45  SUNPHARMA-EQ     Price:Rs1725.70  Qty:21  SL:Rs1720.70  TP:Rs1735.70  Alloc:Rs36,561
+  14:45  SUNPHARMA-EQ     [LONG]  O:1725.70 H:1726.90 L:1724.10 C:1726.10 | st_line:1715.77  atr:3.44 | → None
+  15:00  AXISBANK-EQ              O:1372.60 H:1372.60 L:1366.00 C:1368.00 | st_line:1361.59  atr:4.26 | → None
+  15:00  ICICIBANK-EQ             O:1397.80 H:1398.10 L:1393.50 C:1394.10 | st_line:1388.52  atr:3.42 | → None
+  15:00  NTPC-EQ          [LONG]  O:373.40 H:373.60 L:372.50 C:372.95 | st_line:370.29  atr:1.03 | → None
+  15:00  SUNPHARMA-EQ     [LONG]  O:1726.20 H:1726.80 L:1723.50 C:1724.60 | st_line:1715.77  atr:3.43 | → None
+  15:15  AXISBANK-EQ              O:1368.00 H:1370.30 L:1365.70 C:1367.70 | st_line:1361.59  atr:4.28 | → None
+  15:15  ICICIBANK-EQ             O:1394.00 H:1397.00 L:1392.10 C:1394.00 | st_line:1388.52  atr:3.53 | → None
+  ◀ EXIT  SQUAREOFF   15:15  NTPC-EQ          Price:Rs372.80  Qty:74  Gross:+Rs440.30  Charges:Rs56.90  Net:+Rs383.40  Pool:Rs100,221.25
+  ◀ EXIT  SQUAREOFF   15:15  SUNPHARMA-EQ     Price:Rs1724.00  Qty:21  Gross:Rs-35.70  Charges:Rs59.97  Net:Rs-95.67  Pool:Rs100,125.58
+
+  ────────────────────────────────────────────────────────────────────────────────
+  END OF DAY 2026-02-20  |  Trades:4  W:1  L:3
+  Day net P&L: +Rs152.94  |  Pool: Rs100,125.58  (was Rs99,972.64)
+  ────────────────────────────────────────────────────────────────────────────────
+  Per-symbol:
+    AXISBANK-EQ          1 trade(s)  Rs-38.08
+    ICICIBANK-EQ         1 trade(s)  Rs-96.71
+    NTPC-EQ              1 trade(s)  +Rs383.40
+    SUNPHARMA-EQ         1 trade(s)  Rs-95.67
+
+================================================================================
+  DAY 4  |  2026-02-23  (Monday)  |  Pool: Rs100,125.58
+================================================================================
+
+  [SCREENER]  Walk-forward selection  |  Active: 5  |  Pool: Rs100,126
+  Rank  Symbol             Score     Close     ATR    Mom5d   VolSpike   Gap%       Alloc
+  ────────────────────────────────────────────────────────────────────────────────
+  1     SUNPHARMA-EQ      -35.60  Rs 1724.4   28.64   +1.58%      0.46x   0.64%  Rs  32,820
+  2     AXISBANK-EQ       -49.10  Rs 1368.3   30.27   +2.70%      0.50x   0.86%  Rs  24,615
+  3     ADANIPORTS-EQ     -49.21  Rs 1511.5   42.00   -0.49%      0.38x   0.12%  Rs  18,461
+  4     NTPC-EQ           -50.55  Rs  372.9    7.76   +2.74%      1.50x   2.68%  Rs  13,846
+  5     ICICIBANK-EQ      -56.86  Rs 1394.5   23.36   -1.42%      0.77x   0.41%  Rs  10,384
+  ────────────────────────────────────────────────────────────────────────────────
+  09:15  ADANIPORTS-EQ            O:1511.00 H:1544.60 L:1510.80 C:1544.50 | st_line:1508.99  atr:7.63 | → BUY
+  09:15  AXISBANK-EQ              O:1380.50 H:1397.60 L:1380.20 C:1396.10 | st_line:1368.29  atr:6.11 | → None
+  09:15  ICICIBANK-EQ             O:1400.00 H:1405.00 L:1395.30 C:1404.80 | st_line:1388.52  atr:4.06 | → None
+  09:15  NTPC-EQ                  O:374.00 H:375.80 L:372.15 C:373.00 | st_line:370.29  atr:1.23 | → None
+  09:15  SUNPHARMA-EQ             O:1732.90 H:1733.90 L:1721.80 C:1726.00 | st_line:1715.77  atr:4.22 | → None
+  ▶ ENTRY LONG   09:30  ADANIPORTS-EQ    Price:Rs1544.10  Qty:11  SL:Rs1539.10  TP:Rs1554.10  Alloc:Rs18,461
+  ◀ EXIT  TP          09:30  ADANIPORTS-EQ    Price:Rs1554.10  Qty:11  Gross:+Rs110.00  Charges:Rs46.23  Net:+Rs63.77  Pool:Rs100,189.35
+  09:30  AXISBANK-EQ              O:1396.10 H:1398.00 L:1393.50 C:1395.30 | st_line:1375.85  atr:6.00 | → None
+  09:30  ICICIBANK-EQ             O:1404.70 H:1406.20 L:1403.60 C:1405.50 | st_line:1392.59  atr:3.96 | → None
+  09:30  NTPC-EQ                  O:373.00 H:373.45 L:372.40 C:373.05 | st_line:370.29  atr:1.22 | → None
+  09:30  SUNPHARMA-EQ             O:1726.60 H:1727.40 L:1723.50 C:1725.10 | st_line:1715.77  atr:4.20 | → None
+  09:45  ADANIPORTS-EQ            O:1553.60 H:1560.00 L:1549.00 C:1559.60 | st_line:1527.53  atr:8.13 | → None
+  09:45  AXISBANK-EQ              O:1395.30 H:1402.00 L:1394.00 C:1398.80 | st_line:1377.69  atr:6.14 | → None
+  09:45  ICICIBANK-EQ             O:1405.50 H:1408.30 L:1405.10 C:1407.60 | st_line:1394.66  atr:3.90 | → None
+  09:45  NTPC-EQ                  O:373.10 H:373.75 L:372.80 C:372.95 | st_line:370.29  atr:1.20 | → None
+  09:45  SUNPHARMA-EQ             O:1725.00 H:1726.50 L:1723.40 C:1723.60 | st_line:1715.77  atr:4.12 | → None
+  10:00  ADANIPORTS-EQ            O:1559.10 H:1564.50 L:1547.00 C:1550.40 | st_line:1527.53  atr:8.80 | → None
+  10:00  AXISBANK-EQ              O:1398.40 H:1400.50 L:1396.10 C:1400.40 | st_line:1378.70  atr:6.01 | → None
+  10:00  ICICIBANK-EQ             O:1407.50 H:1408.20 L:1405.60 C:1406.90 | st_line:1395.28  atr:3.81 | → None
+  10:00  NTPC-EQ                  O:372.95 H:373.75 L:372.40 C:373.50 | st_line:370.29  atr:1.21 | → None
+  10:00  SUNPHARMA-EQ             O:1723.60 H:1726.00 L:1723.40 C:1724.50 | st_line:1715.77  atr:4.01 | → None
+  10:15  ADANIPORTS-EQ            O:1550.50 H:1561.10 L:1550.50 C:1552.60 | st_line:1527.53  atr:8.93 | → None
+  10:15  AXISBANK-EQ              O:1400.00 H:1402.00 L:1398.10 C:1398.40 | st_line:1381.24  atr:5.86 | → None
+  10:15  ICICIBANK-EQ             O:1406.70 H:1407.80 L:1405.50 C:1405.80 | st_line:1395.50  atr:3.70 | → None
+  10:15  NTPC-EQ                  O:373.45 H:374.50 L:373.45 C:373.70 | st_line:370.32  atr:1.20 | → None
+  10:15  SUNPHARMA-EQ             O:1724.50 H:1725.50 L:1720.40 C:1720.70 | st_line:1715.77  atr:4.09 | → None
+  10:30  ADANIPORTS-EQ            O:1552.90 H:1554.90 L:1543.30 C:1544.40 | st_line:1527.53  atr:9.12 | → None
+  10:30  AXISBANK-EQ              O:1398.40 H:1399.90 L:1394.10 C:1394.40 | st_line:1381.24  atr:5.86 | → None
+  10:30  ICICIBANK-EQ             O:1405.80 H:1407.40 L:1402.10 C:1402.50 | st_line:1395.50  atr:3.82 | → None
+  10:30  NTPC-EQ                  O:373.70 H:374.50 L:373.50 C:374.25 | st_line:370.41  atr:1.18 | → None
+  10:30  SUNPHARMA-EQ             O:1720.80 H:1724.70 L:1720.20 C:1723.70 | st_line:1715.77  atr:4.12 | → None
+  10:45  ADANIPORTS-EQ            O:1545.40 H:1553.90 L:1544.00 C:1553.00 | st_line:1527.53  atr:9.18 | → None
+  10:45  AXISBANK-EQ              O:1394.40 H:1397.20 L:1392.60 C:1396.00 | st_line:1381.24  atr:5.77 | → None
+  10:45  ICICIBANK-EQ             O:1402.40 H:1403.00 L:1400.70 C:1401.40 | st_line:1395.50  atr:3.71 | → None
+  10:45  NTPC-EQ                  O:374.15 H:375.00 L:374.00 C:374.60 | st_line:370.97  atr:1.17 | → None
+  10:45  SUNPHARMA-EQ             O:1723.70 H:1725.00 L:1722.60 C:1723.80 | st_line:1715.77  atr:4.00 | → None
+  11:00  ADANIPORTS-EQ            O:1553.00 H:1554.70 L:1549.60 C:1552.70 | st_line:1527.53  atr:8.89 | → None
+  11:00  AXISBANK-EQ              O:1396.00 H:1397.40 L:1393.60 C:1396.80 | st_line:1381.24  atr:5.63 | → None
+  11:00  ICICIBANK-EQ             O:1401.40 H:1402.50 L:1400.00 C:1401.70 | st_line:1395.50  atr:3.62 | → None
+  11:00  NTPC-EQ                  O:374.60 H:374.85 L:374.10 C:374.45 | st_line:371.07  atr:1.14 | → None
+  11:00  SUNPHARMA-EQ             O:1723.80 H:1725.80 L:1723.00 C:1724.00 | st_line:1715.77  atr:3.91 | → None
+  11:15  ADANIPORTS-EQ            O:1553.00 H:1557.40 L:1551.60 C:1551.60 | st_line:1527.53  atr:8.67 | → None
+  11:15  AXISBANK-EQ              O:1396.20 H:1396.80 L:1394.00 C:1395.60 | st_line:1381.24  atr:5.43 | → None
+  11:15  ICICIBANK-EQ             O:1401.80 H:1401.80 L:1399.30 C:1399.80 | st_line:1395.50  atr:3.54 | → None
+  11:15  NTPC-EQ                  O:374.30 H:374.55 L:373.65 C:374.10 | st_line:371.07  atr:1.12 | → None
+  11:15  SUNPHARMA-EQ             O:1724.00 H:1724.90 L:1722.70 C:1723.70 | st_line:1715.77  atr:3.79 | → None
+  11:30  ADANIPORTS-EQ            O:1551.20 H:1551.80 L:1548.00 C:1548.80 | st_line:1527.53  atr:8.32 | → None
+  11:30  AXISBANK-EQ              O:1395.50 H:1396.00 L:1390.00 C:1390.60 | st_line:1381.24  atr:5.47 | → None
+  11:30  ICICIBANK-EQ             O:1399.80 H:1401.30 L:1399.00 C:1401.10 | st_line:1395.50  atr:3.45 | → None
+  11:30  NTPC-EQ                  O:374.10 H:374.95 L:374.00 C:374.95 | st_line:371.19  atr:1.11 | → None
+  11:30  SUNPHARMA-EQ             O:1723.70 H:1724.60 L:1722.80 C:1723.00 | st_line:1715.77  atr:3.65 | → None
+  11:45  ADANIPORTS-EQ            O:1549.10 H:1551.50 L:1546.00 C:1548.30 | st_line:1527.53  atr:8.12 | → None
+  11:45  AXISBANK-EQ              O:1390.30 H:1393.90 L:1387.00 C:1388.10 | st_line:1381.24  atr:5.57 | → None
+  11:45  ICICIBANK-EQ             O:1401.20 H:1403.90 L:1399.60 C:1402.20 | st_line:1395.50  atr:3.51 | → None
+  11:45  NTPC-EQ                  O:374.85 H:375.25 L:374.10 C:374.40 | st_line:371.37  atr:1.11 | → None
+  11:45  SUNPHARMA-EQ             O:1723.10 H:1724.00 L:1722.00 C:1722.10 | st_line:1715.77  atr:3.53 | → None
+  12:00  ADANIPORTS-EQ            O:1547.60 H:1549.50 L:1546.00 C:1546.40 | st_line:1527.53  atr:7.79 | → None
+  12:00  AXISBANK-EQ              O:1387.70 H:1388.70 L:1380.90 C:1382.40 | st_line:1381.24  atr:5.73 | → None
+  12:00  ICICIBANK-EQ             O:1402.20 H:1403.50 L:1401.30 C:1402.50 | st_line:1395.50  atr:3.42 | → None
+  12:00  NTPC-EQ                  O:374.45 H:374.90 L:373.80 C:374.25 | st_line:371.37  atr:1.11 | → None
+  12:00  SUNPHARMA-EQ             O:1722.10 H:1724.60 L:1722.00 C:1724.20 | st_line:1715.77  atr:3.46 | → None
+  12:15  ADANIPORTS-EQ            O:1547.10 H:1551.70 L:1546.00 C:1549.10 | st_line:1527.53  atr:7.64 | → None
+  12:15  AXISBANK-EQ              O:1382.40 H:1385.80 L:1381.20 C:1384.90 | st_line:1381.24  atr:5.65 | → None
+  12:15  ICICIBANK-EQ             O:1402.50 H:1402.80 L:1399.10 C:1399.50 | st_line:1395.50  atr:3.44 | → None
+  12:15  NTPC-EQ                  O:374.30 H:375.30 L:374.30 C:374.80 | st_line:371.51  atr:1.11 | → None
+  12:15  SUNPHARMA-EQ             O:1724.20 H:1725.50 L:1722.00 C:1725.20 | st_line:1715.77  atr:3.47 | → None
+  12:30  ADANIPORTS-EQ            O:1548.60 H:1550.00 L:1546.60 C:1550.00 | st_line:1527.53  atr:7.34 | → None
+  12:30  AXISBANK-EQ              O:1384.70 H:1389.00 L:1383.10 C:1389.00 | st_line:1381.24  atr:5.67 | → None
+  12:30  ICICIBANK-EQ             O:1399.40 H:1401.70 L:1399.10 C:1401.40 | st_line:1395.50  atr:3.38 | → None
+  12:30  NTPC-EQ                  O:374.75 H:375.50 L:374.45 C:375.50 | st_line:371.70  atr:1.10 | → None
+  12:30  SUNPHARMA-EQ             O:1725.20 H:1726.60 L:1724.10 C:1726.40 | st_line:1715.77  atr:3.40 | → None
+  12:45  ADANIPORTS-EQ            O:1550.00 H:1551.00 L:1547.60 C:1548.10 | st_line:1528.79  atr:7.06 | → None
+  12:45  AXISBANK-EQ              O:1389.00 H:1390.90 L:1387.50 C:1388.30 | st_line:1381.24  atr:5.50 | → None
+  12:45  ICICIBANK-EQ             O:1401.00 H:1401.40 L:1397.40 C:1398.00 | st_line:1395.50  atr:3.42 | → None
+  12:45  NTPC-EQ                  O:375.45 H:376.45 L:375.35 C:375.95 | st_line:372.62  atr:1.10 | → None
+  12:45  SUNPHARMA-EQ             O:1726.30 H:1727.20 L:1725.00 C:1725.60 | st_line:1716.70  atr:3.31 | → None
+  13:00  ADANIPORTS-EQ            O:1548.10 H:1549.00 L:1545.10 C:1546.90 | st_line:1528.79  atr:6.83 | → None
+  13:00  AXISBANK-EQ              O:1388.10 H:1390.00 L:1386.60 C:1387.20 | st_line:1381.24  atr:5.35 | → None
+  13:00  ICICIBANK-EQ             O:1397.90 H:1399.10 L:1397.10 C:1398.00 | st_line:1395.50  atr:3.32 | → None
+  13:00  NTPC-EQ                  O:375.90 H:376.40 L:375.80 C:376.10 | st_line:372.97  atr:1.07 | → None
+  13:00  SUNPHARMA-EQ             O:1725.40 H:1727.20 L:1725.10 C:1726.20 | st_line:1717.06  atr:3.22 | → None
+  13:15  ADANIPORTS-EQ            O:1546.40 H:1550.50 L:1545.20 C:1547.00 | st_line:1528.79  atr:6.72 | → None
+  13:15  AXISBANK-EQ              O:1386.90 H:1388.00 L:1385.20 C:1386.80 | st_line:1381.24  atr:5.17 | → None
+  13:15  ICICIBANK-EQ             O:1398.00 H:1398.70 L:1397.60 C:1398.00 | st_line:1395.50  atr:3.16 | → None
+  13:15  NTPC-EQ                  O:376.00 H:376.40 L:375.85 C:376.20 | st_line:373.14  atr:1.03 | → None
+  13:15  SUNPHARMA-EQ             O:1725.50 H:1730.30 L:1725.00 C:1730.00 | st_line:1717.88  atr:3.37 | → None
+  13:30  ADANIPORTS-EQ            O:1547.50 H:1548.10 L:1542.60 C:1545.80 | st_line:1528.79  atr:6.63 | → None
+  13:30  AXISBANK-EQ              O:1386.80 H:1389.20 L:1385.50 C:1386.50 | st_line:1381.24  atr:5.07 | → None
+  13:30  ICICIBANK-EQ             O:1398.00 H:1398.90 L:1395.70 C:1398.00 | st_line:1395.50  atr:3.17 | → None
+  13:30  NTPC-EQ                  O:376.15 H:376.50 L:375.25 C:376.25 | st_line:373.14  atr:1.05 | → None
+  13:30  SUNPHARMA-EQ             O:1730.00 H:1731.10 L:1728.80 C:1731.00 | st_line:1720.47  atr:3.30 | → None
+  13:45  ADANIPORTS-EQ            O:1545.80 H:1548.40 L:1545.10 C:1545.40 | st_line:1528.79  atr:6.40 | → None
+  13:45  AXISBANK-EQ              O:1386.50 H:1386.90 L:1384.10 C:1384.30 | st_line:1381.24  atr:4.90 | → None
+  13:45  ICICIBANK-EQ             O:1398.00 H:1398.70 L:1396.70 C:1397.60 | st_line:1395.50  atr:3.08 | → None
+  13:45  NTPC-EQ                  O:376.25 H:376.30 L:375.55 C:375.85 | st_line:373.14  atr:1.03 | → None
+  13:45  SUNPHARMA-EQ             O:1731.10 H:1731.40 L:1729.20 C:1730.20 | st_line:1721.11  atr:3.22 | → None
+  14:00  ADANIPORTS-EQ            O:1545.40 H:1546.00 L:1542.10 C:1544.10 | st_line:1528.79  atr:6.22 | → None
+  14:00  AXISBANK-EQ              O:1384.10 H:1385.10 L:1381.70 C:1383.20 | st_line:1381.24  atr:4.80 | → None
+  14:00  ICICIBANK-EQ             O:1397.50 H:1398.20 L:1396.50 C:1398.10 | st_line:1395.50  atr:2.98 | → None
+  14:00  NTPC-EQ                  O:375.80 H:376.05 L:374.30 C:375.00 | st_line:373.14  atr:1.08 | → None
+  14:00  SUNPHARMA-EQ             O:1730.00 H:1731.40 L:1728.30 C:1730.80 | st_line:1721.11  atr:3.21 | → None
+  14:15  ADANIPORTS-EQ            O:1544.10 H:1545.00 L:1540.90 C:1545.00 | st_line:1528.79  atr:6.07 | → None
+  14:15  AXISBANK-EQ              O:1382.90 H:1384.30 L:1381.10 C:1384.00 | st_line:1381.24  atr:4.68 | → None
+  14:15  ICICIBANK-EQ             O:1397.90 H:1401.00 L:1397.90 C:1400.70 | st_line:1395.50  atr:2.99 | → None
+  14:15  NTPC-EQ                  O:374.95 H:375.90 L:374.85 C:375.60 | st_line:373.14  atr:1.08 | → None
+  14:15  SUNPHARMA-EQ             O:1730.80 H:1731.50 L:1730.00 C:1730.70 | st_line:1722.02  atr:3.09 | → None
+  14:30  ADANIPORTS-EQ            O:1544.90 H:1555.60 L:1544.90 C:1551.80 | st_line:1531.81  atr:6.40 | → None
+  14:30  AXISBANK-EQ              O:1383.60 H:1386.80 L:1382.60 C:1383.10 | st_line:1381.24  atr:4.65 | → None
+  14:30  ICICIBANK-EQ             O:1400.50 H:1402.70 L:1398.50 C:1400.30 | st_line:1395.50  atr:3.08 | → None
+  14:30  NTPC-EQ                  O:375.55 H:375.85 L:373.80 C:374.00 | st_line:373.14  atr:1.14 | → None
+  14:30  SUNPHARMA-EQ             O:1730.60 H:1733.40 L:1730.00 C:1730.10 | st_line:1722.82  atr:3.11 | → None
+  14:45  ADANIPORTS-EQ            O:1552.70 H:1556.00 L:1550.10 C:1551.80 | st_line:1534.68  atr:6.36 | → None
+  14:45  AXISBANK-EQ              O:1383.20 H:1387.00 L:1383.10 C:1385.90 | st_line:1381.24  atr:4.59 | → None
+  14:45  ICICIBANK-EQ             O:1400.30 H:1400.80 L:1398.70 C:1399.20 | st_line:1395.50  atr:3.01 | → None
+  14:45  NTPC-EQ                  O:374.00 H:375.05 L:373.90 C:374.30 | st_line:373.14  atr:1.15 | → None
+  14:45  SUNPHARMA-EQ             O:1730.50 H:1732.50 L:1729.90 C:1731.00 | st_line:1722.82  atr:3.07 | → None
+  15:00  ADANIPORTS-EQ            O:1551.50 H:1558.80 L:1551.30 C:1557.10 | st_line:1536.27  atr:6.44 | → None
+  15:00  AXISBANK-EQ              O:1385.90 H:1387.00 L:1385.50 C:1386.60 | st_line:1381.24  atr:4.37 | → None
+  15:00  ICICIBANK-EQ             O:1399.20 H:1399.90 L:1398.70 C:1399.30 | st_line:1395.50  atr:2.88 | → None
+  15:00  NTPC-EQ                  O:374.30 H:375.80 L:374.25 C:375.50 | st_line:373.14  atr:1.17 | → None
+  15:00  SUNPHARMA-EQ             O:1731.00 H:1733.40 L:1731.00 C:1732.70 | st_line:1723.58  atr:3.03 | → None
+  15:15  ADANIPORTS-EQ            O:1557.10 H:1558.00 L:1553.10 C:1554.00 | st_line:1537.18  atr:6.33 | → None
+  15:15  AXISBANK-EQ              O:1386.60 H:1389.70 L:1382.00 C:1385.90 | st_line:1381.24  atr:4.61 | → None
+  15:15  ICICIBANK-EQ             O:1399.40 H:1400.50 L:1398.00 C:1399.00 | st_line:1395.50  atr:2.85 | → None
+  15:15  NTPC-EQ                  O:375.50 H:375.75 L:375.15 C:375.45 | st_line:373.14  atr:1.13 | → None
+  15:15  SUNPHARMA-EQ             O:1732.70 H:1735.80 L:1730.20 C:1732.00 | st_line:1723.58  atr:3.21 | → None
+
+  ────────────────────────────────────────────────────────────────────────────────
+  END OF DAY 2026-02-23  |  Trades:1  W:1  L:0
+  Day net P&L: +Rs63.77  |  Pool: Rs100,189.35  (was Rs100,125.58)
+  ────────────────────────────────────────────────────────────────────────────────
+  Per-symbol:
+    ADANIPORTS-EQ        1 trade(s)  +Rs63.77
+    AXISBANK-EQ          0 trade(s)  +Rs0.00
+    ICICIBANK-EQ         0 trade(s)  +Rs0.00
+    NTPC-EQ              0 trade(s)  +Rs0.00
+    SUNPHARMA-EQ         0 trade(s)  +Rs0.00
+
+================================================================================
+  DAY 5  |  2026-02-24  (Tuesday)  |  Pool: Rs100,189.35
+================================================================================
+
+  [SCREENER]  Walk-forward selection  |  Active: 4  |  Pool: Rs100,189
+  Rank  Symbol             Score     Close     ATR    Mom5d   VolSpike   Gap%       Alloc
+  ────────────────────────────────────────────────────────────────────────────────
+  1     SUNPHARMA-EQ      -38.04  Rs 1732.3   27.71   +1.87%      0.60x   0.46%  Rs  36,641
+  2     NTPC-EQ           -54.59  Rs  375.4    7.52   +1.72%      1.43x   0.67%  Rs  27,481
+  3     AXISBANK-EQ       -56.27  Rs 1386.7   30.51   +2.09%      0.91x   1.34%  Rs  20,610
+  4     ICICIBANK-EQ      -58.14  Rs 1399.4   22.68   -0.86%      0.84x   0.35%  Rs  15,458
+  ────────────────────────────────────────────────────────────────────────────────
+  09:15  AXISBANK-EQ              O:1398.00 H:1398.00 L:1384.20 C:1387.70 | st_line:1381.24  atr:5.27 | → None
+  09:15  ICICIBANK-EQ             O:1400.90 H:1400.90 L:1393.30 C:1397.30 | st_line:1395.50  atr:3.19 | → None
+  09:15  NTPC-EQ                  O:374.95 H:377.30 L:373.55 C:376.20 | st_line:373.14  atr:1.32 | → None
+  09:15  SUNPHARMA-EQ             O:1732.00 H:1733.00 L:1726.50 C:1727.20 | st_line:1723.58  atr:3.44 | → None
+  09:30  AXISBANK-EQ              O:1387.80 H:1391.30 L:1387.30 C:1391.30 | st_line:1381.24  atr:5.18 | → None
+  09:30  ICICIBANK-EQ             O:1397.30 H:1398.80 L:1395.50 C:1396.70 | st_line:1395.50  atr:3.20 | → None
+  09:30  NTPC-EQ                  O:376.20 H:376.30 L:373.75 C:375.40 | st_line:373.14  atr:1.41 | → None
+  09:30  SUNPHARMA-EQ             O:1727.40 H:1729.20 L:1723.70 C:1725.50 | st_line:1723.58  atr:3.59 | → None
+  09:45  AXISBANK-EQ              O:1391.30 H:1391.80 L:1389.40 C:1390.90 | st_line:1381.24  atr:4.98 | → None
+  09:45  ICICIBANK-EQ             O:1396.70 H:1397.40 L:1395.00 C:1396.70 | st_line:1395.50  atr:3.14 | → None
+  09:45  NTPC-EQ                  O:375.35 H:376.45 L:374.80 C:375.50 | st_line:373.14  atr:1.43 | → None
+  09:45  SUNPHARMA-EQ             O:1726.00 H:1726.80 L:1724.40 C:1725.40 | st_line:1723.58  atr:3.51 | → None
+  10:00  AXISBANK-EQ              O:1391.30 H:1392.40 L:1385.20 C:1386.10 | st_line:1381.24  atr:5.14 | → None
+  10:00  ICICIBANK-EQ             O:1396.70 H:1397.00 L:1394.20 C:1394.60 | st_line:1404.86  atr:3.12 | → SHORT
+  10:00  NTPC-EQ                  O:375.50 H:376.90 L:375.25 C:376.15 | st_line:373.14  atr:1.44 | → None
+  10:00  SUNPHARMA-EQ             O:1725.40 H:1729.40 L:1723.90 C:1726.30 | st_line:1723.58  atr:3.65 | → None
+  10:15  AXISBANK-EQ              O:1386.30 H:1389.00 L:1385.60 C:1388.20 | st_line:1381.24  atr:5.01 | → None
+  ▶ ENTRY SHORT  10:15  ICICIBANK-EQ     Price:Rs1394.60  Qty:11  SL:Rs1399.60  TP:Rs1384.60  Alloc:Rs15,458
+  10:15  ICICIBANK-EQ     [SHORT] O:1394.60 H:1395.00 L:1392.00 C:1394.50 | st_line:1402.73  atr:3.11 | → None
+  10:15  NTPC-EQ                  O:376.15 H:376.90 L:375.70 C:375.85 | st_line:373.14  atr:1.42 | → None
+  10:15  SUNPHARMA-EQ             O:1726.30 H:1727.70 L:1724.90 C:1726.90 | st_line:1723.58  atr:3.59 | → None
+  10:30  AXISBANK-EQ              O:1388.70 H:1391.50 L:1388.00 C:1390.30 | st_line:1381.24  atr:4.91 | → None
+  10:30  ICICIBANK-EQ     [SHORT] O:1394.60 H:1394.60 L:1390.20 C:1390.30 | st_line:1402.03  atr:3.20 | → None
+  10:30  NTPC-EQ                  O:375.85 H:376.10 L:375.00 C:375.60 | st_line:373.14  atr:1.40 | → None
+  10:30  SUNPHARMA-EQ             O:1727.00 H:1728.90 L:1725.70 C:1727.50 | st_line:1723.58  atr:3.56 | → None
+  10:45  AXISBANK-EQ              O:1390.80 H:1392.20 L:1388.90 C:1391.80 | st_line:1381.24  atr:4.79 | → None
+  10:45  ICICIBANK-EQ     [SHORT] O:1390.40 H:1391.10 L:1388.60 C:1389.00 | st_line:1399.27  atr:3.15 | → None
+  10:45  NTPC-EQ                  O:375.60 H:375.65 L:375.00 C:375.65 | st_line:373.14  atr:1.35 | → None
+  10:45  SUNPHARMA-EQ             O:1727.50 H:1733.60 L:1726.90 C:1732.30 | st_line:1723.58  atr:3.78 | → None
+  11:00  AXISBANK-EQ              O:1392.20 H:1394.50 L:1391.80 C:1392.70 | st_line:1381.24  atr:4.64 | → None
+  11:00  ICICIBANK-EQ     [SHORT] O:1389.00 H:1392.60 L:1388.70 C:1392.30 | st_line:1399.27  atr:3.20 | → None
+  11:00  NTPC-EQ                  O:375.65 H:376.40 L:375.45 C:376.30 | st_line:373.14  atr:1.32 | → None
+  11:00  SUNPHARMA-EQ             O:1732.30 H:1735.80 L:1731.30 C:1734.90 | st_line:1723.58  atr:3.84 | → None
+  11:15  AXISBANK-EQ              O:1392.70 H:1393.70 L:1391.10 C:1391.70 | st_line:1381.24  atr:4.50 | → None
+  ◀ EXIT  TSL         11:15  ICICIBANK-EQ     Price:Rs1393.26  Qty:11  Gross:Rs14.70  Charges:Rs41.60  Net:Rs-26.90  Pool:Rs100,162.45
+  11:15  NTPC-EQ                  O:376.30 H:376.90 L:375.60 C:376.80 | st_line:373.14  atr:1.32 | → None
+  11:15  SUNPHARMA-EQ             O:1735.00 H:1735.70 L:1732.90 C:1735.50 | st_line:1723.58  atr:3.76 | → None
+  11:30  AXISBANK-EQ              O:1391.70 H:1395.70 L:1390.40 C:1394.00 | st_line:1381.24  atr:4.55 | → None
+  11:30  ICICIBANK-EQ             O:1393.30 H:1394.00 L:1392.30 C:1392.80 | st_line:1399.27  atr:3.08 | → None
+  11:30  NTPC-EQ                  O:376.85 H:379.80 L:376.50 C:378.60 | st_line:373.55  atr:1.46 | → None
+  11:30  SUNPHARMA-EQ             O:1735.50 H:1735.80 L:1732.00 C:1732.70 | st_line:1723.58  atr:3.76 | → None
+  11:45  AXISBANK-EQ              O:1394.00 H:1394.90 L:1392.00 C:1392.00 | st_line:1381.24  atr:4.43 | → None
+  11:45  ICICIBANK-EQ             O:1393.00 H:1395.30 L:1392.80 C:1393.40 | st_line:1399.27  atr:3.04 | → None
+  11:45  NTPC-EQ                  O:378.50 H:378.60 L:377.10 C:378.10 | st_line:373.55  atr:1.46 | → None
+  11:45  SUNPHARMA-EQ             O:1732.70 H:1733.80 L:1729.10 C:1730.90 | st_line:1723.58  atr:3.83 | → None
+  12:00  AXISBANK-EQ              O:1392.50 H:1396.10 L:1391.50 C:1395.70 | st_line:1381.24  atr:4.45 | → None
+  12:00  ICICIBANK-EQ             O:1393.80 H:1394.60 L:1391.60 C:1393.00 | st_line:1399.27  atr:3.04 | → None
+  12:00  NTPC-EQ                  O:378.10 H:378.80 L:376.80 C:377.10 | st_line:373.55  atr:1.50 | → None
+  12:00  SUNPHARMA-EQ             O:1730.80 H:1738.10 L:1729.40 C:1736.10 | st_line:1723.58  atr:4.18 | → None
+  12:15  AXISBANK-EQ              O:1395.90 H:1396.20 L:1389.00 C:1390.10 | st_line:1381.24  atr:4.64 | → None
+  12:15  ICICIBANK-EQ             O:1393.20 H:1393.20 L:1388.00 C:1388.70 | st_line:1399.27  atr:3.19 | → None
+  12:15  NTPC-EQ                  O:377.10 H:377.40 L:376.50 C:377.10 | st_line:373.55  atr:1.46 | → None
+  12:15  SUNPHARMA-EQ             O:1736.00 H:1743.90 L:1735.00 C:1741.30 | st_line:1724.86  atr:4.52 | → None
+  12:30  AXISBANK-EQ              O:1389.80 H:1390.80 L:1386.30 C:1387.30 | st_line:1381.24  atr:4.63 | → None
+  12:30  ICICIBANK-EQ             O:1388.80 H:1389.90 L:1387.80 C:1387.80 | st_line:1398.15  atr:3.12 | → None
+  12:30  NTPC-EQ                  O:377.20 H:377.40 L:376.05 C:376.30 | st_line:373.55  atr:1.45 | → None
+  12:30  SUNPHARMA-EQ             O:1741.30 H:1745.90 L:1739.50 C:1743.60 | st_line:1727.65  atr:4.65 | → None
+  12:45  AXISBANK-EQ              O:1387.40 H:1388.80 L:1385.20 C:1387.80 | st_line:1381.24  atr:4.56 | → None
+  12:45  ICICIBANK-EQ             O:1387.90 H:1389.00 L:1385.10 C:1388.10 | st_line:1396.59  atr:3.17 | → None
+  12:45  NTPC-EQ                  O:376.30 H:377.30 L:376.10 C:377.00 | st_line:373.55  atr:1.43 | → None
+  12:45  SUNPHARMA-EQ             O:1744.20 H:1745.00 L:1740.70 C:1742.50 | st_line:1728.02  atr:4.63 | → None
+  13:00  AXISBANK-EQ              O:1387.90 H:1391.80 L:1387.10 C:1390.30 | st_line:1381.24  atr:4.57 | → None
+  13:00  ICICIBANK-EQ             O:1388.10 H:1391.00 L:1388.10 C:1389.90 | st_line:1396.59  atr:3.15 | → None
+  13:00  NTPC-EQ                  O:377.00 H:377.10 L:375.65 C:375.80 | st_line:373.55  atr:1.43 | → None
+  13:00  SUNPHARMA-EQ             O:1742.40 H:1743.00 L:1739.30 C:1741.60 | st_line:1728.02  atr:4.56 | → None
+  13:15  AXISBANK-EQ              O:1390.30 H:1390.80 L:1387.80 C:1388.20 | st_line:1381.24  atr:4.46 | → None
+  13:15  ICICIBANK-EQ             O:1389.90 H:1390.00 L:1387.10 C:1387.30 | st_line:1396.59  atr:3.13 | → None
+  13:15  NTPC-EQ                  O:375.80 H:376.00 L:374.85 C:375.20 | st_line:373.55  atr:1.41 | → None
+  13:15  SUNPHARMA-EQ             O:1741.60 H:1745.40 L:1740.70 C:1741.70 | st_line:1728.63  atr:4.57 | → None
+  13:30  AXISBANK-EQ              O:1387.90 H:1388.70 L:1384.50 C:1387.10 | st_line:1381.24  atr:4.44 | → None
+  13:30  ICICIBANK-EQ             O:1387.20 H:1387.20 L:1384.00 C:1385.80 | st_line:1395.03  atr:3.15 | → None
+  13:30  NTPC-EQ                  O:375.40 H:375.85 L:374.50 C:375.20 | st_line:373.55  atr:1.41 | → None
+  13:30  SUNPHARMA-EQ             O:1741.60 H:1742.60 L:1736.10 C:1736.90 | st_line:1728.63  atr:4.71 | → None
+  13:45  AXISBANK-EQ              O:1387.10 H:1389.50 L:1385.20 C:1388.90 | st_line:1381.24  atr:4.43 | → None
+  13:45  ICICIBANK-EQ             O:1385.90 H:1388.20 L:1385.70 C:1387.30 | st_line:1395.03  atr:3.10 | → None
+  13:45  NTPC-EQ                  O:375.10 H:376.60 L:374.90 C:376.35 | st_line:373.55  atr:1.43 | → None
+  13:45  SUNPHARMA-EQ             O:1737.60 H:1742.00 L:1736.20 C:1741.60 | st_line:1728.63  atr:4.79 | → None
+  14:00  AXISBANK-EQ              O:1388.90 H:1390.90 L:1387.90 C:1390.60 | st_line:1381.24  atr:4.33 | → None
+  14:00  ICICIBANK-EQ             O:1387.40 H:1391.70 L:1385.20 C:1391.40 | st_line:1395.03  atr:3.34 | → None
+  14:00  NTPC-EQ                  O:376.35 H:376.70 L:375.70 C:376.55 | st_line:373.55  atr:1.40 | → None
+  14:00  SUNPHARMA-EQ             O:1741.70 H:1741.90 L:1735.80 C:1737.80 | st_line:1728.63  atr:4.88 | → None
+  14:15  AXISBANK-EQ              O:1390.50 H:1391.20 L:1386.60 C:1386.90 | st_line:1381.24  atr:4.35 | → None
+  14:15  ICICIBANK-EQ             O:1391.60 H:1392.00 L:1385.00 C:1386.20 | st_line:1395.03  atr:3.60 | → None
+  14:15  NTPC-EQ                  O:376.55 H:377.45 L:376.30 C:376.85 | st_line:373.55  atr:1.38 | → None
+  14:15  SUNPHARMA-EQ             O:1737.90 H:1738.00 L:1735.10 C:1735.60 | st_line:1728.63  atr:4.74 | → None
+  14:30  AXISBANK-EQ              O:1387.30 H:1390.40 L:1386.80 C:1386.90 | st_line:1381.24  atr:4.29 | → None
+  14:30  ICICIBANK-EQ             O:1386.30 H:1388.10 L:1384.30 C:1384.40 | st_line:1395.03  atr:3.62 | → None
+  14:30  NTPC-EQ                  O:376.85 H:379.40 L:376.65 C:378.75 | st_line:373.55  atr:1.48 | → None
+  14:30  SUNPHARMA-EQ             O:1736.40 H:1739.40 L:1733.20 C:1733.20 | st_line:1728.63  atr:4.84 | → None
+  14:45  AXISBANK-EQ              O:1387.00 H:1391.70 L:1386.10 C:1390.00 | st_line:1381.24  atr:4.39 | → None
+  14:45  ICICIBANK-EQ             O:1384.30 H:1385.70 L:1382.30 C:1385.40 | st_line:1395.03  atr:3.60 | → None
+  14:45  NTPC-EQ                  O:378.75 H:381.80 L:378.60 C:381.80 | st_line:375.14  atr:1.60 | → None
+  14:45  SUNPHARMA-EQ             O:1733.30 H:1736.00 L:1732.70 C:1736.00 | st_line:1728.63  atr:4.73 | → None
+  15:00  AXISBANK-EQ              O:1390.00 H:1391.10 L:1386.30 C:1387.00 | st_line:1381.24  atr:4.42 | → None
+  15:00  ICICIBANK-EQ             O:1385.50 H:1386.60 L:1382.90 C:1384.70 | st_line:1395.03  atr:3.61 | → None
+  15:00  NTPC-EQ                  O:381.75 H:383.30 L:380.70 C:382.20 | st_line:376.67  atr:1.67 | → None
+  15:00  SUNPHARMA-EQ             O:1735.90 H:1737.90 L:1728.00 C:1730.40 | st_line:1728.63  atr:5.10 | → None
+  15:15  AXISBANK-EQ              O:1387.20 H:1387.90 L:1383.50 C:1386.00 | st_line:1381.24  atr:4.41 | → None
+  15:15  ICICIBANK-EQ             O:1384.80 H:1387.70 L:1383.70 C:1385.50 | st_line:1395.03  atr:3.64 | → None
+  15:15  NTPC-EQ                  O:382.20 H:385.00 L:381.95 C:384.50 | st_line:377.76  atr:1.77 | → None
+  15:15  SUNPHARMA-EQ             O:1730.40 H:1737.90 L:1729.00 C:1737.80 | st_line:1728.63  atr:5.37 | → None
+
+  ────────────────────────────────────────────────────────────────────────────────
+  END OF DAY 2026-02-24  |  Trades:1  W:0  L:1
+  Day net P&L: Rs-26.90  |  Pool: Rs100,162.45  (was Rs100,189.35)
+  ────────────────────────────────────────────────────────────────────────────────
+  Per-symbol:
+    AXISBANK-EQ          0 trade(s)  +Rs0.00
+    ICICIBANK-EQ         1 trade(s)  Rs-26.90
+    NTPC-EQ              0 trade(s)  +Rs0.00
+    SUNPHARMA-EQ         0 trade(s)  +Rs0.00
+
+================================================================================
+  DAY 6  |  2026-02-25  (Wednesday)  |  Pool: Rs100,162.45
+================================================================================
+
+  [SCREENER]  Walk-forward selection  |  Active: 3  |  Pool: Rs100,162
+  Rank  Symbol             Score     Close     ATR    Mom5d   VolSpike   Gap%       Alloc
+  ────────────────────────────────────────────────────────────────────────────────
+  1     SUNPHARMA-EQ      -44.02  Rs 1731.8   27.31   +0.86%      1.11x   0.03%  Rs  43,313
+  2     ADANIPORTS-EQ     -48.88  Rs 1555.4   41.74   -0.70%      0.47x   0.03%  Rs  32,485
+  3     AXISBANK-EQ       -58.60  Rs 1387.6   29.37   +2.24%      1.24x   0.06%  Rs  24,364
+  ────────────────────────────────────────────────────────────────────────────────
+  09:15  ADANIPORTS-EQ            O:1567.00 H:1571.80 L:1563.90 C:1566.30 | st_line:1549.54  atr:5.96 | → None
+  09:15  AXISBANK-EQ              O:1394.00 H:1395.00 L:1387.60 C:1393.90 | st_line:1381.24  atr:4.74 | → None
+  09:15  SUNPHARMA-EQ             O:1742.00 H:1749.60 L:1733.40 C:1748.20 | st_line:1728.63  atr:6.15 | → None
+  09:30  ADANIPORTS-EQ            O:1566.60 H:1566.60 L:1560.70 C:1561.60 | st_line:1549.54  atr:5.96 | → None
+  09:30  AXISBANK-EQ              O:1393.90 H:1397.40 L:1392.30 C:1394.30 | st_line:1381.24  atr:4.77 | → None
+  09:30  SUNPHARMA-EQ             O:1748.20 H:1751.90 L:1746.20 C:1746.60 | st_line:1729.02  atr:6.11 | → None
+  09:45  ADANIPORTS-EQ            O:1561.80 H:1569.50 L:1561.30 C:1568.10 | st_line:1549.54  atr:6.12 | → None
+  09:45  AXISBANK-EQ              O:1394.30 H:1394.30 L:1391.00 C:1391.50 | st_line:1381.24  atr:4.66 | → None
+  09:45  SUNPHARMA-EQ             O:1746.60 H:1750.00 L:1745.70 C:1749.40 | st_line:1729.02  atr:5.98 | → None
+  10:00  ADANIPORTS-EQ            O:1568.10 H:1583.30 L:1568.00 C:1582.00 | st_line:1554.06  atr:6.78 | → None
+  10:00  AXISBANK-EQ              O:1391.40 H:1394.50 L:1390.50 C:1392.60 | st_line:1381.24  atr:4.62 | → None
+  10:00  SUNPHARMA-EQ             O:1749.60 H:1753.40 L:1749.40 C:1752.80 | st_line:1732.81  atr:5.84 | → None
+  10:15  ADANIPORTS-EQ            O:1581.40 H:1584.00 L:1570.50 C:1572.00 | st_line:1554.06  atr:7.26 | → None
+  10:15  AXISBANK-EQ              O:1392.60 H:1396.00 L:1392.30 C:1395.90 | st_line:1381.24  atr:4.55 | → None
+  10:15  SUNPHARMA-EQ             O:1752.80 H:1758.80 L:1751.80 C:1758.60 | st_line:1736.47  atr:5.93 | → None
+  10:30  ADANIPORTS-EQ            O:1572.70 H:1574.50 L:1565.00 C:1565.90 | st_line:1554.06  atr:7.42 | → None
+  10:30  AXISBANK-EQ              O:1395.90 H:1397.00 L:1394.50 C:1396.20 | st_line:1382.74  atr:4.40 | → None
+  10:30  SUNPHARMA-EQ             O:1758.60 H:1764.00 L:1757.80 C:1762.10 | st_line:1742.10  atr:5.95 | → None
+  10:45  ADANIPORTS-EQ            O:1566.00 H:1567.30 L:1561.20 C:1562.50 | st_line:1554.06  atr:7.32 | → None
+  10:45  AXISBANK-EQ              O:1396.20 H:1396.50 L:1392.20 C:1395.70 | st_line:1382.74  atr:4.40 | → None
+  10:45  SUNPHARMA-EQ             O:1762.10 H:1763.00 L:1760.00 C:1760.40 | st_line:1743.68  atr:5.73 | → None
+  11:00  ADANIPORTS-EQ            O:1562.50 H:1566.00 L:1562.00 C:1564.90 | st_line:1554.06  atr:7.08 | → None
+  11:00  AXISBANK-EQ              O:1395.70 H:1397.00 L:1394.50 C:1396.30 | st_line:1383.30  atr:4.26 | → None
+  11:00  SUNPHARMA-EQ             O:1760.40 H:1763.40 L:1759.50 C:1760.60 | st_line:1744.24  atr:5.60 | → None
+  11:15  ADANIPORTS-EQ            O:1565.20 H:1565.50 L:1556.70 C:1558.10 | st_line:1554.06  atr:7.21 | → None
+  11:15  AXISBANK-EQ              O:1396.80 H:1399.50 L:1396.30 C:1399.00 | st_line:1385.74  atr:4.19 | → None
+  11:15  SUNPHARMA-EQ             O:1761.10 H:1762.00 L:1758.90 C:1759.80 | st_line:1744.24  atr:5.42 | → None
+  11:30  ADANIPORTS-EQ            O:1558.10 H:1558.70 L:1552.50 C:1554.50 | st_line:1554.06  atr:7.14 | → None
+  11:30  AXISBANK-EQ              O:1398.90 H:1399.20 L:1396.00 C:1396.60 | st_line:1385.74  atr:4.11 | → None
+  11:30  SUNPHARMA-EQ             O:1759.90 H:1761.50 L:1759.00 C:1760.00 | st_line:1744.72  atr:5.22 | → None
+  11:45  ADANIPORTS-EQ            O:1554.80 H:1556.80 L:1552.00 C:1553.40 | st_line:1575.89  atr:6.97 | → SHORT
+  11:45  AXISBANK-EQ              O:1396.60 H:1400.00 L:1396.60 C:1397.70 | st_line:1386.56  atr:4.06 | → None
+  11:45  SUNPHARMA-EQ             O:1760.10 H:1762.90 L:1760.00 C:1761.60 | st_line:1746.60  atr:5.05 | → None
+  ▶ ENTRY SHORT  12:00  ADANIPORTS-EQ    Price:Rs1553.80  Qty:20  SL:Rs1558.80  TP:Rs1543.80  Alloc:Rs32,485
+  12:00  ADANIPORTS-EQ    [SHORT] O:1553.80 H:1555.00 L:1553.00 C:1554.30 | st_line:1573.94  atr:6.61 | → None
+  12:00  AXISBANK-EQ              O:1397.70 H:1400.00 L:1397.00 C:1399.20 | st_line:1387.04  atr:3.99 | → None
+  12:00  SUNPHARMA-EQ             O:1761.60 H:1765.80 L:1761.60 C:1765.00 | st_line:1749.08  atr:4.99 | → None
+  12:15  ADANIPORTS-EQ    [SHORT] O:1554.30 H:1557.90 L:1552.50 C:1553.30 | st_line:1573.94  atr:6.53 | → None
+  12:15  AXISBANK-EQ              O:1399.20 H:1399.20 L:1397.20 C:1397.70 | st_line:1387.28  atr:3.85 | → None
+  12:15  SUNPHARMA-EQ             O:1765.00 H:1770.40 L:1764.00 C:1767.00 | st_line:1752.12  atr:5.09 | → None
+  12:30  ADANIPORTS-EQ    [SHORT] O:1553.20 H:1553.40 L:1546.00 C:1550.00 | st_line:1569.53  atr:6.59 | → None
+  12:30  AXISBANK-EQ              O:1397.70 H:1397.70 L:1393.50 C:1395.60 | st_line:1387.28  atr:3.87 | → None
+  12:30  SUNPHARMA-EQ             O:1767.00 H:1768.80 L:1762.00 C:1763.60 | st_line:1752.12  atr:5.21 | → None
+  12:45  ADANIPORTS-EQ    [SHORT] O:1550.00 H:1550.00 L:1545.00 C:1545.30 | st_line:1566.85  atr:6.48 | → None
+  12:45  AXISBANK-EQ              O:1395.70 H:1396.50 L:1393.40 C:1395.20 | st_line:1387.28  atr:3.82 | → None
+  12:45  SUNPHARMA-EQ             O:1763.60 H:1765.00 L:1761.00 C:1762.60 | st_line:1752.12  atr:5.13 | → None
+  ◀ EXIT  TP          13:00  ADANIPORTS-EQ    Price:Rs1543.80  Qty:20  Gross:+Rs200.00  Charges:Rs58.15  Net:+Rs141.85  Pool:Rs100,304.30
+  13:00  AXISBANK-EQ              O:1395.20 H:1396.10 L:1393.00 C:1394.20 | st_line:1387.28  atr:3.76 | → None
+  13:00  SUNPHARMA-EQ             O:1762.60 H:1763.00 L:1760.00 C:1761.40 | st_line:1752.12  atr:4.97 | → None
+  13:15  ADANIPORTS-EQ            O:1541.30 H:1542.50 L:1535.80 C:1538.40 | st_line:1558.88  atr:6.57 | → None
+  13:15  AXISBANK-EQ              O:1394.20 H:1397.90 L:1393.40 C:1397.20 | st_line:1387.28  atr:3.82 | → None
+  13:15  SUNPHARMA-EQ             O:1761.50 H:1761.90 L:1758.00 C:1760.00 | st_line:1752.12  atr:4.90 | → None
+  13:30  ADANIPORTS-EQ            O:1538.40 H:1539.80 L:1533.20 C:1534.90 | st_line:1556.24  atr:6.57 | → None
+  13:30  AXISBANK-EQ              O:1397.20 H:1400.00 L:1396.20 C:1398.60 | st_line:1387.28  atr:3.82 | → None
+  13:30  SUNPHARMA-EQ             O:1760.00 H:1760.10 L:1757.90 C:1758.00 | st_line:1752.12  atr:4.70 | → None
+  13:45  ADANIPORTS-EQ            O:1534.90 H:1535.50 L:1530.50 C:1531.00 | st_line:1552.27  atr:6.46 | → None
+  13:45  AXISBANK-EQ              O:1399.00 H:1400.80 L:1397.30 C:1400.00 | st_line:1388.05  atr:3.79 | → None
+  13:45  SUNPHARMA-EQ             O:1758.30 H:1760.60 L:1757.30 C:1759.00 | st_line:1752.12  atr:4.60 | → None
+  14:00  ADANIPORTS-EQ            O:1531.00 H:1531.50 L:1525.50 C:1528.30 | st_line:1547.64  atr:6.42 | → None
+  14:00  AXISBANK-EQ              O:1400.00 H:1400.00 L:1394.20 C:1398.30 | st_line:1388.05  atr:3.94 | → None
+  14:00  SUNPHARMA-EQ             O:1759.00 H:1759.50 L:1756.70 C:1759.00 | st_line:1752.12  atr:4.48 | → None
+  14:15  ADANIPORTS-EQ            O:1528.90 H:1530.90 L:1527.50 C:1528.40 | st_line:1547.45  atr:6.21 | → None
+  14:15  AXISBANK-EQ              O:1398.30 H:1399.10 L:1396.60 C:1398.90 | st_line:1388.05  atr:3.83 | → None
+  14:15  SUNPHARMA-EQ             O:1759.00 H:1761.80 L:1758.20 C:1760.00 | st_line:1752.12  atr:4.41 | → None
+  14:30  ADANIPORTS-EQ            O:1528.40 H:1530.10 L:1519.40 C:1521.10 | st_line:1544.38  atr:6.53 | → None
+  14:30  AXISBANK-EQ              O:1399.00 H:1401.90 L:1398.50 C:1401.90 | st_line:1389.07  atr:3.80 | → None
+  14:30  SUNPHARMA-EQ             O:1760.00 H:1762.40 L:1759.20 C:1761.10 | st_line:1752.12  atr:4.33 | → None
+  14:45  ADANIPORTS-EQ            O:1521.10 H:1524.70 L:1518.50 C:1523.40 | st_line:1541.13  atr:6.51 | → None
+  14:45  AXISBANK-EQ              O:1401.90 H:1402.00 L:1398.10 C:1399.90 | st_line:1389.07  atr:3.81 | → None
+  14:45  SUNPHARMA-EQ             O:1761.10 H:1762.50 L:1758.30 C:1762.00 | st_line:1752.12  atr:4.32 | → None
+  15:00  ADANIPORTS-EQ            O:1523.80 H:1529.90 L:1523.80 C:1528.60 | st_line:1541.13  atr:6.50 | → None
+  15:00  AXISBANK-EQ              O:1399.90 H:1404.30 L:1399.90 C:1403.60 | st_line:1390.72  atr:3.85 | → None
+  15:00  SUNPHARMA-EQ             O:1762.40 H:1766.90 L:1762.00 C:1764.70 | st_line:1752.12  atr:4.36 | → None
+  15:15  ADANIPORTS-EQ            O:1528.60 H:1530.00 L:1526.00 C:1529.00 | st_line:1541.13  atr:6.33 | → None
+  15:15  AXISBANK-EQ              O:1403.50 H:1403.80 L:1400.00 C:1402.50 | st_line:1390.72  atr:3.85 | → None
+  15:15  SUNPHARMA-EQ             O:1763.70 H:1765.00 L:1762.00 C:1763.30 | st_line:1752.12  atr:4.26 | → None
+
+  ────────────────────────────────────────────────────────────────────────────────
+  END OF DAY 2026-02-25  |  Trades:1  W:1  L:0
+  Day net P&L: +Rs141.85  |  Pool: Rs100,304.30  (was Rs100,162.45)
+  ────────────────────────────────────────────────────────────────────────────────
+  Per-symbol:
+    ADANIPORTS-EQ        1 trade(s)  +Rs141.85
+    AXISBANK-EQ          0 trade(s)  +Rs0.00
+    SUNPHARMA-EQ         0 trade(s)  +Rs0.00
+
+================================================================================
+  DAY 7  |  2026-02-26  (Thursday)  |  Pool: Rs100,304.30
+================================================================================
+
+  [SCREENER]  Walk-forward selection  |  Active: 1  |  Pool: Rs100,304
+  Rank  Symbol             Score     Close     ATR    Mom5d   VolSpike   Gap%       Alloc
+  ────────────────────────────────────────────────────────────────────────────────
+  1     SUNPHARMA-EQ      -49.80  Rs 1764.2   28.12   +2.31%      0.53x   1.87%  Rs 100,304
+  ────────────────────────────────────────────────────────────────────────────────
+  09:15  SUNPHARMA-EQ             O:1764.20 H:1768.90 L:1760.30 C:1764.10 | st_line:1752.12  atr:4.57 | → None
+  09:30  SUNPHARMA-EQ             O:1764.60 H:1775.90 L:1763.30 C:1775.30 | st_line:1753.65  atr:5.15 | → None
+  09:45  SUNPHARMA-EQ             O:1775.30 H:1789.00 L:1775.30 C:1789.00 | st_line:1763.68  atr:5.76 | → None
+  10:00  SUNPHARMA-EQ             O:1788.40 H:1789.90 L:1785.90 C:1788.00 | st_line:1770.08  atr:5.63 | → None
+  10:15  SUNPHARMA-EQ             O:1788.70 H:1788.80 L:1773.60 C:1776.70 | st_line:1770.08  atr:6.31 | → None
+  10:30  SUNPHARMA-EQ             O:1776.70 H:1780.70 L:1775.10 C:1780.50 | st_line:1770.08  atr:6.26 | → None
+  10:45  SUNPHARMA-EQ             O:1780.40 H:1781.40 L:1775.90 C:1777.30 | st_line:1770.08  atr:6.21 | → None
+  11:00  SUNPHARMA-EQ             O:1777.00 H:1780.80 L:1776.00 C:1780.00 | st_line:1770.08  atr:6.11 | → None
+  11:15  SUNPHARMA-EQ             O:1779.90 H:1783.80 L:1776.80 C:1781.00 | st_line:1770.08  atr:6.17 | → None
+  11:30  SUNPHARMA-EQ             O:1781.00 H:1781.80 L:1777.70 C:1779.90 | st_line:1770.08  atr:6.02 | → None
+  11:45  SUNPHARMA-EQ             O:1779.90 H:1780.40 L:1777.00 C:1779.00 | st_line:1770.08  atr:5.84 | → None
+  12:00  SUNPHARMA-EQ             O:1779.00 H:1780.00 L:1776.50 C:1777.80 | st_line:1770.08  atr:5.67 | → None
+  12:15  SUNPHARMA-EQ             O:1778.40 H:1780.20 L:1773.60 C:1776.00 | st_line:1770.08  atr:5.74 | → None
+  12:30  SUNPHARMA-EQ             O:1776.00 H:1776.50 L:1772.20 C:1774.10 | st_line:1770.08  atr:5.63 | → None
+  12:45  SUNPHARMA-EQ             O:1774.10 H:1776.50 L:1772.00 C:1774.40 | st_line:1770.08  atr:5.55 | → None
+  13:00  SUNPHARMA-EQ             O:1774.10 H:1775.80 L:1772.50 C:1775.40 | st_line:1770.08  atr:5.39 | → None
+  13:15  SUNPHARMA-EQ             O:1775.30 H:1778.00 L:1771.20 C:1776.60 | st_line:1770.08  atr:5.49 | → None
+  13:30  SUNPHARMA-EQ             O:1777.00 H:1779.90 L:1775.00 C:1775.70 | st_line:1770.08  atr:5.45 | → None
+  13:45  SUNPHARMA-EQ             O:1775.90 H:1776.00 L:1772.20 C:1775.40 | st_line:1770.08  atr:5.33 | → None
+  14:00  SUNPHARMA-EQ             O:1775.40 H:1777.00 L:1774.50 C:1776.90 | st_line:1770.08  atr:5.13 | → None
+  14:15  SUNPHARMA-EQ             O:1777.10 H:1780.70 L:1775.40 C:1780.70 | st_line:1770.08  atr:5.14 | → None
+  14:30  SUNPHARMA-EQ             O:1780.70 H:1783.00 L:1777.30 C:1783.00 | st_line:1770.08  atr:5.18 | → None
+  14:45  SUNPHARMA-EQ             O:1783.00 H:1783.50 L:1779.10 C:1780.20 | st_line:1770.08  atr:5.13 | → None
+  15:00  SUNPHARMA-EQ             O:1780.00 H:1783.00 L:1779.80 C:1780.40 | st_line:1770.08  atr:4.99 | → None
+  15:15  SUNPHARMA-EQ             O:1780.50 H:1792.20 L:1780.40 C:1787.50 | st_line:1770.08  atr:5.47 | → None
+
+  ────────────────────────────────────────────────────────────────────────────────
+  END OF DAY 2026-02-26  |  Trades:0  W:0  L:0
+  Day net P&L: +Rs0.00  |  Pool: Rs100,304.30  (was Rs100,304.30)
+  ────────────────────────────────────────────────────────────────────────────────
+  Per-symbol:
+    SUNPHARMA-EQ         0 trade(s)  +Rs0.00
+
+================================================================================
+  DAY 8  |  2026-02-27  (Friday)  |  Pool: Rs100,304.30
+================================================================================
+
+  [SCREENER]  Walk-forward selection  |  Active: 1  |  Pool: Rs100,304
+  Rank  Symbol             Score     Close     ATR    Mom5d   VolSpike   Gap%       Alloc
+  ────────────────────────────────────────────────────────────────────────────────
+  1     SUNPHARMA-EQ      -55.03  Rs 1785.7   28.30   +4.22%      0.95x   1.22%  Rs 100,304
+  ────────────────────────────────────────────────────────────────────────────────
+  09:15  SUNPHARMA-EQ             O:1779.00 H:1788.10 L:1770.50 C:1783.20 | st_line:1770.08  atr:6.34 | → None
+  09:30  SUNPHARMA-EQ             O:1783.20 H:1784.70 L:1777.20 C:1777.30 | st_line:1770.08  atr:6.42 | → None
+  09:45  SUNPHARMA-EQ             O:1777.30 H:1777.40 L:1771.80 C:1773.10 | st_line:1770.08  atr:6.36 | → None
+  10:00  SUNPHARMA-EQ             O:1772.90 H:1774.30 L:1770.70 C:1772.10 | st_line:1770.08  atr:6.17 | → None
+  10:15  SUNPHARMA-EQ             O:1772.10 H:1775.40 L:1767.00 C:1774.40 | st_line:1770.08  atr:6.33 | → None
+  10:30  SUNPHARMA-EQ             O:1774.40 H:1777.50 L:1774.20 C:1775.40 | st_line:1770.08  atr:6.11 | → None
+  10:45  SUNPHARMA-EQ             O:1775.40 H:1776.20 L:1772.50 C:1774.00 | st_line:1770.08  atr:5.94 | → None
+  11:00  SUNPHARMA-EQ             O:1774.00 H:1775.00 L:1770.80 C:1772.30 | st_line:1770.08  atr:5.81 | → None
+  11:15  SUNPHARMA-EQ             O:1772.30 H:1773.60 L:1770.80 C:1773.20 | st_line:1770.08  atr:5.60 | → None
+  11:30  SUNPHARMA-EQ             O:1773.20 H:1773.20 L:1767.30 C:1769.40 | st_line:1786.91  atr:5.62 | → SHORT
+  ▶ ENTRY SHORT  11:45  SUNPHARMA-EQ     Price:Rs1769.40  Qty:56  SL:Rs1774.40  TP:Rs1759.40  Alloc:Rs100,304
+  11:45  SUNPHARMA-EQ     [SHORT] O:1769.40 H:1772.00 L:1767.00 C:1767.90 | st_line:1786.00  atr:5.58 | → None
+  12:00  SUNPHARMA-EQ     [SHORT] O:1767.90 H:1767.90 L:1761.50 C:1762.10 | st_line:1781.47  atr:5.63 | → None
+  ◀ EXIT  TP          12:15  SUNPHARMA-EQ     Price:Rs1759.40  Qty:56  Gross:+Rs560.00  Charges:Rs82.12  Net:+Rs477.88  Pool:Rs100,782.18
+  12:30  SUNPHARMA-EQ             O:1763.00 H:1764.20 L:1760.30 C:1762.90 | st_line:1778.61  atr:5.66 | → None
+  12:45  SUNPHARMA-EQ             O:1763.00 H:1765.80 L:1762.50 C:1764.80 | st_line:1778.61  atr:5.49 | → None
+  13:00  SUNPHARMA-EQ             O:1764.80 H:1767.30 L:1763.30 C:1765.70 | st_line:1778.61  atr:5.39 | → None
+  13:15  SUNPHARMA-EQ             O:1765.70 H:1766.60 L:1760.60 C:1761.90 | st_line:1778.61  atr:5.43 | → None
+  13:30  SUNPHARMA-EQ             O:1761.80 H:1763.80 L:1759.50 C:1759.50 | st_line:1777.33  atr:5.35 | → None
+  13:45  SUNPHARMA-EQ             O:1759.80 H:1763.50 L:1758.40 C:1762.70 | st_line:1776.59  atr:5.33 | → None
+  14:00  SUNPHARMA-EQ             O:1762.70 H:1763.50 L:1760.50 C:1761.40 | st_line:1776.59  atr:5.16 | → None
+  14:15  SUNPHARMA-EQ             O:1761.20 H:1761.90 L:1758.30 C:1759.10 | st_line:1774.66  atr:5.05 | → None
+  14:30  SUNPHARMA-EQ             O:1759.00 H:1760.40 L:1753.40 C:1754.10 | st_line:1772.11  atr:5.19 | → None
+  14:45  SUNPHARMA-EQ             O:1754.10 H:1759.80 L:1752.60 C:1758.50 | st_line:1772.04  atr:5.34 | → None
+  15:00  SUNPHARMA-EQ             O:1758.50 H:1759.00 L:1731.60 C:1733.50 | st_line:1767.78  atr:6.91 | → None
+  15:15  SUNPHARMA-EQ             O:1733.70 H:1749.00 L:1730.90 C:1742.90 | st_line:1765.61  atr:7.71 | → None
+
+  ────────────────────────────────────────────────────────────────────────────────
+  END OF DAY 2026-02-27  |  Trades:1  W:1  L:0
+  Day net P&L: +Rs477.88  |  Pool: Rs100,782.18  (was Rs100,304.30)
+  ────────────────────────────────────────────────────────────────────────────────
+  Per-symbol:
+    SUNPHARMA-EQ         1 trade(s)  +Rs477.88
+
+================================================================================
+  DAY 9  |  2026-04-24  (Friday)  |  Pool: Rs100,782.18
+================================================================================
+
+  [SCREENER]  Walk-forward selection  |  Active: 2  |  Pool: Rs100,782
+  Rank  Symbol             Score     Close     ATR    Mom5d   VolSpike   Gap%       Alloc
+  ────────────────────────────────────────────────────────────────────────────────
+  1     ONGC-EQ           -48.55  Rs  286.2    6.83   +1.24%      0.61x   0.92%  Rs  57,590
+  2     TATASTEEL-EQ      -52.31  Rs  210.9    5.31   +0.10%      0.63x   1.00%  Rs  43,192
+  ────────────────────────────────────────────────────────────────────────────────
+  09:15  ONGC-EQ                  O:288.80 H:288.80 L:286.80 C:287.95 | st_line:284.97  atr:0.93 | → None
+  09:15  TATASTEEL-EQ             O:211.00 H:212.00 L:210.36 C:210.72 | st_line:212.50  atr:0.71 | → None
+  09:30  ONGC-EQ                  O:287.95 H:288.30 L:287.15 C:287.70 | st_line:284.97  atr:0.94 | → None
+  09:30  TATASTEEL-EQ             O:210.75 H:210.93 L:209.26 C:209.63 | st_line:212.50  atr:0.78 | → None
+  09:45  ONGC-EQ                  O:287.60 H:288.40 L:286.50 C:286.90 | st_line:284.97  atr:1.01 | → None
+  09:45  TATASTEEL-EQ             O:209.60 H:209.75 L:209.10 C:209.16 | st_line:211.84  atr:0.77 | → None
+  10:00  ONGC-EQ                  O:286.90 H:287.05 L:286.30 C:286.45 | st_line:284.97  atr:0.99 | → None
+  10:00  TATASTEEL-EQ             O:209.19 H:209.67 L:209.16 C:209.56 | st_line:211.74  atr:0.75 | → None
+  10:15  ONGC-EQ                  O:286.40 H:286.60 L:285.55 C:285.95 | st_line:284.97  atr:1.00 | → None
+  10:15  TATASTEEL-EQ             O:209.54 H:209.60 L:208.88 C:209.20 | st_line:211.55  atr:0.75 | → None
+  10:30  ONGC-EQ                  O:285.95 H:286.55 L:285.85 C:286.35 | st_line:284.97  atr:0.98 | → None
+  10:30  TATASTEEL-EQ             O:209.20 H:209.23 L:208.75 C:208.78 | st_line:211.21  atr:0.73 | → None
+  10:45  ONGC-EQ                  O:286.25 H:286.50 L:285.75 C:286.05 | st_line:284.97  atr:0.96 | → None
+  10:45  TATASTEEL-EQ             O:208.78 H:209.15 L:208.60 C:208.87 | st_line:211.04  atr:0.71 | → None
+  11:00  ONGC-EQ                  O:286.10 H:287.00 L:286.05 C:286.85 | st_line:284.97  atr:0.96 | → None
+  11:00  TATASTEEL-EQ             O:208.89 H:209.90 L:208.71 C:209.55 | st_line:211.04  atr:0.75 | → None
+  11:15  ONGC-EQ                  O:286.85 H:287.30 L:286.60 C:286.80 | st_line:284.97  atr:0.94 | → None
+  11:15  TATASTEEL-EQ             O:209.64 H:210.20 L:209.41 C:210.03 | st_line:211.04  atr:0.75 | → None
+  11:30  ONGC-EQ                  O:286.80 H:286.95 L:285.75 C:286.40 | st_line:284.97  atr:0.96 | → None
+  11:30  TATASTEEL-EQ             O:210.00 H:210.57 L:209.91 C:210.13 | st_line:211.04  atr:0.75 | → None
+  11:45  ONGC-EQ                  O:286.40 H:286.40 L:285.75 C:285.90 | st_line:284.97  atr:0.94 | → None
+  11:45  TATASTEEL-EQ             O:210.13 H:210.24 L:209.13 C:209.21 | st_line:211.04  atr:0.77 | → None
+  12:00  ONGC-EQ                  O:285.90 H:286.00 L:285.10 C:286.00 | st_line:284.97  atr:0.93 | → None
+  12:00  TATASTEEL-EQ             O:209.24 H:210.25 L:209.13 C:210.23 | st_line:211.04  atr:0.80 | → None
+  12:15  ONGC-EQ                  O:286.00 H:286.00 L:284.65 C:284.90 | st_line:288.25  atr:0.96 | → SHORT
+  12:15  TATASTEEL-EQ             O:210.18 H:210.95 L:209.83 C:210.23 | st_line:211.04  atr:0.82 | → None
+  ▶ ENTRY SHORT  12:30  ONGC-EQ          Price:Rs284.90  Qty:202  SL:Rs289.90  TP:Rs274.90  Alloc:Rs57,590
+  12:30  ONGC-EQ          [SHORT] O:284.90 H:285.60 L:284.65 C:285.45 | st_line:288.04  atr:0.96 | → None
+  12:30  TATASTEEL-EQ             O:210.29 H:210.60 L:210.16 C:210.19 | st_line:211.04  atr:0.79 | → None
+  12:45  ONGC-EQ          [SHORT] O:285.50 H:285.85 L:285.35 C:285.55 | st_line:288.04  atr:0.93 | → None
+  12:45  TATASTEEL-EQ             O:210.19 H:210.84 L:210.15 C:210.77 | st_line:211.04  atr:0.78 | → None
+  13:00  ONGC-EQ          [SHORT] O:285.55 H:285.70 L:285.20 C:285.65 | st_line:288.04  atr:0.90 | → None
+  13:00  TATASTEEL-EQ             O:210.75 H:210.85 L:210.19 C:210.33 | st_line:211.04  atr:0.78 | → None
+  13:15  ONGC-EQ          [SHORT] O:285.65 H:285.75 L:285.25 C:285.70 | st_line:288.03  atr:0.87 | → None
+  13:15  TATASTEEL-EQ             O:210.33 H:210.42 L:209.83 C:210.00 | st_line:211.04  atr:0.76 | → None
+  13:30  ONGC-EQ          [SHORT] O:285.70 H:285.70 L:283.95 C:284.75 | st_line:287.63  atr:0.93 | → None
+  13:30  TATASTEEL-EQ             O:210.09 H:210.21 L:209.45 C:209.82 | st_line:211.04  atr:0.76 | → None
+  13:45  ONGC-EQ          [SHORT] O:284.75 H:285.00 L:284.65 C:284.95 | st_line:287.45  atr:0.89 | → None
+  13:45  TATASTEEL-EQ             O:209.82 H:210.35 L:209.76 C:209.89 | st_line:211.04  atr:0.75 | → None
+  14:00  ONGC-EQ          [SHORT] O:284.95 H:285.00 L:283.90 C:284.70 | st_line:287.15  atr:0.91 | → None
+  14:00  TATASTEEL-EQ             O:209.91 H:210.15 L:209.49 C:210.15 | st_line:211.04  atr:0.74 | → None
+  14:15  ONGC-EQ          [SHORT] O:284.70 H:285.30 L:284.60 C:285.20 | st_line:287.15  atr:0.89 | → None
+  14:15  TATASTEEL-EQ             O:210.15 H:210.27 L:209.78 C:210.00 | st_line:211.04  atr:0.73 | → None
+  14:30  ONGC-EQ          [SHORT] O:285.30 H:285.70 L:285.20 C:285.55 | st_line:287.15  atr:0.86 | → None
+  14:30  TATASTEEL-EQ             O:209.99 H:210.67 L:209.90 C:210.50 | st_line:211.04  atr:0.73 | → None
+  14:45  ONGC-EQ          [SHORT] O:285.45 H:285.85 L:285.00 C:285.15 | st_line:287.15  atr:0.86 | → None
+  14:45  TATASTEEL-EQ             O:210.50 H:210.63 L:209.85 C:210.34 | st_line:211.04  atr:0.73 | → None
+  15:00  ONGC-EQ          [SHORT] O:285.15 H:285.15 L:284.35 C:284.50 | st_line:287.15  atr:0.86 | → None
+  15:00  TATASTEEL-EQ             O:210.32 H:210.32 L:209.90 C:210.00 | st_line:211.04  atr:0.71 | → None
+  ◀ EXIT  SQUAREOFF   15:15  ONGC-EQ          Price:Rs284.70  Qty:202  Gross:Rs40.40  Charges:Rs67.50  Net:Rs-27.10  Pool:Rs100,755.08
+  15:15  TATASTEEL-EQ             O:210.00 H:210.30 L:209.88 C:210.00 | st_line:211.04  atr:0.69 | → None
+
+  ────────────────────────────────────────────────────────────────────────────────
+  END OF DAY 2026-04-24  |  Trades:1  W:0  L:1
+  Day net P&L: Rs-27.10  |  Pool: Rs100,755.08  (was Rs100,782.18)
+  ────────────────────────────────────────────────────────────────────────────────
+  Per-symbol:
+    ONGC-EQ              1 trade(s)  Rs-27.10
+    TATASTEEL-EQ         0 trade(s)  +Rs0.00
+
+================================================================================
+  DAY 10  |  2026-04-27  (Monday)  |  Pool: Rs100,755.08
+================================================================================
+
+  [SCREENER]  Walk-forward selection  |  Active: 1  |  Pool: Rs100,755
+  Rank  Symbol             Score     Close     ATR    Mom5d   VolSpike   Gap%       Alloc
+  ────────────────────────────────────────────────────────────────────────────────
+  1     TATASTEEL-EQ      -54.05  Rs  210.1    5.12   -0.97%      0.76x   0.40%  Rs 100,755
+  ────────────────────────────────────────────────────────────────────────────────
+  09:15  TATASTEEL-EQ             O:211.00 H:214.00 L:210.93 C:213.96 | st_line:209.45  atr:0.93 | → BUY
+  ▶ ENTRY LONG   09:30  TATASTEEL-EQ     Price:Rs213.96  Qty:470  SL:Rs208.96  TP:Rs223.96  Alloc:Rs100,755
+  09:30  TATASTEEL-EQ     [LONG]  O:213.96 H:214.20 L:213.10 C:213.52 | st_line:210.61  atr:0.94 | → None
+  09:45  TATASTEEL-EQ     [LONG]  O:213.48 H:214.05 L:213.48 C:213.79 | st_line:210.86  atr:0.91 | → None
+  10:00  TATASTEEL-EQ     [LONG]  O:213.79 H:213.88 L:213.50 C:213.55 | st_line:210.96  atr:0.88 | → None
+  10:15  TATASTEEL-EQ     [LONG]  O:213.55 H:214.45 L:213.52 C:214.40 | st_line:211.25  atr:0.88 | → None
+  10:30  TATASTEEL-EQ     [LONG]  O:214.40 H:214.75 L:213.55 C:214.69 | st_line:211.33  atr:0.90 | → None
+  10:45  TATASTEEL-EQ     [LONG]  O:214.75 H:214.90 L:214.14 C:214.32 | st_line:211.75  atr:0.89 | → None
+  11:00  TATASTEEL-EQ     [LONG]  O:214.33 H:214.78 L:214.15 C:214.50 | st_line:211.78  atr:0.87 | → None
+  11:15  TATASTEEL-EQ     [LONG]  O:214.50 H:215.00 L:214.43 C:214.65 | st_line:212.13  atr:0.85 | → None
+  11:30  TATASTEEL-EQ     [LONG]  O:214.65 H:214.67 L:212.81 C:212.89 | st_line:212.13  atr:0.92 | → None
+  11:45  TATASTEEL-EQ     [LONG]  O:212.86 H:213.55 L:212.57 C:213.50 | st_line:212.13  atr:0.93 | → None
+  12:00  TATASTEEL-EQ     [LONG]  O:213.50 H:213.50 L:212.90 C:213.36 | st_line:212.13  atr:0.90 | → None
+  12:15  TATASTEEL-EQ     [LONG]  O:213.36 H:214.00 L:213.30 C:213.78 | st_line:212.13  atr:0.89 | → None
+  12:30  TATASTEEL-EQ     [LONG]  O:213.82 H:214.10 L:213.67 C:214.03 | st_line:212.13  atr:0.86 | → None
+  12:45  TATASTEEL-EQ     [LONG]  O:214.03 H:214.10 L:213.75 C:213.90 | st_line:212.13  atr:0.82 | → None
+  13:00  TATASTEEL-EQ     [LONG]  O:213.90 H:214.05 L:213.80 C:214.00 | st_line:212.13  atr:0.78 | → None
+  13:15  TATASTEEL-EQ     [LONG]  O:214.00 H:214.19 L:213.85 C:214.15 | st_line:212.13  atr:0.75 | → None
+  13:30  TATASTEEL-EQ     [LONG]  O:214.17 H:214.35 L:213.95 C:214.25 | st_line:212.13  atr:0.72 | → None
+  13:45  TATASTEEL-EQ     [LONG]  O:214.25 H:214.30 L:213.47 C:213.90 | st_line:212.13  atr:0.73 | → None
+  14:00  TATASTEEL-EQ     [LONG]  O:213.90 H:214.18 L:213.85 C:214.00 | st_line:212.13  atr:0.70 | → None
+  14:15  TATASTEEL-EQ     [LONG]  O:214.01 H:214.10 L:213.88 C:213.95 | st_line:212.15  atr:0.67 | → None
+  14:30  TATASTEEL-EQ     [LONG]  O:213.95 H:214.10 L:213.33 C:213.96 | st_line:212.15  atr:0.68 | → None
+  14:45  TATASTEEL-EQ     [LONG]  O:213.96 H:214.08 L:213.78 C:213.96 | st_line:212.15  atr:0.65 | → None
+  15:00  TATASTEEL-EQ     [LONG]  O:213.96 H:214.04 L:213.00 C:213.19 | st_line:212.15  atr:0.68 | → None
+  ◀ EXIT  SQUAREOFF   15:15  TATASTEEL-EQ     Price:Rs213.28  Qty:470  Gross:Rs-319.60  Charges:Rs82.57  Net:Rs-402.17  Pool:Rs100,352.91
+
+  ────────────────────────────────────────────────────────────────────────────────
+  END OF DAY 2026-04-27  |  Trades:1  W:0  L:1
+  Day net P&L: Rs-402.17  |  Pool: Rs100,352.91  (was Rs100,755.08)
+  ────────────────────────────────────────────────────────────────────────────────
+  Per-symbol:
+    TATASTEEL-EQ         1 trade(s)  Rs-402.17
+
+================================================================================
+  DAY 11  |  2026-04-28  (Tuesday)  |  Pool: Rs100,352.91
+================================================================================
+
+  [SCREENER]  Walk-forward selection  |  Active: 2  |  Pool: Rs100,353
+  Rank  Symbol             Score     Close     ATR    Mom5d   VolSpike   Gap%       Alloc
+  ────────────────────────────────────────────────────────────────────────────────
+  1     ONGC-EQ           -45.92  Rs  285.9    6.23   +0.90%      0.31x   0.39%  Rs  57,345
+  2     TATASTEEL-EQ      -55.23  Rs  213.3    5.12   +0.73%      1.13x   1.52%  Rs  43,008
+  ────────────────────────────────────────────────────────────────────────────────
+  09:15  ONGC-EQ                  O:286.25 H:291.60 L:286.00 C:289.70 | st_line:285.39  atr:1.02 | → BUY
+  09:15  TATASTEEL-EQ             O:213.20 H:216.10 L:212.20 C:215.31 | st_line:212.15  atr:0.91 | → None
+  ▶ ENTRY LONG   09:30  ONGC-EQ          Price:Rs289.80  Qty:197  SL:Rs284.80  TP:Rs299.80  Alloc:Rs57,345
+  09:30  ONGC-EQ          [LONG]  O:289.80 H:291.90 L:289.60 C:291.60 | st_line:286.99  atr:1.11 | → None
+  09:30  TATASTEEL-EQ             O:215.35 H:216.97 L:215.18 C:216.96 | st_line:212.90  atr:0.97 | → None
+  09:45  ONGC-EQ          [LONG]  O:291.60 H:293.80 L:291.45 C:292.85 | st_line:288.54  atr:1.20 | → None
+  09:45  TATASTEEL-EQ             O:216.97 H:217.70 L:216.70 C:216.88 | st_line:214.05  atr:0.98 | → None
+  10:00  ONGC-EQ          [LONG]  O:292.85 H:294.30 L:291.35 C:293.90 | st_line:288.54  atr:1.32 | → None
+  10:00  TATASTEEL-EQ             O:216.88 H:217.79 L:216.40 C:217.78 | st_line:214.05  atr:1.01 | → None
+  ◀ EXIT  TSL         10:15  ONGC-EQ          Price:Rs293.19  Qty:197  Gross:+Rs667.64  Charges:Rs67.53  Net:+Rs600.11  Pool:Rs100,953.02
+  10:15  TATASTEEL-EQ             O:217.78 H:218.24 L:217.31 C:217.50 | st_line:214.57  atr:1.00 | → None
+  10:30  ONGC-EQ                  O:293.35 H:294.35 L:292.80 C:293.50 | st_line:289.34  atr:1.37 | → None
+  10:30  TATASTEEL-EQ             O:217.50 H:217.70 L:216.25 C:216.41 | st_line:214.57  atr:1.03 | → None
+  10:45  ONGC-EQ                  O:293.50 H:293.85 L:293.30 C:293.45 | st_line:289.34  atr:1.31 | → None
+  10:45  TATASTEEL-EQ             O:216.48 H:216.85 L:216.34 C:216.81 | st_line:214.57  atr:0.99 | → None
+  11:00  ONGC-EQ                  O:293.55 H:295.90 L:293.25 C:295.75 | st_line:289.88  atr:1.40 | → None
+  11:00  TATASTEEL-EQ             O:216.85 H:216.92 L:216.08 C:216.50 | st_line:214.57  atr:0.98 | → None
+  11:15  ONGC-EQ                  O:295.75 H:295.80 L:294.55 C:295.55 | st_line:290.57  atr:1.39 | → None
+  11:15  TATASTEEL-EQ             O:216.50 H:217.00 L:216.30 C:216.52 | st_line:214.57  atr:0.96 | → None
+  11:30  ONGC-EQ                  O:295.65 H:296.25 L:295.20 C:295.60 | st_line:291.27  atr:1.37 | → None
+  11:30  TATASTEEL-EQ             O:216.53 H:216.97 L:216.23 C:216.34 | st_line:214.57  atr:0.95 | → None
+  11:45  ONGC-EQ                  O:295.65 H:295.90 L:295.40 C:295.60 | st_line:291.49  atr:1.31 | → None
+  11:45  TATASTEEL-EQ             O:216.39 H:216.70 L:216.10 C:216.43 | st_line:214.57  atr:0.92 | → None
+  12:00  ONGC-EQ                  O:295.65 H:296.60 L:295.05 C:296.50 | st_line:291.62  atr:1.32 | → None
+  12:00  TATASTEEL-EQ             O:216.40 H:216.58 L:215.95 C:216.34 | st_line:214.57  atr:0.90 | → None
+  12:15  ONGC-EQ                  O:296.50 H:297.80 L:296.40 C:297.70 | st_line:292.89  atr:1.33 | → None
+  12:15  TATASTEEL-EQ             O:216.34 H:216.58 L:215.80 C:216.08 | st_line:214.57  atr:0.89 | → None
+  12:30  ONGC-EQ                  O:297.70 H:297.85 L:296.50 C:297.45 | st_line:292.98  atr:1.33 | → None
+  12:30  TATASTEEL-EQ             O:216.16 H:216.64 L:215.90 C:216.54 | st_line:214.57  atr:0.88 | → None
+  12:45  ONGC-EQ                  O:297.45 H:297.70 L:296.80 C:297.30 | st_line:293.21  atr:1.30 | → None
+  12:45  TATASTEEL-EQ             O:216.54 H:216.63 L:215.81 C:215.85 | st_line:214.57  atr:0.88 | → None
+  13:00  ONGC-EQ                  O:297.30 H:297.70 L:297.00 C:297.15 | st_line:293.50  atr:1.26 | → None
+  13:00  TATASTEEL-EQ             O:215.86 H:216.00 L:215.56 C:215.74 | st_line:214.57  atr:0.85 | → None
+  13:15  ONGC-EQ                  O:297.20 H:298.50 L:297.00 C:298.40 | st_line:293.84  atr:1.27 | → None
+  13:15  TATASTEEL-EQ             O:215.74 H:215.89 L:215.49 C:215.55 | st_line:214.57  atr:0.81 | → None
+  13:30  ONGC-EQ                  O:298.45 H:298.55 L:298.00 C:298.30 | st_line:294.59  atr:1.22 | → None
+  13:30  TATASTEEL-EQ             O:215.60 H:215.75 L:215.02 C:215.15 | st_line:214.57  atr:0.81 | → None
+  13:45  ONGC-EQ                  O:298.35 H:298.50 L:298.10 C:298.50 | st_line:294.86  atr:1.16 | → None
+  13:45  TATASTEEL-EQ             O:215.18 H:215.60 L:215.05 C:215.28 | st_line:214.57  atr:0.79 | → None
+  14:00  ONGC-EQ                  O:298.50 H:298.60 L:297.55 C:297.95 | st_line:294.86  atr:1.16 | → None
+  14:00  TATASTEEL-EQ             O:215.25 H:215.45 L:214.85 C:214.85 | st_line:214.57  atr:0.78 | → None
+  14:15  ONGC-EQ                  O:297.95 H:299.30 L:297.95 C:298.95 | st_line:295.15  atr:1.17 | → None
+  14:15  TATASTEEL-EQ             O:214.90 H:215.10 L:214.57 C:215.06 | st_line:214.57  atr:0.76 | → None
+  14:30  ONGC-EQ                  O:299.00 H:299.50 L:298.80 C:299.15 | st_line:295.81  atr:1.14 | → None
+  14:30  TATASTEEL-EQ             O:215.10 H:215.70 L:214.97 C:215.45 | st_line:214.57  atr:0.76 | → None
+  14:45  ONGC-EQ                  O:299.25 H:301.40 L:299.15 C:301.10 | st_line:296.60  atr:1.22 | → None
+  14:45  TATASTEEL-EQ             O:215.45 H:215.87 L:215.35 C:215.60 | st_line:214.57  atr:0.74 | → None
+  15:00  ONGC-EQ                  O:301.00 H:301.50 L:299.90 C:301.25 | st_line:296.91  atr:1.24 | → None
+  15:00  TATASTEEL-EQ             O:215.60 H:215.68 L:214.81 C:215.04 | st_line:214.57  atr:0.75 | → None
+  15:15  ONGC-EQ                  O:301.30 H:302.40 L:300.90 C:302.00 | st_line:297.79  atr:1.26 | → None
+  15:15  TATASTEEL-EQ             O:215.04 H:216.00 L:214.70 C:215.58 | st_line:214.57  atr:0.79 | → None
+
+  ────────────────────────────────────────────────────────────────────────────────
+  END OF DAY 2026-04-28  |  Trades:1  W:1  L:0
+  Day net P&L: +Rs600.11  |  Pool: Rs100,953.02  (was Rs100,352.91)
+  ────────────────────────────────────────────────────────────────────────────────
+  Per-symbol:
+    ONGC-EQ              1 trade(s)  +Rs600.11
+    TATASTEEL-EQ         0 trade(s)  +Rs0.00
+
+================================================================================
+  FINAL AGGREGATE  |  supertrend
+================================================================================
+  Opening capital    : Rs  100,000.00
+  Final pool         : Rs  100,953.02
+  Total return       : ++0.95%
+  Total net P&L      : +Rs+953.02
+  Total gross P&L    : Rs+1,853.29
+  Total charges      : Rs900.27
+  Total trades       : 16
+  Win rate           : 50.0%
+────────────────────────────────────────────────────────────────────────────────
+  Per-symbol (sorted by net P&L):
+    ONGC-EQ                2 trades  WR=50%  +Rs+573.01
+    SUNPHARMA-EQ           2 trades  WR=50%  +Rs+382.21
+    NTPC-EQ                3 trades  WR=67%  +Rs+319.62
+    ADANIPORTS-EQ          2 trades  WR=100%  +Rs+205.62
+    AXISBANK-EQ            2 trades  WR=50%  +Rs+57.52
+    ADANIENT-EQ            0 trades  WR=0%  +Rs+0.00
+    APOLLOHOSP-EQ          0 trades  WR=0%  +Rs+0.00
+    ASIANPAINT-EQ          0 trades  WR=0%  +Rs+0.00
+    BAJAJ-AUTO-EQ          0 trades  WR=0%  +Rs+0.00
+    BAJAJFINSV-EQ          0 trades  WR=0%  +Rs+0.00
+    BAJFINANCE-EQ          0 trades  WR=0%  +Rs+0.00
+    BEL-EQ                 0 trades  WR=0%  +Rs+0.00
+    BHARTIARTL-EQ          0 trades  WR=0%  +Rs+0.00
+    BPCL-EQ                0 trades  WR=0%  +Rs+0.00
+    BRITANNIA-EQ           0 trades  WR=0%  +Rs+0.00
+    CIPLA-EQ               0 trades  WR=0%  +Rs+0.00
+    COALINDIA-EQ           0 trades  WR=0%  +Rs+0.00
+    DRREDDY-EQ             0 trades  WR=0%  +Rs+0.00
+    EICHERMOT-EQ           0 trades  WR=0%  +Rs+0.00
+    ETERNAL-EQ             0 trades  WR=0%  +Rs+0.00
+    GRASIM-EQ              0 trades  WR=0%  +Rs+0.00
+    HCLTECH-EQ             0 trades  WR=0%  +Rs+0.00
+    HDFCBANK-EQ            0 trades  WR=0%  +Rs+0.00
+    HDFCLIFE-EQ            0 trades  WR=0%  +Rs+0.00
+    HEROMOTOCO-EQ          0 trades  WR=0%  +Rs+0.00
+    HINDALCO-EQ            0 trades  WR=0%  +Rs+0.00
+    HINDUNILVR-EQ          0 trades  WR=0%  +Rs+0.00
+    INDUSINDBK-EQ          0 trades  WR=0%  +Rs+0.00
+    INFY-EQ                0 trades  WR=0%  +Rs+0.00
+    ITC-EQ                 0 trades  WR=0%  +Rs+0.00
+    JSWSTEEL-EQ            0 trades  WR=0%  +Rs+0.00
+    KOTAKBANK-EQ           0 trades  WR=0%  +Rs+0.00
+    LT-EQ                  0 trades  WR=0%  +Rs+0.00
+    M&M-EQ                 0 trades  WR=0%  +Rs+0.00
+    MARUTI-EQ              0 trades  WR=0%  +Rs+0.00
+    NESTLEIND-EQ           0 trades  WR=0%  +Rs+0.00
+    POWERGRID-EQ           0 trades  WR=0%  +Rs+0.00
+    RELIANCE-EQ            0 trades  WR=0%  +Rs+0.00
+    SBILIFE-EQ             0 trades  WR=0%  +Rs+0.00
+    SBIN-EQ                0 trades  WR=0%  +Rs+0.00
+    SHRIRAMFIN-EQ          0 trades  WR=0%  +Rs+0.00
+    TATACONSUM-EQ          0 trades  WR=0%  +Rs+0.00
+    TCS-EQ                 0 trades  WR=0%  +Rs+0.00
+    TECHM-EQ               0 trades  WR=0%  +Rs+0.00
+    TITAN-EQ               0 trades  WR=0%  +Rs+0.00
+    ULTRACEMCO-EQ          0 trades  WR=0%  +Rs+0.00
+    WIPRO-EQ               0 trades  WR=0%  +Rs+0.00
+    ICICIBANK-EQ           4 trades  WR=25%  Rs-182.79
+    TATASTEEL-EQ           1 trades  WR=0%  Rs-402.17
+================================================================================

@@ -1,0 +1,298 @@
+================================================================================
+  BACKTEST SESSION  |  macd_rsi_trend  |  2026-04-27 → 2026-04-28
+  Capital: Rs100,000  |  Interval: FIFTEEN_MINUTE  |  Top-N: 5
+  SL: 5.0 pts  |  TP: 10.0 pts  |  TSL=atr:1.5 gap=Rs5.0
+  Warmup: 52 bars → 7 extra days fetched before start date
+  Journal: data/journal/backtest_macd_rsi_trend_2026-04-27_2026-04-28.txt
+  Created: 2026-04-29 11:39:24 IST
+================================================================================
+
+================================================================================
+  DAY 1  |  2026-04-27  (Monday)  |  Pool: Rs100,000.00
+================================================================================
+
+  [SCREENER]  Walk-forward selection  |  Active: 5  |  Pool: Rs100,000
+  Rank  Symbol             Score     Close     ATR    Mom5d   VolSpike   Gap%       Alloc
+  ────────────────────────────────────────────────────────────────────────────────
+  1     HCLTECH-EQ         61.33  Rs 1203.2   48.97  -16.58%      1.82x   5.82%  Rs   1,000
+  2     INFY-EQ            60.02  Rs 1154.6   40.08  -12.44%      2.85x   6.93%  Rs   1,000
+  3     SUNPHARMA-EQ       30.43  Rs 1620.4   43.63   -3.29%      2.52x   3.55%  Rs   1,000
+  4     TECHM-EQ           25.16  Rs 1358.5   47.24  -10.12%      1.28x   4.43%  Rs   1,000
+  5     RELIANCE-EQ        10.76  Rs 1327.8   31.88   -2.73%      0.58x   1.16%  Rs   1,000
+  ────────────────────────────────────────────────────────────────────────────────
+  09:15  HCLTECH-EQ               O:1209.00 H:1214.40 L:1201.00 C:1213.70 | trend_ema:1243.21  rsi:43.25  macd:-11.44  macd_signal:-14.64  macd_hist:3.19  atr:6.05 | → None
+  09:15  INFY-EQ                  O:1154.60 H:1176.00 L:1154.50 C:1173.60 | trend_ema:1201.02  rsi:45.88  macd:-14.30  macd_signal:-17.64  macd_hist:3.34  atr:6.65 | → None
+  09:15  RELIANCE-EQ              O:1313.00 H:1331.00 L:1311.00 C:1326.70 | trend_ema:1338.68  rsi:37.22  macd:-3.43  macd_signal:-3.92  macd_hist:0.49  atr:4.78 | → None
+  09:15  SUNPHARMA-EQ             O:1625.00 H:1709.00 L:1621.90 C:1678.10 | trend_ema:1646.95  rsi:72.63  macd:-4.90  macd_signal:-10.47  macd_hist:5.57  atr:13.43 | → BUY
+  09:15  TECHM-EQ                 O:1362.90 H:1384.30 L:1360.20 C:1379.50 | trend_ema:1391.63  rsi:56.02  macd:-9.67  macd_signal:-14.20  macd_hist:4.53  atr:8.60 | → None
+  09:30  HCLTECH-EQ               O:1213.70 H:1216.70 L:1206.40 C:1213.90 | trend_ema:1242.06  rsi:43.51  macd:-10.06  macd_signal:-13.72  macd_hist:3.66  atr:6.35 | → None
+  09:30  INFY-EQ                  O:1173.40 H:1176.00 L:1170.60 C:1175.40 | trend_ema:1200.02  rsi:47.73  macd:-12.20  macd_signal:-16.55  macd_hist:4.35  atr:6.56 | → None
+  09:30  RELIANCE-EQ              O:1326.50 H:1327.70 L:1323.90 C:1325.80 | trend_ema:1338.17  rsi:35.94  macd:-3.47  macd_signal:-3.83  macd_hist:0.37  atr:4.71 | → None
+  09:30  SUNPHARMA-EQ             O:1678.20 H:1729.00 L:1673.50 C:1727.90 | trend_ema:1650.12  rsi:82.25  macd:3.19  macd_signal:-7.74  macd_hist:10.93  atr:16.44 | → BUY
+  09:30  TECHM-EQ                 O:1379.70 H:1387.90 L:1375.50 C:1387.90 | trend_ema:1391.49  rsi:61.59  macd:-6.89  macd_signal:-12.74  macd_hist:5.85  atr:8.87 | → None
+  09:45  HCLTECH-EQ               O:1214.00 H:1216.90 L:1210.50 C:1210.60 | trend_ema:1240.82  rsi:40.25  macd:-9.12  macd_signal:-12.80  macd_hist:3.68  atr:6.35 | → None
+  09:45  INFY-EQ                  O:1175.30 H:1178.50 L:1172.60 C:1174.80 | trend_ema:1199.03  rsi:47.15  macd:-10.46  macd_signal:-15.33  macd_hist:4.87  atr:6.51 | → None
+  09:45  RELIANCE-EQ              O:1325.70 H:1342.90 L:1325.10 C:1342.90 | trend_ema:1338.36  rsi:62.46  macd:-2.09  macd_signal:-3.48  macd_hist:1.39  atr:5.65 | → BUY
+  09:45  SUNPHARMA-EQ             O:1727.90 H:1742.00 L:1726.90 C:1734.80 | trend_ema:1653.45  rsi:83.13  macd:10.04  macd_signal:-4.18  macd_hist:14.22  atr:16.34 | → BUY
+  09:45  TECHM-EQ                 O:1387.70 H:1389.90 L:1381.80 C:1384.70 | trend_ema:1391.22  rsi:58.55  macd:-4.88  macd_signal:-11.17  macd_hist:6.29  atr:8.82 | → None
+  10:00  HCLTECH-EQ               O:1210.60 H:1213.20 L:1207.50 C:1211.40 | trend_ema:1239.67  rsi:41.39  macd:-8.22  macd_signal:-11.89  macd_hist:3.66  atr:6.31 | → None
+  10:00  INFY-EQ                  O:1174.50 H:1177.00 L:1173.00 C:1176.40 | trend_ema:1198.14  rsi:48.93  macd:-8.86  macd_signal:-14.04  macd_hist:5.18  atr:6.33 | → None
+  10:00  RELIANCE-EQ              O:1342.50 H:1345.20 L:1338.20 C:1339.30 | trend_ema:1338.40  rsi:57.10  macd:-1.28  macd_signal:-3.04  macd_hist:1.77  atr:5.74 | → BUY
+  10:00  SUNPHARMA-EQ             O:1734.70 H:1745.20 L:1732.40 C:1737.50 | trend_ema:1656.74  rsi:83.48  macd:15.51  macd_signal:-0.24  macd_hist:15.75  atr:16.09 | → BUY
+  10:00  TECHM-EQ                 O:1384.60 H:1387.80 L:1380.10 C:1387.80 | trend_ema:1391.09  rsi:60.58  macd:-3.01  macd_signal:-9.54  macd_hist:6.53  atr:8.74 | → None
+  10:15  HCLTECH-EQ               O:1212.00 H:1218.00 L:1211.70 C:1216.80 | trend_ema:1238.77  rsi:48.57  macd:-6.99  macd_signal:-10.91  macd_hist:3.92  atr:6.33 | → None
+  10:15  INFY-EQ                  O:1176.20 H:1178.10 L:1175.50 C:1177.40 | trend_ema:1197.33  rsi:50.06  macd:-7.42  macd_signal:-12.71  macd_hist:5.30  atr:6.06 | → None
+  10:15  RELIANCE-EQ              O:1339.00 H:1341.50 L:1336.20 C:1337.10 | trend_ema:1338.35  rsi:54.05  macd:-0.80  macd_signal:-2.59  macd_hist:1.79  atr:5.71 | → None
+  10:15  SUNPHARMA-EQ             O:1737.40 H:1766.70 L:1737.00 C:1765.50 | trend_ema:1661.01  rsi:86.56  macd:21.85  macd_signal:4.17  macd_hist:17.67  atr:17.06 | → BUY
+  10:15  TECHM-EQ                 O:1387.50 H:1392.60 L:1387.50 C:1389.70 | trend_ema:1391.03  rsi:61.82  macd:-1.36  macd_signal:-7.90  macd_hist:6.54  atr:8.48 | → None
+  10:30  HCLTECH-EQ               O:1216.70 H:1217.40 L:1214.00 C:1215.00 | trend_ema:1237.84  rsi:46.52  macd:-6.09  macd_signal:-9.94  macd_hist:3.85  atr:6.12 | → None
+  10:30  INFY-EQ                  O:1177.40 H:1178.50 L:1175.30 C:1177.70 | trend_ema:1196.56  rsi:50.42  macd:-6.18  macd_signal:-11.41  macd_hist:5.23  atr:5.86 | → None
+  10:30  RELIANCE-EQ              O:1337.10 H:1337.10 L:1332.90 C:1335.80 | trend_ema:1338.25  rsi:52.27  macd:-0.52  macd_signal:-2.18  macd_hist:1.66  atr:5.60 | → None
+  10:30  SUNPHARMA-EQ             O:1765.00 H:1766.90 L:1738.60 C:1741.00 | trend_ema:1664.14  rsi:73.61  macd:24.61  macd_signal:8.26  macd_hist:16.35  atr:17.87 | → BUY
+  10:30  TECHM-EQ                 O:1389.80 H:1394.50 L:1387.50 C:1391.00 | trend_ema:1391.03  rsi:62.68  macd:0.06  macd_signal:-6.31  macd_hist:6.37  atr:8.37 | → None
+  10:45  HCLTECH-EQ               O:1215.00 H:1217.70 L:1214.10 C:1216.50 | trend_ema:1237.00  rsi:48.47  macd:-5.20  macd_signal:-8.99  macd_hist:3.80  atr:5.94 | → None
+  10:45  INFY-EQ                  O:1177.60 H:1179.90 L:1177.20 C:1178.30 | trend_ema:1195.84  rsi:51.17  macd:-5.09  macd_signal:-10.14  macd_hist:5.05  atr:5.63 | → None
+  10:45  RELIANCE-EQ              O:1335.80 H:1340.60 L:1334.10 C:1337.30 | trend_ema:1338.21  rsi:54.14  macd:-0.17  macd_signal:-1.78  macd_hist:1.60  atr:5.67 | → None
+  10:45  SUNPHARMA-EQ             O:1740.70 H:1747.80 L:1733.90 C:1738.80 | trend_ema:1667.07  rsi:72.56  macd:26.32  macd_signal:11.87  macd_hist:14.45  atr:17.58 | → BUY
+  10:45  TECHM-EQ                 O:1391.00 H:1396.00 L:1388.60 C:1394.60 | trend_ema:1391.17  rsi:65.03  macd:1.45  macd_signal:-4.76  macd_hist:6.21  atr:8.30 | → BUY
+  11:00  HCLTECH-EQ               O:1216.50 H:1219.70 L:1214.20 C:1217.10 | trend_ema:1236.22  rsi:49.27  macd:-4.39  macd_signal:-8.07  macd_hist:3.69  atr:5.91 | → None
+  11:00  INFY-EQ                  O:1178.10 H:1178.30 L:1171.00 C:1175.30 | trend_ema:1195.04  rsi:47.32  macd:-4.42  macd_signal:-9.00  macd_hist:4.58  atr:5.75 | → None
+  11:00  RELIANCE-EQ              O:1337.10 H:1337.70 L:1335.00 C:1336.80 | trend_ema:1338.15  rsi:53.39  macd:0.06  macd_signal:-1.41  macd_hist:1.47  atr:5.46 | → None
+  11:00  SUNPHARMA-EQ             O:1738.40 H:1740.50 L:1720.00 C:1722.20 | trend_ema:1669.23  rsi:65.02  macd:26.04  macd_signal:14.71  macd_hist:11.33  atr:17.79 | → BUY
+  11:00  TECHM-EQ                 O:1394.60 H:1395.70 L:1386.10 C:1392.20 | trend_ema:1391.21  rsi:62.22  macd:2.34  macd_signal:-3.34  macd_hist:5.68  atr:8.39 | → BUY
+  11:15  HCLTECH-EQ               O:1217.10 H:1217.30 L:1214.40 C:1215.70 | trend_ema:1235.42  rsi:47.43  macd:-3.82  macd_signal:-7.22  macd_hist:3.40  atr:5.69 | → None
+  11:15  INFY-EQ                  O:1175.30 H:1176.80 L:1171.00 C:1173.70 | trend_ema:1194.20  rsi:45.37  macd:-3.98  macd_signal:-7.99  macd_hist:4.02  atr:5.76 | → None
+  11:15  RELIANCE-EQ              O:1336.80 H:1339.60 L:1336.20 C:1337.10 | trend_ema:1338.11  rsi:53.81  macd:0.26  macd_signal:-1.08  macd_hist:1.34  atr:5.31 | → None
+  11:15  SUNPHARMA-EQ             O:1722.20 H:1731.40 L:1722.10 C:1730.00 | trend_ema:1671.62  rsi:66.77  macd:26.14  macd_signal:16.99  macd_hist:9.15  atr:17.18 | → BUY
+  11:15  TECHM-EQ                 O:1392.20 H:1393.60 L:1388.90 C:1391.10 | trend_ema:1391.21  rsi:60.91  macd:2.92  macd_signal:-2.09  macd_hist:5.00  atr:8.13 | → None
+  11:30  HCLTECH-EQ               O:1215.90 H:1219.50 L:1214.50 C:1217.30 | trend_ema:1234.71  rsi:49.74  macd:-3.20  macd_signal:-6.42  macd_hist:3.22  atr:5.64 | → None
+  11:30  INFY-EQ                  O:1173.70 H:1174.50 L:1172.00 C:1173.10 | trend_ema:1193.37  rsi:44.62  macd:-3.63  macd_signal:-7.12  macd_hist:3.49  atr:5.52 | → None
+  11:30  RELIANCE-EQ              O:1337.00 H:1337.50 L:1333.80 C:1335.10 | trend_ema:1337.99  rsi:50.57  macd:0.26  macd_signal:-0.81  macd_hist:1.07  atr:5.19 | → None
+  11:30  SUNPHARMA-EQ             O:1730.00 H:1731.10 L:1725.40 C:1729.40 | trend_ema:1673.88  rsi:66.49  macd:25.88  macd_signal:18.77  macd_hist:7.11  atr:16.36 | → BUY
+  11:30  TECHM-EQ                 O:1390.70 H:1391.60 L:1382.60 C:1385.20 | trend_ema:1390.97  rsi:54.34  macd:2.87  macd_signal:-1.10  macd_hist:3.96  atr:8.19 | → None
+  11:45  HCLTECH-EQ               O:1217.30 H:1217.80 L:1212.30 C:1215.50 | trend_ema:1233.95  rsi:47.22  macd:-2.82  macd_signal:-5.70  macd_hist:2.88  atr:5.63 | → None
+  11:45  INFY-EQ                  O:1173.20 H:1173.40 L:1169.00 C:1172.40 | trend_ema:1192.55  rsi:43.72  macd:-3.37  macd_signal:-6.37  macd_hist:3.00  atr:5.44 | → None
+  11:45  RELIANCE-EQ              O:1335.10 H:1340.60 L:1333.50 C:1340.10 | trend_ema:1338.08  rsi:57.45  macd:0.66  macd_signal:-0.52  macd_hist:1.17  atr:5.33 | → BUY
+  11:45  SUNPHARMA-EQ             O:1729.40 H:1739.90 L:1726.90 C:1733.40 | trend_ema:1676.22  rsi:67.46  macd:25.69  macd_signal:20.16  macd_hist:5.54  atr:16.12 | → BUY
+  11:45  TECHM-EQ                 O:1385.10 H:1387.70 L:1381.00 C:1386.60 | trend_ema:1390.80  rsi:55.57  macd:2.91  macd_signal:-0.30  macd_hist:3.20  atr:8.09 | → None
+  12:00  HCLTECH-EQ               O:1215.60 H:1221.10 L:1214.40 C:1220.30 | trend_ema:1233.42  rsi:53.91  macd:-2.11  macd_signal:-4.98  macd_hist:2.87  atr:5.71 | → None
+  12:00  INFY-EQ                  O:1172.30 H:1175.80 L:1172.00 C:1175.20 | trend_ema:1191.87  rsi:48.23  macd:-2.90  macd_signal:-5.68  macd_hist:2.77  atr:5.33 | → None
+  12:00  RELIANCE-EQ              O:1340.10 H:1342.00 L:1338.00 C:1341.60 | trend_ema:1338.22  rsi:59.29  macd:1.08  macd_signal:-0.20  macd_hist:1.27  atr:5.24 | → BUY
+  12:00  SUNPHARMA-EQ             O:1733.40 H:1736.80 L:1730.00 C:1733.10 | trend_ema:1678.45  rsi:67.30  macd:25.23  macd_signal:21.17  macd_hist:4.06  atr:15.46 | → BUY
+  12:00  TECHM-EQ                 O:1386.50 H:1387.60 L:1377.30 C:1387.20 | trend_ema:1390.66  rsi:56.11  macd:2.95  macd_signal:0.35  macd_hist:2.60  atr:8.24 | → None
+  12:15  HCLTECH-EQ               O:1220.30 H:1221.80 L:1217.60 C:1218.20 | trend_ema:1232.82  rsi:50.87  macd:-1.70  macd_signal:-4.32  macd_hist:2.63  atr:5.60 | → None
+  12:15  INFY-EQ                  O:1175.20 H:1175.90 L:1173.70 C:1175.30 | trend_ema:1191.22  rsi:48.39  macd:-2.50  macd_signal:-5.04  macd_hist:2.54  atr:5.10 | → None
+  12:15  RELIANCE-EQ              O:1341.60 H:1345.50 L:1340.00 C:1343.80 | trend_ema:1338.43  rsi:61.88  macd:1.57  macd_signal:0.16  macd_hist:1.41  atr:5.25 | → BUY
+  12:15  SUNPHARMA-EQ             O:1733.00 H:1738.00 L:1732.40 C:1734.60 | trend_ema:1680.65  rsi:67.70  macd:24.70  macd_signal:21.88  macd_hist:2.83  atr:14.75 | → BUY
+  12:15  TECHM-EQ                 O:1387.20 H:1389.50 L:1386.40 C:1386.90 | trend_ema:1390.51  rsi:55.74  macd:2.93  macd_signal:0.87  macd_hist:2.06  atr:7.88 | → None
+  12:30  HCLTECH-EQ               O:1218.30 H:1219.60 L:1217.00 C:1219.50 | trend_ema:1232.30  rsi:52.65  macd:-1.25  macd_signal:-3.71  macd_hist:2.46  atr:5.39 | → None
+  12:30  INFY-EQ                  O:1175.30 H:1176.20 L:1174.30 C:1175.10 | trend_ema:1190.59  rsi:48.07  macd:-2.17  macd_signal:-4.47  macd_hist:2.30  atr:4.87 | → None
+  12:30  RELIANCE-EQ              O:1343.70 H:1351.00 L:1343.10 C:1349.60 | trend_ema:1338.87  rsi:67.71  macd:2.40  macd_signal:0.60  macd_hist:1.80  atr:5.44 | → BUY
+  12:30  SUNPHARMA-EQ             O:1734.50 H:1735.20 L:1730.60 C:1731.60 | trend_ema:1682.65  rsi:65.95  macd:23.77  macd_signal:22.26  macd_hist:1.51  atr:14.03 | → BUY
+  12:30  TECHM-EQ                 O:1386.90 H:1389.40 L:1386.10 C:1388.40 | trend_ema:1390.43  rsi:57.25  macd:3.00  macd_signal:1.30  macd_hist:1.70  atr:7.55 | → None
+  12:45  HCLTECH-EQ               O:1219.50 H:1219.70 L:1217.00 C:1218.50 | trend_ema:1231.76  rsi:51.12  macd:-0.96  macd_signal:-3.16  macd_hist:2.20  atr:5.20 | → None
+  12:45  INFY-EQ                  O:1175.10 H:1176.50 L:1173.40 C:1176.20 | trend_ema:1190.02  rsi:50.02  macd:-1.80  macd_signal:-3.93  macd_hist:2.13  atr:4.75 | → None
+  12:45  RELIANCE-EQ              O:1349.60 H:1349.90 L:1346.20 C:1347.40 | trend_ema:1339.21  rsi:63.73  macd:2.85  macd_signal:1.05  macd_hist:1.80  atr:5.32 | → BUY
+  12:45  SUNPHARMA-EQ             O:1731.60 H:1738.90 L:1730.60 C:1736.60 | trend_ema:1684.76  rsi:67.46  macd:23.16  macd_signal:22.44  macd_hist:0.73  atr:13.62 | → BUY
+  12:45  TECHM-EQ                 O:1388.30 H:1389.10 L:1383.60 C:1388.40 | trend_ema:1390.35  rsi:57.25  macd:3.02  macd_signal:1.64  macd_hist:1.38  atr:7.40 | → None
+  13:00  HCLTECH-EQ               O:1218.50 H:1221.00 L:1218.40 C:1220.80 | trend_ema:1231.33  rsi:54.41  macd:-0.55  macd_signal:-2.64  macd_hist:2.09  atr:5.01 | → None
+  13:00  INFY-EQ                  O:1176.10 H:1177.80 L:1172.20 C:1173.00 | trend_ema:1189.36  rsi:44.76  macd:-1.74  macd_signal:-3.50  macd_hist:1.75  atr:4.81 | → None
+  13:00  RELIANCE-EQ              O:1347.40 H:1348.50 L:1345.00 C:1347.60 | trend_ema:1339.54  rsi:63.94  macd:3.18  macd_signal:1.48  macd_hist:1.70  atr:5.19 | → BUY
+  13:00  SUNPHARMA-EQ             O:1736.60 H:1737.80 L:1732.80 C:1736.80 | trend_ema:1686.80  rsi:67.52  macd:22.44  macd_signal:22.44  macd_hist:0.00  atr:13.00 | → BUY
+  13:00  TECHM-EQ                 O:1388.40 H:1389.80 L:1386.00 C:1388.30 | trend_ema:1390.27  rsi:57.10  macd:2.99  macd_signal:1.91  macd_hist:1.08  atr:7.15 | → None
+  13:15  HCLTECH-EQ               O:1220.40 H:1221.80 L:1220.00 C:1220.10 | trend_ema:1230.89  rsi:53.24  macd:-0.27  macd_signal:-2.16  macd_hist:1.89  atr:4.78 | → None
+  13:15  INFY-EQ                  O:1172.90 H:1173.60 L:1171.00 C:1171.80 | trend_ema:1188.67  rsi:42.94  macd:-1.78  macd_signal:-3.15  macd_hist:1.38  atr:4.65 | → None
+  13:15  RELIANCE-EQ              O:1347.50 H:1351.00 L:1347.10 C:1350.50 | trend_ema:1339.97  rsi:66.90  macd:3.64  macd_signal:1.91  macd_hist:1.73  atr:5.10 | → BUY
+  13:15  SUNPHARMA-EQ             O:1736.70 H:1746.40 L:1733.00 C:1741.50 | trend_ema:1688.95  rsi:69.02  macd:22.00  macd_signal:22.35  macd_hist:-0.35  atr:13.03 | → None
+  13:15  TECHM-EQ                 O:1388.20 H:1390.50 L:1387.60 C:1389.00 | trend_ema:1390.22  rsi:57.93  macd:2.99  macd_signal:2.13  macd_hist:0.87  atr:6.84 | → None
+  13:30  HCLTECH-EQ               O:1220.10 H:1223.10 L:1220.00 C:1221.50 | trend_ema:1230.52  rsi:55.31  macd:0.06  macd_signal:-1.72  macd_hist:1.78  atr:4.66 | → None
+  13:30  INFY-EQ                  O:1171.70 H:1172.50 L:1170.00 C:1170.80 | trend_ema:1187.97  rsi:41.43  macd:-1.86  macd_signal:-2.89  macd_hist:1.03  atr:4.50 | → None
+  13:30  RELIANCE-EQ              O:1350.00 H:1354.20 L:1348.40 C:1354.20 | trend_ema:1340.52  rsi:70.25  macd:4.25  macd_signal:2.38  macd_hist:1.87  atr:5.15 | → BUY
+  13:30  SUNPHARMA-EQ             O:1741.40 H:1743.90 L:1735.00 C:1738.10 | trend_ema:1690.88  rsi:66.63  macd:21.12  macd_signal:22.10  macd_hist:-0.98  atr:12.74 | → None
+  13:30  TECHM-EQ                 O:1388.80 H:1393.00 L:1388.70 C:1391.70 | trend_ema:1390.28  rsi:61.07  macd:3.18  macd_signal:2.34  macd_hist:0.84  atr:6.66 | → BUY
+  13:45  HCLTECH-EQ               O:1221.50 H:1222.60 L:1220.00 C:1222.40 | trend_ema:1230.20  rsi:56.65  macd:0.39  macd_signal:-1.30  macd_hist:1.69  atr:4.51 | → None
+  13:45  INFY-EQ                  O:1170.80 H:1171.00 L:1170.00 C:1170.20 | trend_ema:1187.27  rsi:40.51  macd:-1.95  macd_signal:-2.71  macd_hist:0.75  atr:4.25 | → None
+  13:45  RELIANCE-EQ              O:1354.00 H:1357.30 L:1351.60 C:1355.90 | trend_ema:1341.13  rsi:71.67  macd:4.82  macd_signal:2.87  macd_hist:1.95  atr:5.19 | → BUY
+  13:45  SUNPHARMA-EQ             O:1738.10 H:1741.20 L:1735.70 C:1737.50 | trend_ema:1692.70  rsi:66.19  macd:20.15  macd_signal:21.71  macd_hist:-1.56  atr:12.22 | → None
+  13:45  TECHM-EQ                 O:1391.50 H:1392.60 L:1387.50 C:1389.80 | trend_ema:1390.26  rsi:57.80  macd:3.13  macd_signal:2.50  macd_hist:0.63  atr:6.55 | → None
+  14:00  HCLTECH-EQ               O:1222.40 H:1224.50 L:1220.60 C:1223.90 | trend_ema:1229.95  rsi:58.85  macd:0.77  macd_signal:-0.88  macd_hist:1.65  atr:4.47 | → None
+  14:00  INFY-EQ                  O:1170.20 H:1174.30 L:1169.30 C:1172.60 | trend_ema:1186.70  rsi:45.71  macd:-1.81  macd_signal:-2.53  macd_hist:0.71  atr:4.30 | → None
+  14:00  RELIANCE-EQ              O:1355.90 H:1358.20 L:1354.10 C:1355.80 | trend_ema:1341.70  rsi:71.46  macd:5.20  macd_signal:3.33  macd_hist:1.87  atr:5.11 | → BUY
+  14:00  SUNPHARMA-EQ             O:1737.60 H:1738.60 L:1731.10 C:1731.90 | trend_ema:1694.24  rsi:62.12  macd:18.71  macd_signal:21.11  macd_hist:-2.40  atr:11.88 | → None
+  14:00  TECHM-EQ                 O:1389.80 H:1398.60 L:1389.50 C:1397.70 | trend_ema:1390.55  rsi:65.96  macd:3.69  macd_signal:2.74  macd_hist:0.96  atr:6.73 | → BUY
+  14:15  HCLTECH-EQ               O:1223.90 H:1225.00 L:1222.60 C:1225.00 | trend_ema:1229.76  rsi:60.44  macd:1.14  macd_signal:-0.48  macd_hist:1.62  atr:4.32 | → None
+  14:15  INFY-EQ                  O:1172.70 H:1174.40 L:1172.00 C:1172.30 | trend_ema:1186.13  rsi:45.18  macd:-1.71  macd_signal:-2.36  macd_hist:0.66  atr:4.17 | → None
+  14:15  RELIANCE-EQ              O:1355.70 H:1356.80 L:1354.00 C:1356.70 | trend_ema:1342.29  rsi:72.27  macd:5.51  macd_signal:3.77  macd_hist:1.74  atr:4.94 | → BUY
+  14:15  SUNPHARMA-EQ             O:1732.00 H:1733.50 L:1730.00 C:1731.00 | trend_ema:1695.68  rsi:61.46  macd:17.30  macd_signal:20.35  macd_hist:-3.05  atr:11.28 | → None
+  14:15  TECHM-EQ                 O:1397.70 H:1397.90 L:1395.00 C:1397.00 | trend_ema:1390.80  rsi:64.76  macd:4.03  macd_signal:2.99  macd_hist:1.04  atr:6.46 | → BUY
+  14:30  HCLTECH-EQ               O:1225.00 H:1228.90 L:1225.00 C:1226.00 | trend_ema:1229.61  rsi:61.88  macd:1.50  macd_signal:-0.08  macd_hist:1.58  atr:4.29 | → None
+  14:30  INFY-EQ                  O:1172.20 H:1176.70 L:1172.10 C:1174.90 | trend_ema:1185.69  rsi:50.55  macd:-1.40  macd_signal:-2.17  macd_hist:0.77  atr:4.20 | → None
+  14:30  RELIANCE-EQ              O:1356.70 H:1360.70 L:1354.00 C:1360.40 | trend_ema:1343.00  rsi:75.37  macd:5.99  macd_signal:4.21  macd_hist:1.77  atr:5.07 | → BUY
+  14:30  SUNPHARMA-EQ             O:1731.10 H:1734.40 L:1727.50 C:1732.00 | trend_ema:1697.11  rsi:61.94  macd:16.08  macd_signal:19.50  macd_hist:-3.42  atr:10.97 | → None
+  14:30  TECHM-EQ                 O:1397.00 H:1400.50 L:1395.30 C:1398.60 | trend_ema:1391.11  rsi:66.27  macd:4.38  macd_signal:3.27  macd_hist:1.11  atr:6.37 | → BUY
+  14:45  HCLTECH-EQ               O:1225.80 H:1226.70 L:1224.20 C:1225.20 | trend_ema:1229.44  rsi:60.00  macd:1.70  macd_signal:0.27  macd_hist:1.43  atr:4.16 | → None
+  14:45  INFY-EQ                  O:1174.70 H:1174.90 L:1172.40 C:1173.50 | trend_ema:1185.21  rsi:47.83  macd:-1.25  macd_signal:-1.99  macd_hist:0.74  atr:4.08 | → None
+  14:45  RELIANCE-EQ              O:1360.40 H:1368.00 L:1358.20 C:1365.30 | trend_ema:1343.88  rsi:78.75  macd:6.68  macd_signal:4.71  macd_hist:1.98  atr:5.41 | → BUY
+  14:45  SUNPHARMA-EQ             O:1732.00 H:1735.80 L:1732.00 C:1735.20 | trend_ema:1698.60  rsi:63.51  macd:15.19  macd_signal:18.64  macd_hist:-3.44  atr:10.46 | → None
+  14:45  TECHM-EQ                 O:1398.60 H:1398.70 L:1395.20 C:1396.20 | trend_ema:1391.31  rsi:61.99  macd:4.41  macd_signal:3.50  macd_hist:0.91  atr:6.16 | → BUY
+  15:00  HCLTECH-EQ               O:1224.90 H:1228.00 L:1222.70 C:1227.90 | trend_ema:1229.38  rsi:63.98  macd:2.05  macd_signal:0.63  macd_hist:1.42  atr:4.24 | → None
+  15:00  INFY-EQ                  O:1173.40 H:1173.40 L:1169.00 C:1170.20 | trend_ema:1184.62  rsi:42.09  macd:-1.38  macd_signal:-1.86  macd_hist:0.48  atr:4.11 | → None
+  15:00  RELIANCE-EQ              O:1365.10 H:1365.90 L:1363.50 C:1365.00 | trend_ema:1344.70  rsi:78.05  macd:7.13  macd_signal:5.19  macd_hist:1.94  atr:5.19 | → BUY
+  15:00  SUNPHARMA-EQ             O:1735.30 H:1737.10 L:1732.00 C:1733.20 | trend_ema:1699.96  rsi:61.80  macd:14.17  macd_signal:17.74  macd_hist:-3.58  atr:10.08 | → None
+  15:00  TECHM-EQ                 O:1396.00 H:1397.40 L:1395.00 C:1397.00 | trend_ema:1391.53  rsi:62.85  macd:4.45  macd_signal:3.69  macd_hist:0.76  atr:5.89 | → BUY
+  15:15  HCLTECH-EQ               O:1227.90 H:1232.00 L:1227.00 C:1230.20 | trend_ema:1229.41  rsi:66.99  macd:2.49  macd_signal:1.00  macd_hist:1.49  atr:4.30 | → BUY
+  15:15  INFY-EQ                  O:1170.10 H:1174.10 L:1167.40 C:1172.90 | trend_ema:1184.16  rsi:47.63  macd:-1.25  macd_signal:-1.74  macd_hist:0.49  atr:4.29 | → None
+  15:15  RELIANCE-EQ              O:1365.00 H:1371.60 L:1364.50 C:1370.00 | trend_ema:1345.70  rsi:81.09  macd:7.79  macd_signal:5.71  macd_hist:2.08  atr:5.33 | → BUY
+  15:15  SUNPHARMA-EQ             O:1733.30 H:1734.50 L:1730.90 C:1731.00 | trend_ema:1701.18  rsi:59.88  macd:13.03  macd_signal:16.80  macd_hist:-3.77  atr:9.61 | → None
+  15:15  TECHM-EQ                 O:1397.30 H:1398.00 L:1395.00 C:1398.00 | trend_ema:1391.79  rsi:63.95  macd:4.51  macd_signal:3.85  macd_hist:0.65  atr:5.69 | → BUY
+
+  ────────────────────────────────────────────────────────────────────────────────
+  END OF DAY 2026-04-27  |  Trades:0  W:0  L:0
+  Day net P&L: +Rs0.00  |  Pool: Rs100,000.00  (was Rs100,000.00)
+  ────────────────────────────────────────────────────────────────────────────────
+  Per-symbol:
+    HCLTECH-EQ           0 trade(s)  +Rs0.00
+    INFY-EQ              0 trade(s)  +Rs0.00
+    RELIANCE-EQ          0 trade(s)  +Rs0.00
+    SUNPHARMA-EQ         0 trade(s)  +Rs0.00
+    TECHM-EQ             0 trade(s)  +Rs0.00
+
+================================================================================
+  DAY 2  |  2026-04-28  (Tuesday)  |  Pool: Rs100,000.00
+================================================================================
+
+  [SCREENER]  Walk-forward selection  |  Active: 2  |  Pool: Rs100,000
+  Rank  Symbol             Score     Close     ATR    Mom5d   VolSpike   Gap%       Alloc
+  ────────────────────────────────────────────────────────────────────────────────
+  1     INFY-EQ            46.73  Rs 1170.3   39.03  -10.84%      1.30x   1.36%  Rs   2,500
+  2     HCLTECH-EQ         45.92  Rs 1228.2   47.68  -14.01%      0.99x   2.08%  Rs   2,500
+  ────────────────────────────────────────────────────────────────────────────────
+  09:15  HCLTECH-EQ               O:1227.90 H:1232.70 L:1220.40 C:1228.70 | trend_ema:1229.38  rsi:63.27  macd:2.68  macd_signal:1.34  macd_hist:1.35  atr:4.87 | → None
+  09:15  INFY-EQ                  O:1162.70 H:1169.40 L:1156.40 C:1167.10 | trend_ema:1183.49  rsi:39.00  macd:-1.60  macd_signal:-1.71  macd_hist:0.11  atr:5.16 | → None
+  09:30  HCLTECH-EQ               O:1228.70 H:1228.70 L:1218.10 C:1219.80 | trend_ema:1229.01  rsi:46.71  macd:2.09  macd_signal:1.49  macd_hist:0.61  atr:5.28 | → None
+  09:30  INFY-EQ                  O:1167.20 H:1167.20 L:1158.40 C:1159.70 | trend_ema:1182.56  rsi:31.22  macd:-2.45  macd_signal:-1.86  macd_hist:-0.59  atr:5.42 | → SHORT
+  09:45  HCLTECH-EQ               O:1219.30 H:1221.60 L:1216.00 C:1220.60 | trend_ema:1228.68  rsi:48.03  macd:1.67  macd_signal:1.53  macd_hist:0.15  atr:5.30 | → None
+  ▶ ENTRY SHORT  09:45  INFY-EQ          Price:Rs1159.50  Qty:2  SL:Rs1164.50  TP:Rs1149.50  Alloc:Rs2,500
+  09:45  INFY-EQ          [SHORT] O:1159.50 H:1160.00 L:1155.00 C:1159.80 | trend_ema:1181.67  rsi:31.42  macd:-3.08  macd_signal:-2.10  macd_hist:-0.97  atr:5.39 | → None
+  10:00  HCLTECH-EQ               O:1220.60 H:1224.20 L:1219.70 C:1220.40 | trend_ema:1228.35  rsi:47.71  macd:1.31  macd_signal:1.48  macd_hist:-0.17  atr:5.25 | → None
+  ◀ EXIT  SL          10:00  INFY-EQ          Price:Rs1164.50  Qty:2  Gross:Rs-10.00  Charges:Rs12.62  Net:Rs-22.62  Pool:Rs99,977.38
+  10:15  HCLTECH-EQ               O:1220.40 H:1221.40 L:1217.80 C:1217.80 | trend_ema:1227.94  rsi:43.67  macd:0.80  macd_signal:1.35  macd_hist:-0.55  atr:5.13 | → SHORT
+  10:15  INFY-EQ                  O:1161.90 H:1162.60 L:1160.00 C:1161.00 | trend_ema:1180.11  rsi:34.65  macd:-3.62  macd_signal:-2.61  macd_hist:-1.01  atr:5.21 | → SHORT
+  ▶ ENTRY SHORT  10:30  HCLTECH-EQ       Price:Rs1218.20  Qty:2  SL:Rs1223.20  TP:Rs1208.20  Alloc:Rs2,500
+  10:30  HCLTECH-EQ       [SHORT] O:1218.20 H:1218.20 L:1211.30 C:1212.30 | trend_ema:1227.33  rsi:36.60  macd:-0.05  macd_signal:1.07  macd_hist:-1.11  atr:5.25 | → None
+  ▶ ENTRY SHORT  10:30  INFY-EQ          Price:Rs1161.00  Qty:2  SL:Rs1166.00  TP:Rs1151.00  Alloc:Rs2,500
+  10:30  INFY-EQ          [SHORT] O:1161.00 H:1161.00 L:1157.00 C:1157.70 | trend_ema:1179.23  rsi:31.25  macd:-4.05  macd_signal:-2.90  macd_hist:-1.15  atr:5.13 | → None
+  10:45  HCLTECH-EQ       [SHORT] O:1212.30 H:1214.80 L:1210.30 C:1212.40 | trend_ema:1226.74  rsi:36.80  macd:-0.70  macd_signal:0.71  macd_hist:-1.41  atr:5.20 | → None
+  10:45  INFY-EQ          [SHORT] O:1157.70 H:1159.10 L:1156.20 C:1158.90 | trend_ema:1178.44  rsi:33.79  macd:-4.24  macd_signal:-3.17  macd_hist:-1.07  atr:4.97 | → None
+  11:00  HCLTECH-EQ       [SHORT] O:1212.40 H:1212.50 L:1208.50 C:1209.60 | trend_ema:1226.07  rsi:33.60  macd:-1.43  macd_signal:0.29  macd_hist:-1.71  atr:5.11 | → None
+  11:00  INFY-EQ          [SHORT] O:1159.00 H:1159.00 L:1155.50 C:1156.00 | trend_ema:1177.56  rsi:30.82  macd:-4.57  macd_signal:-3.45  macd_hist:-1.13  atr:4.86 | → None
+  ◀ EXIT  TP          11:15  HCLTECH-EQ       Price:Rs1208.20  Qty:2  Gross:+Rs20.00  Charges:Rs12.66  Net:+Rs7.34  Pool:Rs99,984.72
+  11:15  INFY-EQ          [SHORT] O:1156.40 H:1156.60 L:1153.20 C:1153.80 | trend_ema:1176.63  rsi:28.76  macd:-4.96  macd_signal:-3.75  macd_hist:-1.21  atr:4.76 | → None
+  11:30  HCLTECH-EQ               O:1206.90 H:1210.50 L:1206.10 C:1210.50 | trend_ema:1224.73  rsi:38.25  macd:-2.49  macd_signal:-0.67  macd_hist:-1.83  atr:4.99 | → SHORT
+  11:30  INFY-EQ          [SHORT] O:1153.90 H:1158.00 L:1153.00 C:1157.80 | trend_ema:1175.89  rsi:37.02  macd:-4.88  macd_signal:-3.98  macd_hist:-0.91  atr:4.78 | → None
+  ▶ ENTRY SHORT  11:45  HCLTECH-EQ       Price:Rs1210.50  Qty:2  SL:Rs1215.50  TP:Rs1200.50  Alloc:Rs2,500
+  11:45  HCLTECH-EQ       [SHORT] O:1210.50 H:1210.70 L:1208.20 C:1208.30 | trend_ema:1224.09  rsi:35.76  macd:-2.87  macd_signal:-1.11  macd_hist:-1.76  atr:4.81 | → None
+  11:45  INFY-EQ          [SHORT] O:1157.80 H:1159.80 L:1157.60 C:1159.20 | trend_ema:1175.23  rsi:39.66  macd:-4.66  macd_signal:-4.11  macd_hist:-0.54  atr:4.59 | → None
+  12:00  HCLTECH-EQ       [SHORT] O:1208.70 H:1210.10 L:1206.70 C:1208.60 | trend_ema:1223.48  rsi:36.37  macd:-3.10  macd_signal:-1.51  macd_hist:-1.60  atr:4.71 | → None
+  12:00  INFY-EQ          [SHORT] O:1159.20 H:1159.20 L:1154.10 C:1157.00 | trend_ema:1174.52  rsi:37.03  macd:-4.60  macd_signal:-4.21  macd_hist:-0.39  atr:4.63 | → None
+  12:15  HCLTECH-EQ       [SHORT] O:1208.60 H:1210.00 L:1204.00 C:1204.80 | trend_ema:1222.75  rsi:32.22  macd:-3.56  macd_signal:-1.92  macd_hist:-1.64  atr:4.80 | → None
+  12:15  INFY-EQ          [SHORT] O:1157.00 H:1158.60 L:1155.00 C:1155.80 | trend_ema:1173.78  rsi:35.65  macd:-4.60  macd_signal:-4.29  macd_hist:-0.31  atr:4.55 | → None
+  12:30  HCLTECH-EQ       [SHORT] O:1204.80 H:1204.90 L:1201.30 C:1202.10 | trend_ema:1221.94  rsi:29.63  macd:-4.09  macd_signal:-2.35  macd_hist:-1.73  atr:4.72 | → None
+  12:30  INFY-EQ          [SHORT] O:1155.90 H:1156.40 L:1153.50 C:1154.00 | trend_ema:1173.01  rsi:33.61  macd:-4.69  macd_signal:-4.37  macd_hist:-0.32  atr:4.44 | → None
+  ◀ EXIT  TP          12:45  HCLTECH-EQ       Price:Rs1200.50  Qty:2  Gross:+Rs20.00  Charges:Rs12.66  Net:+Rs7.34  Pool:Rs99,992.06
+  12:45  INFY-EQ          [SHORT] O:1154.10 H:1154.10 L:1151.10 C:1151.90 | trend_ema:1172.18  rsi:31.37  macd:-4.88  macd_signal:-4.47  macd_hist:-0.41  atr:4.33 | → None
+  13:00  HCLTECH-EQ               O:1200.90 H:1201.30 L:1198.20 C:1200.30 | trend_ema:1220.29  rsi:27.98  macd:-4.92  macd_signal:-3.22  macd_hist:-1.70  atr:4.48 | → SHORT
+  ◀ EXIT  TP          13:00  INFY-EQ          Price:Rs1151.00  Qty:2  Gross:+Rs20.00  Charges:Rs12.62  Net:+Rs7.38  Pool:Rs99,999.44
+  ▶ ENTRY SHORT  13:15  HCLTECH-EQ       Price:Rs1200.50  Qty:2  SL:Rs1205.50  TP:Rs1190.50  Alloc:Rs2,500
+  13:15  HCLTECH-EQ       [SHORT] O:1200.50 H:1201.40 L:1197.10 C:1197.10 | trend_ema:1219.38  rsi:25.15  macd:-5.40  macd_signal:-3.65  macd_hist:-1.74  atr:4.47 | → None
+  13:15  INFY-EQ                  O:1153.90 H:1154.70 L:1152.20 C:1152.60 | trend_ema:1170.70  rsi:33.78  macd:-4.84  macd_signal:-4.61  macd_hist:-0.23  atr:4.19 | → SHORT
+  13:30  HCLTECH-EQ       [SHORT] O:1197.50 H:1200.20 L:1196.00 C:1198.20 | trend_ema:1218.55  rsi:27.85  macd:-5.62  macd_signal:-4.05  macd_hist:-1.58  atr:4.45 | → None
+  ▶ ENTRY SHORT  13:30  INFY-EQ          Price:Rs1152.60  Qty:2  SL:Rs1157.60  TP:Rs1142.60  Alloc:Rs2,500
+  13:30  INFY-EQ          [SHORT] O:1152.60 H:1154.10 L:1150.00 C:1152.20 | trend_ema:1169.98  rsi:33.29  macd:-4.80  macd_signal:-4.64  macd_hist:-0.16  atr:4.18 | → None
+  13:45  HCLTECH-EQ       [SHORT] O:1198.50 H:1198.70 L:1196.90 C:1197.80 | trend_ema:1217.74  rsi:27.46  macd:-5.77  macd_signal:-4.39  macd_hist:-1.38  atr:4.26 | → None
+  13:45  INFY-EQ          [SHORT] O:1152.20 H:1154.40 L:1151.20 C:1153.50 | trend_ema:1169.33  rsi:36.51  macd:-4.62  macd_signal:-4.64  macd_hist:0.02  atr:4.11 | → COVER
+  14:00  HCLTECH-EQ       [SHORT] O:1197.80 H:1197.80 L:1194.70 C:1195.00 | trend_ema:1216.85  rsi:24.85  macd:-6.04  macd_signal:-4.72  macd_hist:-1.32  atr:4.18 | → None
+  ◀ EXIT  SIGNAL      14:00  INFY-EQ          Price:Rs1153.50  Qty:2  Gross:Rs-1.80  Charges:Rs12.62  Net:Rs-14.42  Pool:Rs99,985.02
+  14:00  INFY-EQ                  O:1153.50 H:1154.00 L:1151.60 C:1152.00 | trend_ema:1168.65  rsi:34.44  macd:-4.54  macd_signal:-4.62  macd_hist:0.08  atr:3.99 | → None
+  14:15  HCLTECH-EQ       [SHORT] O:1195.00 H:1195.10 L:1192.30 C:1194.00 | trend_ema:1215.95  rsi:23.98  macd:-6.26  macd_signal:-5.03  macd_hist:-1.23  atr:4.08 | → None
+  14:15  INFY-EQ                  O:1152.00 H:1152.10 L:1150.50 C:1151.00 | trend_ema:1167.96  rsi:33.10  macd:-4.50  macd_signal:-4.60  macd_hist:0.09  atr:3.82 | → None
+  14:30  HCLTECH-EQ       [SHORT] O:1194.00 H:1195.80 L:1193.50 C:1195.00 | trend_ema:1215.13  rsi:26.76  macd:-6.29  macd_signal:-5.28  macd_hist:-1.01  atr:3.95 | → None
+  14:30  INFY-EQ                  O:1151.00 H:1152.20 L:1150.10 C:1151.60 | trend_ema:1167.32  rsi:34.74  macd:-4.38  macd_signal:-4.55  macd_hist:0.17  atr:3.70 | → None
+  ◀ EXIT  TSL         14:45  HCLTECH-EQ       Price:Rs1199.00  Qty:2  Gross:Rs3.00  Charges:Rs12.65  Net:Rs-9.65  Pool:Rs99,975.37
+  14:45  INFY-EQ                  O:1151.30 H:1153.20 L:1150.60 C:1151.50 | trend_ema:1166.70  rsi:34.59  macd:-4.24  macd_signal:-4.49  macd_hist:0.25  atr:3.62 | → None
+  15:00  HCLTECH-EQ               O:1198.90 H:1199.50 L:1194.00 C:1194.80 | trend_ema:1213.71  rsi:31.42  macd:-5.92  macd_signal:-5.51  macd_hist:-0.40  atr:4.24 | → SHORT
+  15:00  INFY-EQ                  O:1151.50 H:1157.70 L:1150.00 C:1150.80 | trend_ema:1166.08  rsi:33.48  macd:-4.14  macd_signal:-4.42  macd_hist:0.28  atr:3.91 | → None
+  15:15  HCLTECH-EQ               O:1194.80 H:1199.90 L:1194.20 C:1199.80 | trend_ema:1213.16  rsi:41.64  macd:-5.42  macd_signal:-5.50  macd_hist:0.07  atr:4.34 | → None
+  15:15  INFY-EQ                  O:1150.80 H:1151.60 L:1149.80 C:1151.00 | trend_ema:1165.48  rsi:34.13  macd:-3.99  macd_signal:-4.33  macd_hist:0.34  atr:3.76 | → None
+
+  ────────────────────────────────────────────────────────────────────────────────
+  END OF DAY 2026-04-28  |  Trades:6  W:3  L:3
+  Day net P&L: Rs-24.63  |  Pool: Rs99,975.37  (was Rs100,000.00)
+  ────────────────────────────────────────────────────────────────────────────────
+  Per-symbol:
+    HCLTECH-EQ           3 trade(s)  +Rs5.03
+    INFY-EQ              3 trade(s)  Rs-29.66
+
+================================================================================
+  FINAL AGGREGATE  |  macd_rsi_trend
+================================================================================
+  Opening capital    : Rs  100,000.00
+  Final pool         : Rs   99,975.37
+  Total return       : -0.02%
+  Total net P&L      : Rs-24.63
+  Total gross P&L    : Rs+51.20
+  Total charges      : Rs75.83
+  Total trades       : 6
+  Win rate           : 50.0%
+────────────────────────────────────────────────────────────────────────────────
+  Per-symbol (sorted by net P&L):
+    HCLTECH-EQ             3 trades  WR=67%  +Rs+5.03
+    ADANIENT-EQ            0 trades  WR=0%  +Rs+0.00
+    ADANIPORTS-EQ          0 trades  WR=0%  +Rs+0.00
+    APOLLOHOSP-EQ          0 trades  WR=0%  +Rs+0.00
+    ASIANPAINT-EQ          0 trades  WR=0%  +Rs+0.00
+    AXISBANK-EQ            0 trades  WR=0%  +Rs+0.00
+    BAJAJ-AUTO-EQ          0 trades  WR=0%  +Rs+0.00
+    BAJAJFINSV-EQ          0 trades  WR=0%  +Rs+0.00
+    BAJFINANCE-EQ          0 trades  WR=0%  +Rs+0.00
+    BEL-EQ                 0 trades  WR=0%  +Rs+0.00
+    BHARTIARTL-EQ          0 trades  WR=0%  +Rs+0.00
+    BPCL-EQ                0 trades  WR=0%  +Rs+0.00
+    BRITANNIA-EQ           0 trades  WR=0%  +Rs+0.00
+    CIPLA-EQ               0 trades  WR=0%  +Rs+0.00
+    COALINDIA-EQ           0 trades  WR=0%  +Rs+0.00
+    DRREDDY-EQ             0 trades  WR=0%  +Rs+0.00
+    EICHERMOT-EQ           0 trades  WR=0%  +Rs+0.00
+    ETERNAL-EQ             0 trades  WR=0%  +Rs+0.00
+    GRASIM-EQ              0 trades  WR=0%  +Rs+0.00
+    HDFCBANK-EQ            0 trades  WR=0%  +Rs+0.00
+    HDFCLIFE-EQ            0 trades  WR=0%  +Rs+0.00
+    HEROMOTOCO-EQ          0 trades  WR=0%  +Rs+0.00
+    HINDALCO-EQ            0 trades  WR=0%  +Rs+0.00
+    HINDUNILVR-EQ          0 trades  WR=0%  +Rs+0.00
+    ICICIBANK-EQ           0 trades  WR=0%  +Rs+0.00
+    INDUSINDBK-EQ          0 trades  WR=0%  +Rs+0.00
+    ITC-EQ                 0 trades  WR=0%  +Rs+0.00
+    JSWSTEEL-EQ            0 trades  WR=0%  +Rs+0.00
+    KOTAKBANK-EQ           0 trades  WR=0%  +Rs+0.00
+    LT-EQ                  0 trades  WR=0%  +Rs+0.00
+    M&M-EQ                 0 trades  WR=0%  +Rs+0.00
+    MARUTI-EQ              0 trades  WR=0%  +Rs+0.00
+    NESTLEIND-EQ           0 trades  WR=0%  +Rs+0.00
+    NTPC-EQ                0 trades  WR=0%  +Rs+0.00
+    ONGC-EQ                0 trades  WR=0%  +Rs+0.00
+    POWERGRID-EQ           0 trades  WR=0%  +Rs+0.00
+    RELIANCE-EQ            0 trades  WR=0%  +Rs+0.00
+    SBILIFE-EQ             0 trades  WR=0%  +Rs+0.00
+    SBIN-EQ                0 trades  WR=0%  +Rs+0.00
+    SHRIRAMFIN-EQ          0 trades  WR=0%  +Rs+0.00
+    SUNPHARMA-EQ           0 trades  WR=0%  +Rs+0.00
+    TATACONSUM-EQ          0 trades  WR=0%  +Rs+0.00
+    TATASTEEL-EQ           0 trades  WR=0%  +Rs+0.00
+    TCS-EQ                 0 trades  WR=0%  +Rs+0.00
+    TECHM-EQ               0 trades  WR=0%  +Rs+0.00
+    TITAN-EQ               0 trades  WR=0%  +Rs+0.00
+    ULTRACEMCO-EQ          0 trades  WR=0%  +Rs+0.00
+    WIPRO-EQ               0 trades  WR=0%  +Rs+0.00
+    INFY-EQ                3 trades  WR=33%  Rs-29.66
+================================================================================
