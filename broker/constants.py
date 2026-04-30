@@ -242,8 +242,12 @@ class ChargeRates:
 # ──────────────────────────────────────────────────────────────────────────────
 
 class RateLimits:
-    ORDERS_PER_SECOND   = 10   # max 10 order API calls per second per exchange/segment
-    ORDER_STATUS_PER_SEC = 10  # individual order status endpoint: 10 req/sec
+    # Order APIs (place + modify + cancel) share a cumulative 9 req/sec limit
+    ORDERS_PER_SECOND    = 9
+    # Individual order status endpoint: 10 req/sec, 500/min, 5000/day
+    ORDER_STATUS_PER_SEC = 10
+    # Historical candle data: 3 req/sec, 180/min, 5000/day
+    CANDLE_DATA_PER_SEC  = 3
 
 
 # ──────────────────────────────────────────────────────────────────────────────

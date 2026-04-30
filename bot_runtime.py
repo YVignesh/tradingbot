@@ -8,6 +8,7 @@ notifications, and pre-market screening.
 from __future__ import annotations
 
 import argparse
+import atexit
 import copy
 import json
 import logging
@@ -33,11 +34,14 @@ from broker.session import AngelSession
 from broker.websocket_feed import MarketFeed, OrderFeed
 from journal import TradeJournal
 from notifications import TelegramNotifier
+from notifications.telegram import TelegramCommandHandler
 from risk.manager import RiskManager
 from screener import ScreenerScheduler
+from ai.orchestrator import AIOrchestrator
 from strategies.directional import DirectionalStrategy
 from strategies.registry import STRATEGIES
 from utils import AngelOneAPIError, get_logger
+from utils.market_regime import MarketRegimeFilter
 
 IST = timezone(timedelta(hours=5, minutes=30))
 
@@ -85,6 +89,38 @@ def load_config(path: str = "config.json") -> dict:
             raise KeyError(f"Missing required section '{section}' in {path}")
     if "strategy" not in config and "strategies" not in config:
         raise KeyError(f"Missing required section 'strategy' or 'strategies' in {path}")
+
+    # Validate critical risk parameters (#19)
+    risk = config["risk"]
+    required_risk_keys = ("capital", "max_risk_pct", "sl_points", "max_qty", "daily_loss_limit")
+    for key in required_risk_keys:
+        if key not in risk:
+            raise KeyError(f"Missing required risk parameter '{key}' in {path}")
+        val = float(risk[key])
+        if val <= 0:
+            raise ValueError(f"risk.{key} must be positive, got {val}")
+
+    if float(risk["max_risk_pct"]) > 5.0:
+        raise ValueError(f"risk.max_risk_pct={risk['max_risk_pct']} exceeds safety limit of 5%")
+
+    if float(risk["daily_loss_limit"]) > float(risk["capital"]) * 0.2:
+        log = get_logger("config")
+        log.warning(
+            "daily_loss_limit (₹%.0f) is >20%% of capital (₹%.0f) — review if intentional",
+            float(risk["daily_loss_limit"]), float(risk["capital"]),
+        )
+
+    # Additional validation warnings
+    _cfg_log = get_logger("config")
+    sl_pts = float(risk.get("sl_points", 0))
+    sl_atr = float(risk.get("sl_atr_multiplier", 0))
+    if sl_pts <= 0 and sl_atr <= 0:
+        _cfg_log.warning("Neither sl_points nor sl_atr_multiplier is set — SL will be zero")
+
+    loop_interval = config.get("bot", {}).get("loop_interval_sec", 5)
+    if float(loop_interval) <= 0:
+        raise ValueError(f"bot.loop_interval_sec must be > 0, got {loop_interval}")
+
     return config
 
 
@@ -108,10 +144,15 @@ def build_strategy_configs(
         raw_strategies = list(config["strategies"])
     elif session is not None and config.get("screener", {}).get("enabled", False):
         selected = ScreenerScheduler(config).resolve_symbols(session, force=force_screener)
+        if not selected:
+            get_logger("build_strategy_configs").warning(
+                "Screener returned 0 symbols — bot will idle until next screener run"
+            )
+            return []
         raw_strategies = [
             {"symbol": item["symbol"], "exchange": item["exchange"]}
             for item in selected
-        ] or [template]
+        ]
     else:
         raw_strategies = [template]
 
@@ -282,6 +323,7 @@ class ExecutionManager:
         self.log = get_logger(f"execution.{strategy.symbol}.{strategy.strategy_name}")
         self._active_orders: dict[str, TrackedOrder] = {}
         self._last_terminal_status: dict[str, str] = {}
+        self._terminal_status_max = 200  # LRU cap — evict oldest when exceeded
         self._lock = threading.RLock()
         self._consecutive_api_failures = 0
         self._circuit_open_until = 0.0
@@ -374,6 +416,11 @@ class ExecutionManager:
             with self._lock:
                 self._active_orders.pop(unique_id, None)
                 self._last_terminal_status[unique_id] = status
+                # LRU eviction: trim oldest entries when cap exceeded
+                if len(self._last_terminal_status) > self._terminal_status_max:
+                    excess = len(self._last_terminal_status) - self._terminal_status_max
+                    for key in list(self._last_terminal_status)[:excess]:
+                        del self._last_terminal_status[key]
         elif status in PARTIAL_STATUSES and delta_qty > 0:
             self.log.warning(
                 "%s partially filled: %s %d/%d @ %.2f",
@@ -407,7 +454,7 @@ class ExecutionManager:
                         return _normalize_status(update.get("status", ""), _safe_int(update.get("filledshares", 0)))
             except AngelOneAPIError as exc:
                 self.log.warning("Status poll error for %s: %s", unique_order_id, exc)
-            time.sleep(2)
+            time.sleep(self.config.status_poll_interval_sec)
         with self._lock:
             state = self._active_orders.get(unique_order_id)
         if state is not None:
@@ -583,20 +630,52 @@ class ExecutionManager:
         if state.intent in EXIT_INTENTS and state.filled_qty < state.expected_qty:
             self._open_circuit(f"stale exit order left residual position ({state.unique_order_id})")
 
+    # AngelOne error codes that are definitively non-retryable
+    _NON_RETRYABLE_CODES = frozenset({
+        "AG8001",   # Invalid Token
+        "AG8003",   # Token missing
+        "AB1006",   # Blocked
+        "AB1008",   # Invalid Variety
+        "AB1009",   # Symbol Not Found
+        "AB1012",   # Invalid Product
+        "AB2002",   # ROBO blocked
+        "AB4008",   # ordertag length exceeded
+    })
+
+    # Codes that indicate auth needs refresh (not retryable via simple retry)
+    _AUTH_REFRESH_CODES = frozenset({
+        "AG8002",   # Token Expired
+        "AB8050",   # Invalid Refresh Token
+        "AB8051",   # Refresh Token Expired
+        "AB1010",   # AMX Session Expired
+        "AB1011",   # Client not login
+    })
+
+    # Codes that are explicitly retryable
+    _RETRYABLE_CODES = frozenset({
+        "AB1004",   # Something Went Wrong Try Later
+        "AB2001",   # Internal Error
+    })
+
     def _is_retryable_error(self, exc: AngelOneAPIError) -> bool:
-        text = str(exc).lower()
+        text = str(exc)
+        # Check AngelOne error codes first (more reliable than text matching)
+        for code in self._NON_RETRYABLE_CODES:
+            if code in text:
+                return False
+        for code in self._AUTH_REFRESH_CODES:
+            if code in text:
+                return False
+        for code in self._RETRYABLE_CODES:
+            if code in text:
+                return True
+        # Fallback: text-based classification for network/HTTP errors
+        text_lower = text.lower()
         retryable_markers = (
-            "network error",
-            "timed out",
-            "timeout",
-            "connection",
-            "http 429",
-            "http 500",
-            "http 502",
-            "http 503",
-            "http 504",
+            "network error", "timed out", "timeout", "connection",
+            "http 429", "http 500", "http 502", "http 503", "http 504",
         )
-        return any(marker in text for marker in retryable_markers)
+        return any(marker in text_lower for marker in retryable_markers)
 
     def _classify_rejection(self, update: dict) -> str:
         text = _status_message(update).lower()
@@ -634,7 +713,8 @@ def _place_sl(
     qty: int,
 ) -> Optional[str]:
     log = get_logger(f"sl_manager.{strategy.symbol}")
-    sl_trigger = round(entry_price - strategy.sl_points, 2)
+    sl_distance = strategy.effective_sl_points()
+    sl_trigger = round(entry_price - sl_distance, 2)
     try:
         result = execution.call_with_retry(
             "place_stop_loss_long",
@@ -661,7 +741,7 @@ def _place_sl(
         log.info("Long SL placed trigger=%.2f orderid=%s", sl_trigger, order_id)
         return order_id
     except AngelOneAPIError as exc:
-        log.error("SL order failed (no stop-loss active): %s", exc)
+        log.error("SL order failed (no stop-loss active) — flattening position: %s", exc)
         return None
 
 
@@ -673,7 +753,8 @@ def _place_sl_short(
     qty: int,
 ) -> Optional[str]:
     log = get_logger(f"sl_manager.{strategy.symbol}")
-    sl_trigger = round(entry_price + strategy.sl_points, 2)
+    sl_distance = strategy.effective_sl_points()
+    sl_trigger = round(entry_price + sl_distance, 2)
     try:
         result = execution.call_with_retry(
             "place_stop_loss_short",
@@ -700,7 +781,7 @@ def _place_sl_short(
         log.info("Short SL placed trigger=%.2f orderid=%s", sl_trigger, order_id)
         return order_id
     except AngelOneAPIError as exc:
-        log.error("Short SL order failed (no stop-loss active): %s", exc)
+        log.error("Short SL order failed (no stop-loss active) — flattening position: %s", exc)
         return None
 
 
@@ -726,7 +807,7 @@ def execute_buy(
     dry_run: bool,
 ) -> Optional[str]:
     log = get_logger(f"execute_buy.{strategy.symbol}")
-    qty = risk_mgr.position_size(ltp)
+    qty = risk_mgr.position_size(ltp, sl_override=strategy.effective_sl_points())
     allowed, reason = execution.can_submit(ENTRY_LONG)
     if not allowed:
         log.warning("BUY blocked by execution guard: %s", reason)
@@ -766,7 +847,11 @@ def execute_buy(
         if terminal != "complete":
             log.error("BUY order did not complete (status=%s)", terminal or "timeout")
             return None
-        return _place_sl(session, strategy, execution, strategy.entry_price, strategy.entry_qty)
+        sl_id = _place_sl(session, strategy, execution, strategy.entry_price, strategy.entry_qty)
+        if sl_id is None and strategy.in_position:
+            log.error("SL placement failed after BUY — immediately flattening position")
+            execute_sell(session, strategy, execution, ltp, dry_run=False, sl_order_id=None)
+        return sl_id
     except AngelOneAPIError as exc:
         log.error("BUY order failed: %s", exc)
         return None
@@ -795,9 +880,7 @@ def execute_sell(
         })
         return
 
-    if sl_order_id:
-        _cancel_sl(session, execution, sl_order_id)
-
+    # Place exit FIRST, cancel SL only AFTER exit is confirmed (#1 SL reliability)
     try:
         result = execution.call_with_retry(
             "place_sell_exit",
@@ -820,9 +903,13 @@ def execute_sell(
         )
         terminal = execution.wait_for_terminal(session, unique_id, execution.config.exit_order_timeout_sec)
         if terminal != "complete":
-            log.error("SELL order did not complete (status=%s)", terminal or "timeout")
+            log.error("SELL order did not complete (status=%s) — keeping SL active", terminal or "timeout")
+            return
+        # Exit confirmed → now safe to cancel SL
+        if sl_order_id:
+            _cancel_sl(session, execution, sl_order_id)
     except AngelOneAPIError as exc:
-        log.error("SELL order failed: %s", exc)
+        log.error("SELL order failed — keeping SL active: %s", exc)
 
 
 def execute_short(
@@ -834,7 +921,7 @@ def execute_short(
     dry_run: bool,
 ) -> Optional[str]:
     log = get_logger(f"execute_short.{strategy.symbol}")
-    qty = risk_mgr.position_size(ltp)
+    qty = risk_mgr.position_size(ltp, sl_override=strategy.effective_sl_points())
     allowed, reason = execution.can_submit(ENTRY_SHORT)
     if not allowed:
         log.warning("SHORT blocked by execution guard: %s", reason)
@@ -874,7 +961,11 @@ def execute_short(
         if terminal != "complete":
             log.error("SHORT order did not complete (status=%s)", terminal or "timeout")
             return None
-        return _place_sl_short(session, strategy, execution, strategy.entry_price, strategy.entry_qty)
+        sl_id = _place_sl_short(session, strategy, execution, strategy.entry_price, strategy.entry_qty)
+        if sl_id is None and strategy.in_position:
+            log.error("SL placement failed after SHORT — immediately flattening position")
+            execute_cover(session, strategy, execution, ltp, dry_run=False, sl_order_id=None)
+        return sl_id
     except AngelOneAPIError as exc:
         log.error("SHORT order failed: %s", exc)
         return None
@@ -903,9 +994,7 @@ def execute_cover(
         })
         return
 
-    if sl_order_id:
-        _cancel_sl(session, execution, sl_order_id)
-
+    # Place cover FIRST, cancel SL only AFTER cover is confirmed (#1 SL reliability)
     try:
         result = execution.call_with_retry(
             "place_cover_exit",
@@ -928,9 +1017,49 @@ def execute_cover(
         )
         terminal = execution.wait_for_terminal(session, unique_id, execution.config.exit_order_timeout_sec)
         if terminal != "complete":
-            log.error("COVER order did not complete (status=%s)", terminal or "timeout")
+            log.error("COVER order did not complete (status=%s) — keeping SL active", terminal or "timeout")
+            return
+        # Cover confirmed → now safe to cancel SL
+        if sl_order_id:
+            _cancel_sl(session, execution, sl_order_id)
     except AngelOneAPIError as exc:
-        log.error("COVER order failed: %s", exc)
+        log.error("COVER order failed — keeping SL active: %s", exc)
+
+
+def _squareoff_with_retry(
+    session: AngelSession,
+    runtime: StrategyRuntime,
+    ltp: float,
+    dry_run: bool,
+    max_attempts: int = 3,
+) -> None:
+    """EOD squareoff with retry escalation (#4).
+    Retries exit order up to max_attempts with increasing timeouts."""
+    log = get_logger(f"squareoff.{runtime.strategy.symbol}")
+    strategy = runtime.strategy
+
+    for attempt in range(max_attempts):
+        if not strategy.in_position:
+            return
+
+        if attempt > 0:
+            log.warning("Squareoff retry %d/%d for %s", attempt + 1, max_attempts, strategy.symbol)
+            time.sleep(2 * attempt)  # Backoff between retries
+
+        if strategy.direction == "LONG":
+            execute_sell(session, strategy, runtime.execution, ltp, dry_run, runtime.sl_order_id)
+        elif strategy.direction == "SHORT":
+            execute_cover(session, strategy, runtime.execution, ltp, dry_run, runtime.sl_order_id)
+
+        if not strategy.in_position:
+            runtime.sl_order_id = None
+            return
+
+    if strategy.in_position:
+        log.critical(
+            "SQUAREOFF FAILED after %d attempts for %s %s qty=%d — MANUAL INTERVENTION REQUIRED",
+            max_attempts, strategy.direction, strategy.symbol, strategy.entry_qty,
+        )
 
 
 def recover_positions(
@@ -986,20 +1115,37 @@ def run_strategy_loop(
     stop_event: threading.Event,
     notifier: Optional[TelegramNotifier] = None,
     reselect_fn: Optional[Callable[[], list[StrategyRuntime]]] = None,
+    orchestrator: Optional[AIOrchestrator] = None,
+    cmd_handler: Optional[TelegramCommandHandler] = None,
 ) -> None:
     log = get_logger("strategy_loop")
     dry_run = bool(config["bot"]["dry_run"])
-    loop_interval = int(config["bot"].get("loop_interval_sec", 300))
+    loop_interval = int(config["bot"].get("loop_interval_sec", 15))
     screener_cfg = config.get("screener", {})
     screener_enabled = bool(screener_cfg.get("enabled", False)) and reselect_fn is not None
     win_h, win_m = map(int, str(screener_cfg.get("run_window_start", "09:00")).split(":"))
     last_halt_reason = ""
     current_day: Optional[date] = None
     screener_done_today = False
+    mid_day_done_today = False
+
+    # AI mid-day window time
+    ai_cfg = config.get("ai", {})
+    _mid_day_h, _mid_day_m = 12, 30
+    mid_time_str = str(ai_cfg.get("mid_day_time", "12:30"))
+    if ":" in mid_time_str:
+        _mid_day_h, _mid_day_m = int(mid_time_str.split(":")[0]), int(mid_time_str.split(":")[1])
+
+    # Market regime filter — gates entries during choppy conditions
+    regime_cfg = config.get("regime_filter", {})
+    regime_filter = MarketRegimeFilter(regime_cfg)
+    regime_update_interval = int(regime_cfg.get("update_interval_sec", 300))
+    _last_regime_update = 0.0
 
     log.info(
-        "Strategy loop started interval=%ds dry_run=%s strategies=%d screener=%s",
+        "Strategy loop started interval=%ds dry_run=%s strategies=%d screener=%s regime=%s",
         loop_interval, dry_run, len(runtimes), screener_enabled,
+        "on" if regime_filter.enabled else "off",
     )
 
     while not stop_event.is_set():
@@ -1013,6 +1159,9 @@ def run_strategy_loop(
             if today != current_day:
                 current_day = today
                 screener_done_today = False
+                mid_day_done_today = False
+                if orchestrator is not None:
+                    orchestrator.clear_trades()
 
             if screener_enabled and not screener_done_today and (now_ist.hour, now_ist.minute) >= (win_h, win_m):
                 screener_done_today = True
@@ -1038,10 +1187,58 @@ def run_strategy_loop(
                     stop_event.wait(timeout=300)
                 continue
 
+            # AI mid-day review (once per day at configured time)
+            if (
+                orchestrator is not None
+                and orchestrator.enabled
+                and not mid_day_done_today
+                and (now_ist.hour, now_ist.minute) >= (_mid_day_h, _mid_day_m)
+            ):
+                mid_day_done_today = True
+                try:
+                    trades_so_far = []
+                    for rt in runtimes:
+                        popped = rt.strategy.pop_completed_trades()
+                        trades_so_far.extend(popped)
+                        orchestrator.collect_trades(popped)
+                    active_syms = [rt.strategy.symbol for rt in runtimes]
+                    regime_state = orchestrator.get_regime_state(regime_filter)
+                    adjustments = orchestrator.mid_day(trades_so_far, active_syms, regime_state)
+                    if adjustments:
+                        updated_config, syms_drop = orchestrator.apply_mid_day_adjustments(copy.deepcopy(config), adjustments)
+                        config = updated_config
+                        risk_cfg = config.get("risk", {})
+                        # Propagate updated risk params to each runtime's own config and strategy
+                        for rt in runtimes:
+                            rt.config["risk"] = dict(risk_cfg)
+                            if "sl_atr_multiplier" in adjustments.get("param_changes", {}):
+                                rt.strategy.sl_atr_multiplier = float(risk_cfg.get("sl_atr_multiplier", rt.strategy.sl_atr_multiplier))
+                            if "tp_atr_multiplier" in adjustments.get("param_changes", {}):
+                                rt.strategy.tp_atr_multiplier = float(risk_cfg.get("tp_atr_multiplier", rt.strategy.tp_atr_multiplier))
+                        if syms_drop:
+                            log.info("AI mid-day: dropping symbols %s from new entries", syms_drop)
+                except Exception as exc:
+                    log.warning("AI mid-day review error: %s", exc)
+
+            # Update market regime periodically (once per loop, not per symbol)
+            now_mono = time.monotonic()
+            if regime_filter.enabled and now_mono - _last_regime_update >= regime_update_interval:
+                _last_regime_update = now_mono
+                try:
+                    regime_filter.update(session)
+                except Exception as exc:
+                    log.warning("Regime filter update error: %s", exc)
+
             for runtime in runtimes:
                 strategy = runtime.strategy
                 strat_cfg = runtime.config["strategy"]
                 rlog = get_logger(f"loop.{strategy.symbol}.{strategy.strategy_name}")
+
+                # Proactive session health check (#26)
+                try:
+                    session.refresh_if_needed(warn_minutes=30)
+                except Exception as exc:
+                    rlog.warning("Session refresh check failed: %s", exc)
 
                 try:
                     ltp = get_ltp_single(
@@ -1056,12 +1253,22 @@ def run_strategy_loop(
 
                 signal_name = strategy.generate_signal(session)
 
+                # Check if paused via Telegram command (block entries, allow exits)
+                _is_paused = cmd_handler is not None and cmd_handler.is_paused
+
                 if signal_name == "BUY":
-                    can_trade, reason = risk_mgr.check_can_trade()
-                    if can_trade:
-                        runtime.sl_order_id = execute_buy(session, strategy, risk_mgr, runtime.execution, ltp, dry_run)
+                    if _is_paused:
+                        rlog.info("BUY blocked: bot is paused via Telegram")
                     else:
-                        rlog.warning("BUY blocked by risk manager: %s", reason)
+                        regime_ok, regime_reason = regime_filter.allows_entry()
+                        if not regime_ok:
+                            rlog.info("BUY blocked by regime filter: %s", regime_reason)
+                        else:
+                            can_trade, reason = risk_mgr.check_can_trade()
+                            if can_trade:
+                                runtime.sl_order_id = execute_buy(session, strategy, risk_mgr, runtime.execution, ltp, dry_run)
+                            else:
+                                rlog.warning("BUY blocked by risk manager: %s", reason)
 
                 elif signal_name == "SELL":
                     execute_sell(session, strategy, runtime.execution, ltp, dry_run, runtime.sl_order_id)
@@ -1069,11 +1276,18 @@ def run_strategy_loop(
                         runtime.sl_order_id = None
 
                 elif signal_name == "SHORT":
-                    can_trade, reason = risk_mgr.check_can_trade()
-                    if can_trade:
-                        runtime.sl_order_id = execute_short(session, strategy, risk_mgr, runtime.execution, ltp, dry_run)
+                    if _is_paused:
+                        rlog.info("SHORT blocked: bot is paused via Telegram")
                     else:
-                        rlog.warning("SHORT blocked by risk manager: %s", reason)
+                        regime_ok, regime_reason = regime_filter.allows_entry()
+                        if not regime_ok:
+                            rlog.info("SHORT blocked by regime filter: %s", regime_reason)
+                        else:
+                            can_trade, reason = risk_mgr.check_can_trade()
+                            if can_trade:
+                                runtime.sl_order_id = execute_short(session, strategy, risk_mgr, runtime.execution, ltp, dry_run)
+                            else:
+                                rlog.warning("SHORT blocked by risk manager: %s", reason)
 
                 elif signal_name == "COVER":
                     execute_cover(session, strategy, runtime.execution, ltp, dry_run, runtime.sl_order_id)
@@ -1155,11 +1369,34 @@ def main() -> None:
     log = get_logger("main")
 
     notifier = TelegramNotifier.from_config(config)
+
+    # Telegram command handler (bidirectional control)
+    cmd_handler: Optional[TelegramCommandHandler] = None
+    tg_cfg = config.get("notifications", {}).get("telegram", {})
+    if tg_cfg.get("enabled") and tg_cfg.get("commands_enabled", True):
+        cmd_handler = TelegramCommandHandler(
+            notifier,
+            poll_interval_sec=tg_cfg.get("poll_interval_sec", 3.0),
+        )
+
     journal = None
     if config.get("trade_journal", {}).get("enabled", True):
         journal = TradeJournal(path=config.get("trade_journal", {}).get("path", "data/journal/trades.sqlite3"))
 
     log.info("=== Bot starting dry_run=%s ===", config["bot"]["dry_run"])
+    if config["bot"]["dry_run"]:
+        log.info("╔══════════════════════════════════════════╗")
+        log.info("║         DRY RUN MODE — NO REAL ORDERS    ║")
+        log.info("╚══════════════════════════════════════════╝")
+    else:
+        log.warning("╔══════════════════════════════════════════╗")
+        log.warning("║   ⚠  LIVE TRADING — REAL MONEY AT RISK   ║")
+        log.warning("╚══════════════════════════════════════════╝")
+
+    # AI orchestrator (3-window: pre-market, mid-day, post-market)
+    orchestrator = AIOrchestrator(config)
+    if orchestrator.enabled:
+        log.info("AI orchestrator enabled: %s/%s", orchestrator.client.provider, orchestrator.client.model)
 
     session = AngelSession.from_env()
     stop_event = threading.Event()
@@ -1176,13 +1413,68 @@ def main() -> None:
     signal.signal(signal.SIGINT, _shutdown)
     signal.signal(signal.SIGTERM, _shutdown)
 
+    # Emergency cleanup: cancel SL orders on unplanned process death (#7)
+    def _emergency_cleanup():
+        for rt in runtimes:
+            if rt.sl_order_id:
+                try:
+                    cancel_order(session, rt.sl_order_id)
+                except Exception:
+                    pass
+            if rt.strategy.in_position and not config["bot"]["dry_run"]:
+                log.warning("Emergency: %s still has open position — manual intervention needed", rt.strategy.symbol)
+
+    atexit.register(_emergency_cleanup)
+
     try:
         session.login()
         log.info("Logged in: %s", session.tokens.client_code)
 
         runtime_configs = build_strategy_configs(config, session=session)
         if not runtime_configs:
-            raise RuntimeError("No strategies resolved from config/screener")
+            if config.get("screener", {}).get("enabled", False):
+                log.warning("Screener returned 0 symbols at startup — bot will idle and retry at next screener window")
+                runtime_configs = []
+            else:
+                raise RuntimeError("No strategies resolved from config — check config.json strategy section")
+
+        # AI Pre-Market Window: adjust strategy/params before trading starts
+        if orchestrator.enabled:
+            try:
+                screener_picks = []
+                for rc in runtime_configs:
+                    strat = rc.get("strategy", {})
+                    screener_picks.append({
+                        "symbol": strat.get("symbol", ""),
+                        "score": strat.get("screener_score", 0),
+                        "close": strat.get("close", 0),
+                        "atr": strat.get("atr", 0),
+                    })
+                regime_state = {"regime": "UNKNOWN", "adx": 0.0, "atr_pct": 0.0}
+                # Try to compute real regime state for AI pre-market
+                try:
+                    regime_cfg = config.get("regime_filter", {})
+                    if regime_cfg.get("enabled", False):
+                        pre_regime = MarketRegimeFilter(regime_cfg)
+                        pre_regime.update(session)
+                        regime_state = pre_regime.state()
+                except Exception:
+                    pass  # Fall back to UNKNOWN
+                plan = orchestrator.pre_market(
+                    screener_picks=screener_picks,
+                    regime_state=regime_state,
+                    journal_path=config.get("trade_journal", {}).get("path", "data/journal/trades.sqlite3"),
+                )
+                if plan:
+                    config = orchestrator.apply_day_plan(copy.deepcopy(config), plan)
+                    # Re-build runtime configs if AI changed the strategy
+                    if "strategy" in plan:
+                        log.info("AI changed strategy, rebuilding configs...")
+                        runtime_configs = build_strategy_configs(config, session=session)
+                        if not runtime_configs:
+                            raise RuntimeError("No strategies resolved after AI adjustment")
+            except Exception as exc:
+                log.warning("AI pre-market failed (continuing with defaults): %s", exc)
 
         risk_mgr = RiskManager(config)
         risk_mgr.sync_from_portfolio(session)
@@ -1295,10 +1587,7 @@ def main() -> None:
                 )
                 for rt in new_runtimes
             ]
-            try:
-                market_feed.stop()
-            except Exception:
-                pass
+            # Atomic feed swap: build new feed first, only stop old after new connects
             new_feed = MarketFeed(
                 session=session,
                 on_tick=_route_tick,
@@ -1307,7 +1596,16 @@ def main() -> None:
                 on_disconnect=lambda: log.warning("MarketFeed disconnected"),
             )
             new_feed.subscribe(instruments=new_subscriptions, mode=1)
-            new_feed.start()
+            try:
+                new_feed.start()
+            except Exception as exc:
+                log.error("New MarketFeed failed to start — keeping old feed: %s", exc)
+                return list(runtimes)
+            # New feed started successfully; stop old feed
+            try:
+                market_feed.stop()
+            except Exception:
+                pass
             market_feed = new_feed
 
             log.info("Re-selection: %d → %d strategies", len(runtimes), len(new_runtimes))
@@ -1333,11 +1631,26 @@ def main() -> None:
             len(runtimes),
             [f"{runtime.strategy.strategy_name}:{runtime.strategy.symbol}" for runtime in runtimes],
         )
+
+        # Start Telegram command handler (bidirectional control)
+        if cmd_handler is not None:
+            cmd_handler.set_bot_context(
+                stop_event=stop_event,
+                runtimes=runtimes,
+                risk_mgr=risk_mgr,
+                session=session,
+                config=config,
+                squareoff_fn=_squareoff_with_retry,
+            )
+            cmd_handler.start()
+
         screener_live = bool(config.get("screener", {}).get("enabled", False))
         run_strategy_loop(
             session, runtimes, risk_mgr, config, stop_event,
             notifier=notifier,
             reselect_fn=_reselect if screener_live else None,
+            orchestrator=orchestrator,
+            cmd_handler=cmd_handler,
         )
 
     except KeyboardInterrupt:
@@ -1345,6 +1658,34 @@ def main() -> None:
 
     finally:
         log.info("=== Shutting down ===")
+
+        # AI Post-Market Window: review the day's trades and extract lessons
+        if orchestrator.enabled:
+            try:
+                # Collect any remaining trades not yet popped
+                for runtime in runtimes:
+                    orchestrator.collect_trades(runtime.strategy.pop_completed_trades())
+                regime_state = {"regime": "UNKNOWN", "adx": 0.0, "atr_pct": 0.0}
+                orchestrator.post_market(orchestrator.get_collected_trades(), regime_state)
+            except Exception as exc:
+                log.warning("AI post-market review failed: %s", exc)
+
+        # Stop Telegram command handler
+        if cmd_handler is not None:
+            try:
+                cmd_handler.stop()
+            except Exception:
+                pass
+
+        # Force-close any open positions with retry before shutdown (#4)
+        for runtime in runtimes:
+            if runtime.strategy.in_position and not config["bot"]["dry_run"]:
+                try:
+                    ltp = get_ltp_single(session, runtime.strategy.exchange, runtime.strategy.symbol, runtime.strategy.token)
+                    _squareoff_with_retry(session, runtime, ltp, dry_run=False)
+                except Exception as exc:
+                    log.critical("Emergency squareoff failed for %s: %s", runtime.strategy.symbol, exc)
+
         for runtime in runtimes:
             try:
                 runtime.strategy.on_stop()

@@ -16,12 +16,15 @@ config.json allocation options:
   kelly_max_frac  : cap on Kelly fraction (default 0.5 = 50% of pool max)
   kelly_fraction  : use fractional Kelly e.g. 0.5 for half-Kelly (default 1.0)
 
-If Kelly fraction is <= 0 (negative edge), falls back to 10% of pool per symbol.
+If Kelly fraction is <= 0 (negative edge), returns empty allocation (no deployment).
 """
 
 from __future__ import annotations
 
+from utils import get_logger
 from allocation.base import BaseAllocator
+
+_log = get_logger(__name__)
 
 
 class KellyAllocator(BaseAllocator):
@@ -41,8 +44,12 @@ class KellyAllocator(BaseAllocator):
         kelly_f = max(0.0, min(full_kelly * frac_kelly, max_frac))
 
         if kelly_f <= 0:
-            # Negative edge: conservative fallback
-            kelly_f = 0.1
+            # Negative edge: do NOT deploy capital (#14)
+            _log.warning(
+                "Kelly fraction <= 0 (negative edge: win_rate=%.2f, b=%.2f) — returning empty allocation",
+                win_rate, b,
+            )
+            return {}
 
         total_deploy = pool * kelly_f
         per = total_deploy / len(picks)

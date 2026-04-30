@@ -62,7 +62,7 @@ def evaluate_symbol(
     atr_value = float(last["atr"])
     volume_spike = float(last["volume"]) / avg_volume if avg_volume > 0 else 0.0
     momentum_5d = ((close / float(prev_5["close"])) - 1.0) * 100 if float(prev_5["close"]) > 0 else 0.0
-    gap_pct = abs((close / float(prev_1["close"])) - 1.0) * 100 if float(prev_1["close"]) > 0 else 0.0
+    gap_pct = abs((float(last["open"]) / float(prev_1["close"])) - 1.0) * 100 if float(prev_1["close"]) > 0 else 0.0
 
     if min_price > 0 and close < min_price:
         return None

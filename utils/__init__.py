@@ -19,6 +19,9 @@ from broker.constants import PAISE_PER_RUPEE, RateLimits
 # LOGGING
 # ──────────────────────────────────────────────────────────────────────────────
 
+_logger_lock = threading.Lock()
+
+
 def get_logger(name: str, level: int = logging.INFO) -> logging.Logger:
     """
     Return a named logger with a consistent format.
@@ -34,14 +37,15 @@ def get_logger(name: str, level: int = logging.INFO) -> logging.Logger:
         Configured Logger instance
     """
     logger = logging.getLogger(name)
-    if not logger.handlers:                     # avoid duplicate handlers on re-import
-        handler = logging.StreamHandler()
-        fmt = logging.Formatter(
-            "%(asctime)s  [%(levelname)-8s]  %(name)s  — %(message)s",
-            datefmt="%Y-%m-%d %H:%M:%S",
-        )
-        handler.setFormatter(fmt)
-        logger.addHandler(handler)
+    with _logger_lock:
+        if not logger.handlers:                     # avoid duplicate handlers on re-import
+            handler = logging.StreamHandler()
+            fmt = logging.Formatter(
+                "%(asctime)s  [%(levelname)-8s]  %(name)s  — %(message)s",
+                datefmt="%Y-%m-%d %H:%M:%S",
+            )
+            handler.setFormatter(fmt)
+            logger.addHandler(handler)
     logger.setLevel(level)
     return logger
 
@@ -188,22 +192,27 @@ class RateLimiter:
     def acquire(self) -> None:
         """
         Block until a call slot is available within the rate window.
-        Returns immediately if under the limit; sleeps otherwise.
+        Returns immediately if under the limit; sleeps outside the lock.
         """
-        with self._lock:
-            now = time.monotonic()
-            # Remove timestamps older than the window
-            self._calls = [t for t in self._calls if now - t < self.period]
-            if len(self._calls) >= self.max_calls:
-                # Sleep until the oldest call falls out of the window
+        while True:
+            with self._lock:
+                now = time.monotonic()
+                # Remove timestamps older than the window
+                self._calls = [t for t in self._calls if now - t < self.period]
+                if len(self._calls) < self.max_calls:
+                    self._calls.append(time.monotonic())
+                    return
+                # Calculate sleep outside lock to avoid convoy effect (#25)
                 sleep_for = self.period - (now - self._calls[0])
-                _log.debug("Rate limit reached — sleeping %.3fs", sleep_for)
-                time.sleep(max(sleep_for, 0))
-            self._calls.append(time.monotonic())
+            _log.debug("Rate limit reached — sleeping %.3fs", sleep_for)
+            time.sleep(max(sleep_for, 0.001))
 
 
 # Singleton rate limiter shared across all order calls in the same process
 order_rate_limiter = RateLimiter(max_calls=RateLimits.ORDERS_PER_SECOND, period=1.0)
+
+# Rate limiter for Individual Order Status endpoint (10 req/sec per API docs)
+order_status_rate_limiter = RateLimiter(max_calls=RateLimits.ORDER_STATUS_PER_SEC, period=1.0)
 
 
 # ──────────────────────────────────────────────────────────────────────────────

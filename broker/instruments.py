@@ -22,7 +22,6 @@ Dependencies:
 
 import json
 import time
-import tempfile
 import threading
 import requests
 from pathlib import Path
@@ -34,7 +33,9 @@ from utils import get_logger, AngelOneAPIError
 _log = get_logger(__name__)
 
 # Use the OS temp directory so the cache works on Windows, macOS, and Linux
-DEFAULT_CACHE_PATH = Path(tempfile.gettempdir()) / "angelone_instruments.json"
+_CACHE_DIR = Path.home() / ".tradingbot" / "cache"
+_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+DEFAULT_CACHE_PATH = _CACHE_DIR / "angelone_instruments.json"
 CACHE_MAX_AGE_HOURS = 12  # refresh cache if older than this
 
 
@@ -190,6 +191,33 @@ class InstrumentMaster:
         self._check_loaded()
         inst = self._by_symbol.get((exchange.upper(), symbol.upper()))
         return inst["token"] if inst else None
+
+    def resolve_symbol(self, exchange: str, symbol: str) -> Optional[str]:
+        """
+        Resolve a user-supplied ticker to the canonical AngelOne trading symbol.
+
+        Handles the common mismatch between real-world tickers and AngelOne's
+        naming convention:
+          - NSE equities:  "SBIN"     → "SBIN-EQ"
+          - BSE equities:  "SBIN"     → "SBIN"   (no suffix on BSE)
+          - Exact matches: "SBIN-EQ"  → "SBIN-EQ" (already correct)
+
+        Returns the canonical symbol string, or None if the ticker cannot be
+        found on the given exchange in any known variant.
+        """
+        self._check_loaded()
+        exchange = exchange.upper()
+        symbol = symbol.upper()
+
+        if self._by_symbol.get((exchange, symbol)):
+            return symbol
+
+        if exchange == "NSE" and not symbol.endswith("-EQ"):
+            candidate = symbol + "-EQ"
+            if self._by_symbol.get((exchange, candidate)):
+                return candidate
+
+        return None
 
     def get_token_strict(self, exchange: str, symbol: str) -> str:
         """

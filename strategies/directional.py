@@ -42,9 +42,13 @@ class DirectionalStrategy(BaseStrategy):
 
         self.capital = float(risk["capital"])
         self.max_risk_pct = float(risk["max_risk_pct"])
-        self.sl_points = float(risk["sl_points"])
-        self.tp_points = float(risk["tp_points"])
+        self.sl_points = float(risk.get("sl_points", 0))
+        self.tp_points = float(risk.get("tp_points", 0))
         self.max_qty = int(risk["max_qty"])
+
+        # ATR-based dynamic SL/TP (overrides fixed sl_points/tp_points when set)
+        self.sl_atr_multiplier = float(risk.get("sl_atr_multiplier", 0))
+        self.tp_atr_multiplier = float(risk.get("tp_atr_multiplier", 0))
 
         self.strategy_name = str(strat.get("name", self.NAME))
         self.charge_segment = str(strat.get("charge_segment") or broker.get("charge_segment") or "").strip()
@@ -93,6 +97,10 @@ class DirectionalStrategy(BaseStrategy):
     def on_start(self, session) -> None:
         master = InstrumentMaster()
         master.load()
+        resolved = master.resolve_symbol(self.exchange, self.symbol)
+        if resolved and resolved != self.symbol:
+            self.log.info("Symbol resolved: %s → %s", self.symbol, resolved)
+            self.symbol = resolved
         self.token = master.get_token(self.exchange, self.symbol)
         if not self.token:
             raise ValueError(
@@ -125,6 +133,12 @@ class DirectionalStrategy(BaseStrategy):
     def on_tick(self, tick: dict) -> None:
         ltp = float(tick.get("ltp", self._ltp) or self._ltp)
         self._ltp = ltp
+        # Track MAE/MFE intra-trade extremes
+        if self._active_trade is not None and ltp > 0:
+            if ltp > self._active_trade["high_since_entry"]:
+                self._active_trade["high_since_entry"] = ltp
+            if ltp < self._active_trade["low_since_entry"]:
+                self._active_trade["low_since_entry"] = ltp
         if self.tsl_enabled and self.direction != "FLAT" and self.tsl is not None:
             if self.tsl.update(ltp):
                 self._tsl_triggered = True
@@ -151,8 +165,8 @@ class DirectionalStrategy(BaseStrategy):
             return None
 
         idx = len(prepared) - 2
-        if self.tsl_enabled and self.tsl is not None and self.tsl._mode == "atr":
-            self._cache_atr(prepared, idx)
+        # Always cache ATR for dynamic SL/TP and TSL
+        self._cache_atr(prepared, idx)
 
         signal = self.signal_from_prepared(prepared, idx, self.direction)
         self.log.info(
@@ -191,10 +205,17 @@ class DirectionalStrategy(BaseStrategy):
             elif self.direction == "SHORT":
                 self._increase_short(price, qty, oid)
 
-    def compute_qty(self, ltp: float) -> int:
-        risk_amount = self.capital * self.max_risk_pct / 100.0
-        qty = int(risk_amount / self.sl_points)
-        return max(1, min(qty, self.max_qty))
+    def effective_sl_points(self) -> float:
+        """Return ATR-based SL distance if configured, else fixed sl_points."""
+        if self.sl_atr_multiplier > 0 and self._last_atr > 0:
+            return round(self._last_atr * self.sl_atr_multiplier, 2)
+        return self.sl_points
+
+    def effective_tp_points(self) -> float:
+        """Return ATR-based TP distance if configured, else fixed tp_points."""
+        if self.tp_atr_multiplier > 0 and self._last_atr > 0:
+            return round(self._last_atr * self.tp_atr_multiplier, 2)
+        return self.tp_points
 
     def get_state(self) -> dict:
         if self.direction == "LONG" and self._ltp > 0:
@@ -250,6 +271,8 @@ class DirectionalStrategy(BaseStrategy):
             "realized_qty": 0,
             "gross_pnl": 0.0,
             "recovered": True,
+            "high_since_entry": entry_price,
+            "low_since_entry": entry_price,
         }
         tsl_status = self._arm_tsl(entry_price, "long" if direction == "LONG" else "short")
         self.log.warning(
@@ -280,6 +303,8 @@ class DirectionalStrategy(BaseStrategy):
             "realized_qty": 0,
             "gross_pnl": 0.0,
             "recovered": False,
+            "high_since_entry": price,
+            "low_since_entry": price,
         }
         tsl_status = self._arm_tsl(price, "long")
         self.log.info(
@@ -357,6 +382,8 @@ class DirectionalStrategy(BaseStrategy):
             "realized_qty": 0,
             "gross_pnl": 0.0,
             "recovered": False,
+            "high_since_entry": price,
+            "low_since_entry": price,
         }
         tsl_status = self._arm_tsl(price, "short")
         self.log.info(
@@ -427,11 +454,20 @@ class DirectionalStrategy(BaseStrategy):
         total_qty = int(self._active_trade["entry_qty"])
         avg_entry = self._active_trade["entry_turnover"] / total_qty if total_qty > 0 else self.entry_price
         avg_exit = self._active_trade["exit_turnover"] / total_qty if total_qty > 0 else price
+        direction = self._active_trade["direction"]
+        high_since = self._active_trade.get("high_since_entry", avg_entry)
+        low_since = self._active_trade.get("low_since_entry", avg_entry)
+        if direction == "LONG":
+            mae = round(avg_entry - low_since, 2)   # max drawdown from entry
+            mfe = round(high_since - avg_entry, 2)   # max run-up from entry
+        else:
+            mae = round(high_since - avg_entry, 2)   # max adverse for shorts
+            mfe = round(avg_entry - low_since, 2)   # max favourable for shorts
         self._completed_trades.append({
             "strategy": self._active_trade["strategy"],
             "symbol": self._active_trade["symbol"],
             "exchange": self._active_trade["exchange"],
-            "direction": self._active_trade["direction"],
+            "direction": direction,
             "entry_time": self._active_trade["entry_time"],
             "exit_time": self._parse_fill_time(filled_at),
             "entry_price": round(avg_entry, 2),
@@ -439,6 +475,8 @@ class DirectionalStrategy(BaseStrategy):
             "qty": total_qty,
             "gross_pnl": round(self._active_trade["gross_pnl"], 2),
             "recovered": bool(self._active_trade.get("recovered", False)),
+            "mae": mae,
+            "mfe": mfe,
         })
         self._active_trade = None
 

@@ -384,25 +384,59 @@ def get_ohlc(
     return result
 
 
+# ──────────────────────────────────────────────────────────────────────────────
+# NSE HOLIDAY CALENDAR (update annually — source: NSE circulars)
+# ──────────────────────────────────────────────────────────────────────────────
+
+from datetime import date as _date
+
+# 2026 NSE holidays (equity segment) — update each year from NSE website
+_NSE_HOLIDAYS: frozenset = frozenset({
+    _date(2026, 1, 26),   # Republic Day
+    _date(2026, 2, 17),   # Mahashivratri
+    _date(2026, 3, 14),   # Holi
+    _date(2026, 3, 31),   # Id-Ul-Fitr (Eid)
+    _date(2026, 4, 2),    # Ram Navami
+    _date(2026, 4, 3),    # Good Friday
+    _date(2026, 4, 14),   # Dr. Ambedkar Jayanti
+    _date(2026, 5, 1),    # Maharashtra Day
+    _date(2026, 6, 7),    # Eid-Ul-Adha (Bakrid)
+    _date(2026, 7, 7),    # Muharram
+    _date(2026, 8, 15),   # Independence Day
+    _date(2026, 8, 21),   # Janmashtami
+    _date(2026, 9, 5),    # Milad-un-Nabi
+    _date(2026, 10, 2),   # Mahatma Gandhi Jayanti
+    _date(2026, 10, 20),  # Dussehra
+    _date(2026, 10, 21),  # Dussehra (additional)
+    _date(2026, 11, 9),   # Diwali (Laxmi Puja)
+    _date(2026, 11, 10),  # Diwali Balipratipada
+    _date(2026, 11, 24),  # Guru Nanak Jayanti
+    _date(2026, 12, 25),  # Christmas
+})
+
+
+def is_nse_holiday(d: _date | None = None) -> bool:
+    """Check if a given date (default: today IST) is an NSE holiday."""
+    if d is None:
+        d = datetime.now(IST).date()
+    return d in _NSE_HOLIDAYS
+
+
 def is_market_open() -> bool:
     """
     Check if the Indian equity market is currently open.
 
     Market hours: Monday–Friday, 09:15 to 15:30 IST.
-    Does NOT account for exchange holidays — add holiday calendar as needed.
+    Accounts for weekends and NSE holidays.
 
     Returns:
         True if current IST time is within regular market hours
-        False on weekends or outside 09:15–15:30 IST
-
-    Example:
-        if is_market_open():
-            buy(session, ...)
-        else:
-            print("Market is closed")
+        False on weekends, holidays, or outside 09:15–15:30 IST
     """
     now = datetime.now(IST)
     if now.weekday() >= 5:   # Saturday=5, Sunday=6
+        return False
+    if now.date() in _NSE_HOLIDAYS:
         return False
     market_start = now.replace(hour=9,  minute=15, second=0, microsecond=0)
     market_end   = now.replace(hour=15, minute=30, second=0, microsecond=0)
@@ -411,22 +445,11 @@ def is_market_open() -> bool:
 
 def minutes_to_market_open() -> Optional[int]:
     """
-    Return minutes until market opens, or None if market is open/already closed today.
-
-    Useful for scheduling pre-market tasks.
-
-    Returns:
-        Integer minutes until 09:15 IST, or None if market is open or past close
-
-    Example:
-        mins = minutes_to_market_open()
-        if mins:
-            print(f"Market opens in {mins} minutes")
-            time.sleep(mins * 60)
-        get_candles(...)   # now safe to fetch
+    Return minutes until market opens, or None if market is open or already
+    closed for today. Returns None on weekends and holidays.
     """
     now = datetime.now(IST)
-    if now.weekday() >= 5:
+    if now.weekday() >= 5 or now.date() in _NSE_HOLIDAYS:
         return None
     market_open = now.replace(hour=9, minute=15, second=0, microsecond=0)
     if now >= market_open:

@@ -28,7 +28,7 @@ from broker.constants import (
 from broker.session import AngelSession
 from utils import (
     get_logger, validate_response, AngelOneAPIError,
-    order_rate_limiter, rupees_to_paise,
+    order_rate_limiter, order_status_rate_limiter, rupees_to_paise,
 )
 
 _log = get_logger(__name__)
@@ -43,11 +43,15 @@ def _post(session: AngelSession, endpoint_key: str, payload: dict) -> dict:
     Authenticated POST with rate limiting and error handling.
     Applies the order rate limiter before each call.
     """
-    order_rate_limiter.acquire()          # Respect 10 OPS SEBI limit
+    order_rate_limiter.acquire()          # Respect 9 req/sec cumulative API limit
     url = BASE_URL + ENDPOINTS[endpoint_key]
+    with session._token_lock:
+        tok = session.tokens
+    if not tok:
+        raise AngelOneAPIError("Session not initialised — call session.login() first")
     try:
         resp = requests.post(
-            url, json=payload, headers=session.tokens.headers, timeout=REQUEST_TIMEOUT
+            url, json=payload, headers=tok.headers, timeout=REQUEST_TIMEOUT
         )
         resp.raise_for_status()
         return resp.json()
@@ -683,6 +687,7 @@ def get_order_status(session: AngelSession, unique_order_id: str) -> dict:
         print(status["status"])   # "complete", "open", "rejected", ...
     """
     url = BASE_URL + ENDPOINTS["order_status"] + f"/{unique_order_id}"
+    order_status_rate_limiter.acquire()   # Respect 10 req/sec API rate limit
     try:
         resp = requests.get(
             url, headers=session.tokens.headers, timeout=REQUEST_TIMEOUT

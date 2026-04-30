@@ -26,9 +26,14 @@ class SupertrendStrategy(DirectionalStrategy):
         strat = config["strategy"]
         self.st_period = int(strat.get("supertrend_period", 10))
         self.st_mult = float(strat.get("supertrend_multiplier", 3.0))
+        self.vol_period = int(strat.get("volume_period", 20))
+        self.vol_spike = float(strat.get("volume_spike", 0))  # 0 = disabled
+        # Optional RSI confirmation
+        self.rsi_filter = bool(strat.get("rsi_filter", False))
+        self.rsi_period = int(strat.get("rsi_period", 14))
 
     def required_history_bars(self) -> int:
-        return self.st_period + 5
+        return max(self.st_period, self.vol_period, self.rsi_period) + 5
 
     def prepare_dataframe(self, df: pd.DataFrame) -> pd.DataFrame:
         prepared = df.copy()
@@ -38,6 +43,11 @@ class SupertrendStrategy(DirectionalStrategy):
         )
         prepared["st_line"] = st_line
         prepared["st_dir"] = st_dir
+        if self.vol_spike > 0:
+            prepared["vol_avg"] = prepared["volume"].rolling(self.vol_period, min_periods=1).mean()
+        if self.rsi_filter:
+            from indicators.momentum import rsi as compute_rsi
+            prepared["rsi"] = compute_rsi(prepared["close"], self.rsi_period)
         return prepared
 
     def signal_from_prepared(self, df: pd.DataFrame, index: int, direction: str):
@@ -53,15 +63,28 @@ class SupertrendStrategy(DirectionalStrategy):
         flipped_bullish = curr_dir == 1 and prev_dir == -1
         flipped_bearish = curr_dir == -1 and prev_dir == 1
 
+        # Volume confirmation
+        vol_ok = True
+        if self.vol_spike > 0 and "vol_avg" in df.columns:
+            vol_ok = float(df["volume"].iloc[index]) >= float(df["vol_avg"].iloc[index]) * self.vol_spike
+
+        # RSI confirmation
+        rsi_ok_long = True
+        rsi_ok_short = True
+        if self.rsi_filter and "rsi" in df.columns:
+            rsi_val = float(df["rsi"].iloc[index])
+            rsi_ok_long = rsi_val > 50
+            rsi_ok_short = rsi_val < 50
+
         if flipped_bullish:
             if direction == "SHORT":
                 return "COVER"
-            if direction == "FLAT":
+            if direction == "FLAT" and vol_ok and rsi_ok_long:
                 return "BUY"
         elif flipped_bearish:
             if direction == "LONG":
                 return "SELL"
-            if direction == "FLAT":
+            if direction == "FLAT" and vol_ok and rsi_ok_short:
                 return "SHORT"
         return None
 

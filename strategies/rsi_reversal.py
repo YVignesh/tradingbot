@@ -37,14 +37,18 @@ class RsiReversalStrategy(DirectionalStrategy):
         self.rsi_overbought = float(strat.get("rsi_overbought", 70))
         self.rsi_exit_long = float(strat.get("rsi_exit_long", 65))
         self.rsi_exit_short = float(strat.get("rsi_exit_short", 35))
+        self.vol_period = int(strat.get("volume_period", 20))
+        self.vol_spike = float(strat.get("volume_spike", 0))  # 0 = disabled
 
     def required_history_bars(self) -> int:
-        return max(self.trend_ema_period, self.rsi_period) + 5
+        return max(self.trend_ema_period, self.rsi_period, self.vol_period) + 5
 
     def prepare_dataframe(self, df: pd.DataFrame) -> pd.DataFrame:
         prepared = df.copy()
         prepared["rsi"] = rsi(prepared["close"], self.rsi_period)
         prepared["trend_ema"] = ema(prepared["close"], self.trend_ema_period)
+        if self.vol_spike > 0:
+            prepared["vol_avg"] = prepared["volume"].rolling(self.vol_period, min_periods=1).mean()
         return prepared
 
     def signal_from_prepared(self, df: pd.DataFrame, index: int, direction: str):
@@ -73,9 +77,14 @@ class RsiReversalStrategy(DirectionalStrategy):
             return None
 
         # Flat — look for entries
-        if crossed_oversold_up and close > trend:
+        # Volume confirmation gate
+        vol_ok = True
+        if self.vol_spike > 0 and "vol_avg" in df.columns:
+            vol_ok = float(df["volume"].iloc[index]) >= float(df["vol_avg"].iloc[index]) * self.vol_spike
+
+        if crossed_oversold_up and close > trend and vol_ok:
             return "BUY"
-        if crossed_overbought_down and close < trend:
+        if crossed_overbought_down and close < trend and vol_ok:
             return "SHORT"
         return None
 

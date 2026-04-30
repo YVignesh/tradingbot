@@ -22,8 +22,9 @@ class MomentumScreener(BaseScreener):
         return True
 
     def score(self, metrics: dict) -> float:
+        # Rebalanced weights: momentum and volume roughly equal contribution (#11)
         return (
-            float(metrics.get("momentum_5d", 0.0)) * 0.6
-            + float(metrics.get("volume_spike", 0.0)) * 25.0
-            - float(metrics.get("gap_pct", 0.0)) * 0.5
+            float(metrics.get("momentum_5d", 0.0)) * 2.0
+            + float(metrics.get("volume_spike", 0.0)) * 5.0
+            - float(metrics.get("gap_pct", 0.0)) * 1.0
         )

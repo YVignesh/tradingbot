@@ -57,8 +57,9 @@ class BreakoutScreener(BaseScreener):
         vol_expansion = float(metrics.get("vol_expansion", 1.0))
         gap_pct = float(metrics.get("gap_pct", 0.0))
         # Closer to high = higher score; more volume expansion = higher score
+        # Rebalanced weights (#11)
         return (
-            -pct_from_high * 2.0
-            + vol_expansion * 15.0
-            - gap_pct * 0.5
+            -pct_from_high * 3.0
+            + vol_expansion * 5.0
+            - gap_pct * 1.0
         )

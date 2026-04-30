@@ -3,6 +3,9 @@
 from strategies.base import BaseStrategy
 from strategies.bollinger_breakout import BollingerBreakoutStrategy
 from strategies.ema_crossover import EmaCrossoverStrategy
+from strategies.gap_and_go import GapAndGoStrategy
+from strategies.inside_bar import InsideBarStrategy
+from strategies.macd_divergence import MacdDivergenceStrategy
 from strategies.macd_rsi_trend import MacdRsiTrendStrategy
 from strategies.orb import OrbStrategy
 from strategies.pivot_bounce import PivotBounceStrategy
@@ -18,11 +21,17 @@ STRATEGIES: dict[str, type[BaseStrategy]] = {
     "macd_rsi_trend": MacdRsiTrendStrategy,
     "vwap_pullback": VwapPullbackStrategy,
     "bollinger_breakout": BollingerBreakoutStrategy,
-    # New strategies
+    # Trend-following
     "supertrend": SupertrendStrategy,
-    "rsi_reversal": RsiReversalStrategy,
-    "orb": OrbStrategy,
-    "stochastic_crossover": StochasticCrossoverStrategy,
     "three_ema_trend": ThreeEmaTrendStrategy,
+    # Mean-reversion
+    "rsi_reversal": RsiReversalStrategy,
+    "stochastic_crossover": StochasticCrossoverStrategy,
+    # Intraday patterns
+    "orb": OrbStrategy,
     "pivot_bounce": PivotBounceStrategy,
+    "inside_bar": InsideBarStrategy,
+    "gap_and_go": GapAndGoStrategy,
+    # Advanced
+    "macd_divergence": MacdDivergenceStrategy,
 }

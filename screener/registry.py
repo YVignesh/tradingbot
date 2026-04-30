@@ -4,12 +4,14 @@ from screener.base import BaseScreener
 from screener.breakout import BreakoutScreener
 from screener.gap_momentum import GapMomentumScreener
 from screener.high_rvol import HighRvolScreener
+from screener.institutional import InstitutionalScreener
 from screener.mean_reversion import MeanReversionScreener
 from screener.momentum import MomentumScreener
 from screener.multi_factor import MultiFactorScreener
 from screener.price_acceleration import PriceAccelerationScreener
 from screener.quality_trend import QualityTrendScreener
 from screener.range_position import RangePositionScreener
+from screener.relative_strength import RelativeStrengthScreener
 from screener.vcp import VCPScreener
 
 SCREENERS: dict[str, type[BaseScreener]] = {
@@ -17,7 +19,7 @@ SCREENERS: dict[str, type[BaseScreener]] = {
     "momentum": MomentumScreener,
     "mean_reversion": MeanReversionScreener,
     "breakout": BreakoutScreener,
-    # New screeners
+    # Pattern screeners
     "vcp": VCPScreener,
     "high_rvol": HighRvolScreener,
     "range_position": RangePositionScreener,
@@ -25,6 +27,9 @@ SCREENERS: dict[str, type[BaseScreener]] = {
     "multi_factor": MultiFactorScreener,
     "gap_momentum": GapMomentumScreener,
     "quality_trend": QualityTrendScreener,
+    # New screeners
+    "relative_strength": RelativeStrengthScreener,
+    "institutional": InstitutionalScreener,
 }
 
 

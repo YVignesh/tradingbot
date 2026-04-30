@@ -52,14 +52,10 @@ class OrbStrategy(DirectionalStrategy):
                         orb_high[idx] = float(day_df["high"].iloc[: self.orb_bars].max())
                         orb_low[idx] = float(day_df["low"].iloc[: self.orb_bars].min())
         else:
-            # Fallback: treat full series as single day
-            or_h = prepared["high"].iloc[: self.orb_bars].max()
-            or_l = prepared["low"].iloc[: self.orb_bars].min()
-            for i in range(self.orb_bars, len(prepared)):
-                idx = prepared.index[i]
-                orb_high[idx] = or_h
-                orb_low[idx] = or_l
-                bar_of_day[idx] = i
+            raise ValueError(
+                "ORB strategy requires a DatetimeIndex to identify intraday sessions. "
+                "Got index type: " + type(prepared.index).__name__
+            )
 
         prepared["orb_high"] = orb_high
         prepared["orb_low"] = orb_low

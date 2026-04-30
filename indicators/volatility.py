@@ -9,6 +9,7 @@ All functions:
   - Have no broker dependency
 """
 from typing import NamedTuple, Tuple
+import math
 import pandas as pd
 
 
@@ -141,13 +142,13 @@ def supertrend(
 
     for i in range(n):
         a = atr_arr[i]
-        if a != a:  # NaN check
+        if math.isnan(a):
             continue
 
         bu = hl2_arr[i] + multiplier * a
         bl = hl2_arr[i] - multiplier * a
 
-        if i == 0 or final_upper[i - 1] != final_upper[i - 1]:
+        if i == 0 or math.isnan(final_upper[i - 1]):
             final_upper[i] = bu
             final_lower[i] = bl
             st_line[i] = bu

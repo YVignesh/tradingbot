@@ -48,16 +48,10 @@ class PivotBounceStrategy(DirectionalStrategy):
                 reindexed = col_data.shift(1).reindex(df.index, method="ffill")
                 df[col_name] = reindexed
         else:
-            # Fallback: use rolling 20-bar high/low/close to approximate pivot
-            roll_high = df["high"].rolling(20, min_periods=10).max().shift(1)
-            roll_low = df["low"].rolling(20, min_periods=10).min().shift(1)
-            roll_close = df["close"].rolling(20, min_periods=10).mean().shift(1)
-            pivot = (roll_high + roll_low + roll_close) / 3.0
-            df["pivot"] = pivot
-            df["r1"] = 2.0 * pivot - roll_low
-            df["s1"] = 2.0 * pivot - roll_high
-            df["r2"] = pivot + (roll_high - roll_low)
-            df["s2"] = pivot - (roll_high - roll_low)
+            raise ValueError(
+                "PivotBounce strategy requires a DatetimeIndex for accurate daily "
+                "pivot calculation. Got index type: " + type(df.index).__name__
+            )
 
         return df
 

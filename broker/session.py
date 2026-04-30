@@ -16,8 +16,11 @@ Dependencies:
 """
 
 import os
+import sys
+import ctypes
 import pyotp
 import requests
+import threading
 from datetime import datetime, timedelta, timezone
 from dataclasses import dataclass, field
 from typing import Optional
@@ -136,6 +139,7 @@ class AngelSession:
         self._local_ip    = local_ip
         self._mac_address = mac_address
         self.tokens: Optional[SessionTokens] = None
+        self._token_lock  = threading.Lock()  # guards self.tokens read/write
 
     # ── Factory: load credentials from environment variables ─────────────────
     @classmethod
@@ -182,8 +186,10 @@ class AngelSession:
             requests.RequestException on network failure
         """
         url = BASE_URL + ENDPOINTS[endpoint_key]
-        if auth and self.tokens:
-            headers = self.tokens.headers
+        with self._token_lock:
+            tok = self.tokens
+        if auth and tok:
+            headers = tok.headers
         else:
             headers = build_headers(
                 jwt_token   = "",
@@ -212,12 +218,14 @@ class AngelSession:
         Returns:
             Parsed JSON response dict
         """
-        if not self.tokens:
+        with self._token_lock:
+            tok = self.tokens
+        if not tok:
             raise AngelOneAPIError("Session not initialised — call login() first")
         url = BASE_URL + ENDPOINTS[endpoint_key]
         try:
             resp = requests.get(
-                url, params=params, headers=self.tokens.headers, timeout=REQUEST_TIMEOUT
+                url, params=params, headers=tok.headers, timeout=REQUEST_TIMEOUT
             )
             resp.raise_for_status()
             return resp.json()
@@ -273,7 +281,7 @@ class AngelSession:
         # feedToken is inside the data dict (AngelOne API v1 login response)
         feed_token = data.get("feedToken", "")
 
-        self.tokens = SessionTokens(
+        new_tokens = SessionTokens(
             jwt_token     = data["jwtToken"].replace("Bearer ", "").strip(),
             refresh_token = data["refreshToken"],
             feed_token    = feed_token,
@@ -283,6 +291,8 @@ class AngelSession:
             local_ip      = self._local_ip,
             mac_address   = self._mac_address,
         )
+        with self._token_lock:
+            self.tokens = new_tokens
         _log.info("Login successful. Session created at %s IST",
                   self.tokens.created_at.strftime("%H:%M:%S"))
         return self.tokens
@@ -299,21 +309,33 @@ class AngelSession:
         Raises:
             AngelOneAPIError if refresh_token is expired (must call login() again)
         """
-        if not self.tokens:
+        with self._token_lock:
+            tok = self.tokens
+        if not tok:
             _log.warning("No active session — calling login() instead of refresh()")
             return self.login()
 
         _log.info("Refreshing session tokens...")
-        payload = {"refreshToken": self.tokens.refresh_token}
+        payload = {"refreshToken": tok.refresh_token}
         raw  = self._post("refresh_token", payload)
         data = validate_response(raw, context="refresh_token")
 
-        # Update only the rotating tokens; keep feed_token and other fields
-        self.tokens.jwt_token     = data["jwtToken"].replace("Bearer ", "").strip()
-        self.tokens.refresh_token = data["refreshToken"]
-        self.tokens.created_at    = datetime.now(IST)
+        # Build a new immutable SessionTokens (atomic swap under lock)
+        refreshed = SessionTokens(
+            jwt_token     = data["jwtToken"].replace("Bearer ", "").strip(),
+            refresh_token = data["refreshToken"],
+            feed_token    = tok.feed_token,
+            client_code   = tok.client_code,
+            api_key       = tok.api_key,
+            public_ip     = tok.public_ip,
+            local_ip      = tok.local_ip,
+            mac_address   = tok.mac_address,
+            created_at    = datetime.now(IST),
+        )
+        with self._token_lock:
+            self.tokens = refreshed
         _log.info("Token refreshed successfully")
-        return self.tokens
+        return refreshed
 
     def refresh_if_needed(self, warn_minutes: int = 60) -> bool:
         """
@@ -323,7 +345,9 @@ class AngelSession:
         Returns:
             True if a refresh was performed, False if not needed
         """
-        if self.tokens and self.tokens.is_near_expiry(warn_minutes):
+        with self._token_lock:
+            tok = self.tokens
+        if tok and tok.is_near_expiry(warn_minutes):
             _log.info("Session near expiry — refreshing proactively")
             self.refresh()
             return True
@@ -342,9 +366,11 @@ class AngelSession:
         Raises:
             AngelOneAPIError if session is invalid
         """
-        if not self.tokens:
+        with self._token_lock:
+            tok = self.tokens
+        if not tok:
             raise AngelOneAPIError("Session not initialised — call login() first")
-        raw  = self._get("profile", params={"refreshToken": self.tokens.refresh_token})
+        raw  = self._get("profile", params={"refreshToken": tok.refresh_token})
         data = validate_response(raw, context="get_profile")
         _log.info("Profile fetched for: %s (%s)", data.get("name"), data.get("clientcode"))
         return data
@@ -359,15 +385,36 @@ class AngelSession:
         Raises:
             AngelOneAPIError on failure
         """
-        if not self.tokens:
+        with self._token_lock:
+            tok = self.tokens
+        if not tok:
             _log.warning("logout() called but no active session exists — skipping")
             return False
-        payload = {"clientcode": self.tokens.client_code}
+        payload = {"clientcode": tok.client_code}
         raw = self._post("logout", payload)
         validate_response(raw, context="logout")
         _log.info("Logged out successfully")
-        self.tokens = None
+        with self._token_lock:
+            self.tokens = None
+        # Clear sensitive credentials from memory
+        self._clear_credentials()
         return True
+
+    def _clear_credentials(self) -> None:
+        """Overwrite sensitive credential strings in memory with zeros."""
+        for attr in ("_mpin", "_totp_secret"):
+            val = getattr(self, attr, None)
+            if isinstance(val, str) and val:
+                # Best-effort: overwrite the string's buffer (CPython-specific)
+                try:
+                    buf = ctypes.cast(
+                        id(val) + sys.getsizeof("") - 1,       # compact str header
+                        ctypes.POINTER(ctypes.c_char * len(val))
+                    )
+                    ctypes.memset(buf, 0, len(val))
+                except Exception:
+                    pass
+                setattr(self, attr, "")
 
     def __enter__(self) -> "AngelSession":
         """Support `with AngelSession(...) as s:` context manager."""

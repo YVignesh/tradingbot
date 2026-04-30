@@ -136,3 +136,62 @@ def crossunder(fast: pd.Series, slow: pd.Series) -> pd.Series:
             exit_long(...)
     """
     return (fast < slow) & (fast.shift(1) >= slow.shift(1))
+
+
+def adx(
+    high: pd.Series,
+    low: pd.Series,
+    close: pd.Series,
+    period: int = 14,
+) -> tuple[pd.Series, pd.Series, pd.Series]:
+    """
+    Average Directional Index (ADX) with +DI and -DI.
+
+    Measures trend strength regardless of direction:
+      - ADX < 20  → no trend / chop
+      - ADX 20–40 → developing trend
+      - ADX > 40  → strong trend
+
+    Uses Wilder's smoothing (same as ATR).
+
+    Args:
+        high   : high price series
+        low    : low price series
+        close  : close price series
+        period : smoothing period (default 14)
+
+    Returns:
+        (adx, plus_di, minus_di) — three pd.Series
+    """
+    prev_high = high.shift(1)
+    prev_low = low.shift(1)
+    prev_close = close.shift(1)
+
+    # True Range
+    tr = pd.concat([
+        high - low,
+        (high - prev_close).abs(),
+        (low - prev_close).abs(),
+    ], axis=1).max(axis=1)
+
+    # Directional Movement
+    up_move = high - prev_high
+    down_move = prev_low - low
+    plus_dm = pd.Series(0.0, index=high.index)
+    minus_dm = pd.Series(0.0, index=high.index)
+    plus_dm[(up_move > down_move) & (up_move > 0)] = up_move
+    minus_dm[(down_move > up_move) & (down_move > 0)] = down_move
+
+    # Wilder smoothing (EMA with alpha = 1/period)
+    alpha = 1.0 / period
+    atr = tr.ewm(alpha=alpha, min_periods=period, adjust=False).mean()
+    smooth_plus = plus_dm.ewm(alpha=alpha, min_periods=period, adjust=False).mean()
+    smooth_minus = minus_dm.ewm(alpha=alpha, min_periods=period, adjust=False).mean()
+
+    plus_di = 100.0 * smooth_plus / atr
+    minus_di = 100.0 * smooth_minus / atr
+
+    dx = 100.0 * (plus_di - minus_di).abs() / (plus_di + minus_di)
+    adx_line = dx.ewm(alpha=alpha, min_periods=period, adjust=False).mean()
+
+    return adx_line, plus_di, minus_di

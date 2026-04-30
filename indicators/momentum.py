@@ -129,3 +129,15 @@ def stochastic(
     k = 100 * (close - lowest_low) / (highest_high - lowest_low)
     d = k.rolling(d_period, min_periods=d_period).mean()
     return StochasticResult(k=k, d=d)
+
+
+def roc(series: pd.Series, period: int = 10) -> pd.Series:
+    """
+    Rate of Change — percentage change over `period` bars.
+
+    ROC = ((close - close[n]) / close[n]) * 100
+
+    Useful for momentum and acceleration detection.
+    """
+    shifted = series.shift(period)
+    return ((series - shifted) / shifted) * 100

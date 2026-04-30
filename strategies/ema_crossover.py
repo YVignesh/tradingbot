@@ -21,27 +21,37 @@ class EmaCrossoverStrategy(DirectionalStrategy):
         strat = config["strategy"]
         self.fast = int(strat.get("ema_fast", 9))
         self.slow = int(strat.get("ema_slow", 21))
+        self.vol_period = int(strat.get("volume_period", 20))
+        self.vol_spike = float(strat.get("volume_spike", 0))  # 0 = disabled
 
     def required_history_bars(self) -> int:
-        return self.slow + 2
+        return max(self.slow, self.vol_period) + 2
 
     def prepare_dataframe(self, df: pd.DataFrame) -> pd.DataFrame:
         prepared = df.copy()
         prepared["ema_fast"] = ema(prepared["close"], self.fast)
         prepared["ema_slow"] = ema(prepared["close"], self.slow)
+        if self.vol_spike > 0:
+            prepared["vol_avg"] = prepared["volume"].rolling(self.vol_period, min_periods=1).mean()
         return prepared
 
     def signal_from_prepared(self, df: pd.DataFrame, index: int, direction: str):
         ema_bullish = bool(df["ema_fast"].iloc[index] > df["ema_slow"].iloc[index])
+
+        # Volume confirmation gate for entries
+        vol_ok = True
+        if self.vol_spike > 0 and "vol_avg" in df.columns:
+            vol_ok = float(df["volume"].iloc[index]) >= float(df["vol_avg"].iloc[index]) * self.vol_spike
+
         if ema_bullish:
             if direction == "SHORT":
                 return "COVER"
-            if direction == "FLAT":
+            if direction == "FLAT" and vol_ok:
                 return "BUY"
         else:
             if direction == "LONG":
                 return "SELL"
-            if direction == "FLAT":
+            if direction == "FLAT" and vol_ok:
                 return "SHORT"
         return None
 

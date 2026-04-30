@@ -62,6 +62,8 @@ class RiskManager:
         self.daily_loss_limit      = float(r["daily_loss_limit"])
         self.max_trades_per_day    = int(r.get("max_trades_per_day", 10))
         self.max_consecutive_losses= int(r.get("max_consecutive_losses", 3))
+        # Drawdown kill switch: max % drawdown from starting capital (#2)
+        self.max_drawdown_pct      = float(r.get("max_drawdown_pct", 0))  # 0 = disabled
 
         self._lock = threading.Lock()
         self._reset_daily_state()
@@ -102,34 +104,44 @@ class RiskManager:
                     f"cool-down until next session"
                 )
 
+            # Drawdown kill switch: halt if cumulative drawdown exceeds threshold (#2)
+            if self.max_drawdown_pct > 0:
+                drawdown_pct = abs(self._cumulative_pnl) / self.capital * 100 if self._cumulative_pnl < 0 else 0.0
+                if drawdown_pct >= self.max_drawdown_pct:
+                    self._halt(
+                        f"max drawdown {self.max_drawdown_pct:.1f}% breached "
+                        f"(current: {drawdown_pct:.1f}%, cumulative P&L: ₹{self._cumulative_pnl:.0f})"
+                    )
+                    return False, self._halt_reason
+
             return True, ""
 
-    def position_size(self, ltp: float) -> int:
+    def position_size(self, ltp: float, sl_override: float = 0.0) -> int:
         """
         Calculate order quantity from risk parameters.
 
-        qty = floor(capital × max_risk_pct% / sl_points), capped at max_qty.
-
-        Example:
-            capital=₹50,000  max_risk_pct=1%  sl_points=₹5
-            → risk_amount = ₹500
-            → qty = 500 / 5 = 100 → capped at max_qty=10
-            → returns 10
+        Uses current equity (capital + cumulative P&L) for sizing.
 
         Args:
-            ltp : last traded price (used for logging context only)
+            ltp         : last traded price (used for logging context only)
+            sl_override : effective SL distance in ₹ (ATR-based or fixed).
+                          When > 0, overrides the configured sl_points.
+                          Pass strategy.effective_sl_points() to respect ATR-based SL.
 
         Returns:
-            Number of shares to trade (always ≥ 1)
+            Number of shares to trade (always >= 1)
         """
-        risk_amount = self.capital * self.max_risk_pct / 100.0
-        qty         = int(risk_amount / self.sl_points)
+        with self._lock:
+            current_equity = self.capital + self._cumulative_pnl
+        sl = sl_override if sl_override > 0 else self.sl_points
+        risk_amount = current_equity * self.max_risk_pct / 100.0
+        qty         = int(risk_amount / sl) if sl > 0 else self.max_qty
         qty         = max(1, min(qty, self.max_qty))
         _log.debug(
-            "Position size: capital=₹%.0f  risk=%.1f%%  sl=₹%.0f  "
+            "Position size: equity=₹%.0f  risk=%.1f%%  sl=₹%.0f  "
             "→ raw_qty=%d  capped=%d  ltp=₹%.2f",
-            self.capital, self.max_risk_pct, self.sl_points,
-            int(risk_amount / self.sl_points), qty, ltp,
+            current_equity, self.max_risk_pct, sl,
+            int(risk_amount / sl) if sl > 0 else self.max_qty, qty, ltp,
         )
         return qty
 
@@ -151,6 +163,7 @@ class RiskManager:
         with self._lock:
             self._maybe_reset_daily()
             self._daily_pnl    += pnl
+            self._cumulative_pnl += pnl  # Track across all days (#2)
 
             if close_round_trip:
                 self._trades_today += 1
@@ -213,8 +226,16 @@ class RiskManager:
                 abs(self._daily_pnl) / self.daily_loss_limit * 100
                 if self.daily_loss_limit > 0 and self._daily_pnl < 0 else 0.0
             )
+            current_equity = self.capital + self._cumulative_pnl
+            drawdown_pct = (
+                abs(self._cumulative_pnl) / self.capital * 100
+                if self._cumulative_pnl < 0 else 0.0
+            )
             return {
                 "daily_pnl":          round(self._daily_pnl, 2),
+                "cumulative_pnl":     round(self._cumulative_pnl, 2),
+                "current_equity":     round(current_equity, 2),
+                "drawdown_pct":       round(drawdown_pct, 1),
                 "trades_today":       self._trades_today,
                 "consecutive_losses": self._consecutive_losses,
                 "halted":             self._halted,
@@ -231,6 +252,9 @@ class RiskManager:
         self._halted             = False
         self._halt_reason        = ""
         self._trade_date         = datetime.now(IST).date()
+        # Cumulative P&L across all days (persists across daily resets)
+        if not hasattr(self, '_cumulative_pnl'):
+            self._cumulative_pnl = 0.0
 
     def _maybe_reset_daily(self) -> None:
         """Reset all daily counters if the calendar date has changed (IST)."""

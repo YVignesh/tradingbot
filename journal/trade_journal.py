@@ -6,6 +6,7 @@ Persists fills and completed trades for later analysis across symbols.
 
 from __future__ import annotations
 
+import re
 import sqlite3
 import threading
 from datetime import datetime, timezone, timedelta
@@ -25,7 +26,7 @@ def _resolve_trade_segment(symbol: str, exchange: str, product: str, configured:
     symbol = str(symbol).upper()
     exchange = str(exchange).upper()
     product = str(product).upper()
-    looks_like_option = "CE" in symbol or "PE" in symbol
+    looks_like_option = bool(re.search(r"(CE|PE)(?:[-_ ]|$)", symbol))
 
     if exchange in {"NSE", "BSE"}:
         return Segment.EQUITY_INTRADAY if product == "INTRADAY" else Segment.EQUITY_DELIVERY
@@ -48,7 +49,7 @@ class TradeJournal:
 
     def record_fill(self, fill: dict) -> None:
         recorded_at = self._fmt(fill.get("recorded_at"))
-        with self._connect() as conn, self._lock:
+        with self._lock, self._connect() as conn:
             conn.execute(
                 """
                 INSERT INTO fills (
@@ -122,16 +123,19 @@ class TradeJournal:
             "net_pnl": round(float(trade["gross_pnl"]) - charges.total_charges, 2),
             "segment": segment,
             "recovered": 1 if trade.get("recovered") else 0,
+            "mae": round(float(trade.get("mae", 0.0)), 2),
+            "mfe": round(float(trade.get("mfe", 0.0)), 2),
         }
 
-        with self._connect() as conn, self._lock:
+        with self._lock, self._connect() as conn:
             conn.execute(
                 """
                 INSERT INTO trades (
                     recorded_at, strategy, symbol, exchange, direction, entry_time, exit_time,
-                    qty, entry_price, exit_price, gross_pnl, charges, net_pnl, segment, recovered
+                    qty, entry_price, exit_price, gross_pnl, charges, net_pnl, segment, recovered,
+                    mae, mfe
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     record["recorded_at"],
@@ -149,6 +153,8 @@ class TradeJournal:
                     record["net_pnl"],
                     record["segment"],
                     record["recovered"],
+                    record["mae"],
+                    record["mfe"],
                 ),
             )
             conn.commit()
@@ -160,7 +166,7 @@ class TradeJournal:
         return conn
 
     def _init_db(self) -> None:
-        with self._connect() as conn, self._lock:
+        with self._lock, self._connect() as conn:
             conn.executescript(
                 """
                 CREATE TABLE IF NOT EXISTS fills (
@@ -196,10 +202,18 @@ class TradeJournal:
                     charges REAL NOT NULL,
                     net_pnl REAL NOT NULL,
                     segment TEXT NOT NULL,
-                    recovered INTEGER NOT NULL DEFAULT 0
+                    recovered INTEGER NOT NULL DEFAULT 0,
+                    mae REAL NOT NULL DEFAULT 0.0,
+                    mfe REAL NOT NULL DEFAULT 0.0
                 );
                 """
             )
+            # Migrate existing databases: add MAE/MFE columns if missing
+            cols = {r[1] for r in conn.execute("PRAGMA table_info(trades)").fetchall()}
+            if "mae" not in cols:
+                conn.execute("ALTER TABLE trades ADD COLUMN mae REAL NOT NULL DEFAULT 0.0")
+            if "mfe" not in cols:
+                conn.execute("ALTER TABLE trades ADD COLUMN mfe REAL NOT NULL DEFAULT 0.0")
             conn.commit()
 
     def _fmt(self, value: Optional[datetime | str]) -> str:

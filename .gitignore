@@ -2,5 +2,11 @@
 __pycache__/
 *.pyc
 .env
+.env.*
 logs/
 data/cache/
+data/journal/
+data/ai/
+*.sqlite3
+*.db
+config.local.json

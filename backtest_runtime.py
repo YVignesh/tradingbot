@@ -29,6 +29,7 @@ import argparse
 import copy
 import json
 import math
+import pickle
 import re
 import sys
 import time
@@ -230,6 +231,8 @@ class BacktestJournal:
         charges: float,
         net: float,
         pool: float,
+        mae: float = 0.0,
+        mfe: float = 0.0,
     ) -> None:
         time_str = ts.astimezone(IST).strftime("%H:%M")
         sign = "+" if net >= 0 else ""
@@ -237,11 +240,13 @@ class BacktestJournal:
             f"  ◀ EXIT  {reason:<10}  {time_str}  {symbol:<16} "
             f"Price:Rs{price:.2f}  Qty:{qty}  "
             f"Gross:{sign}Rs{gross:.2f}  Charges:Rs{charges:.2f}  Net:{sign}Rs{net:.2f}  "
+            f"MAE:Rs{mae:.2f}  MFE:Rs{mfe:.2f}  "
             f"Pool:Rs{pool:,.2f}"
         )
         self._echo(line)
         self._day_trades.append(
-            {"symbol": symbol, "direction": direction, "net": net, "reason": reason}
+            {"symbol": symbol, "direction": direction, "net": net, "reason": reason,
+             "mae": mae, "mfe": mfe}
         )
 
     # ── end-of-day summary ────────────────────────────────────────────────────
@@ -301,6 +306,11 @@ class BacktestJournal:
         self._echo(f"  Total charges      : Rs{total_charges:>,.2f}")
         self._echo(f"  Total trades       : {len(all_trades)}")
         self._echo(f"  Win rate           : {wr:.1f}%")
+        if all_trades:
+            avg_mae = sum(t.get("mae", 0.0) for t in all_trades) / len(all_trades)
+            avg_mfe = sum(t.get("mfe", 0.0) for t in all_trades) / len(all_trades)
+            self._echo(f"  Avg MAE            : Rs{avg_mae:>,.2f}")
+            self._echo(f"  Avg MFE            : Rs{avg_mfe:>,.2f}")
         self._echo(self.SEP_MINOR)
         self._echo(f"  Per-symbol (sorted by net P&L):")
         for r in sorted(results, key=lambda x: sum(t["net_pnl"] for t in x["trades"]), reverse=True):
@@ -315,7 +325,14 @@ class BacktestJournal:
         self._echo(self.SEP_MAJOR)
 
     def close(self) -> None:
-        self._f.close()
+        if not self._f.closed:
+            self._f.close()
+
+    def __del__(self) -> None:
+        try:
+            self.close()
+        except Exception:
+            pass
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -385,6 +402,15 @@ def _resolve_trade_segment(strat_cfg: dict, broker_cfg: dict) -> str:
 # Data fetching
 # ─────────────────────────────────────────────────────────────────────────────
 
+_CANDLE_CACHE_DIR = Path("data/cache/candles")
+
+
+def _candle_cache_path(exchange: str, symbol: str, interval: str, from_date: str, to_date: str) -> Path:
+    safe = lambda s: s.replace(" ", "_").replace(":", "-").replace("/", "-")
+    fname = f"{exchange}_{symbol}_{interval}_{safe(from_date)}_{safe(to_date)}.pkl"
+    return _CANDLE_CACHE_DIR / fname
+
+
 def _fetch_all_candles(
     session,
     exchange: str,
@@ -392,24 +418,55 @@ def _fetch_all_candles(
     interval: str,
     from_date: str,
     to_date: str,
+    symbol: str = "",
+    use_cache: bool = True,
 ) -> pd.DataFrame:
+    _CANDLE_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Check disk cache first — avoids re-fetching on reruns
+    cache_path = _candle_cache_path(exchange, symbol or token, interval, from_date, to_date)
+    if use_cache and cache_path.exists():
+        try:
+            df = pickle.loads(cache_path.read_bytes())
+            _log.debug("Candle cache hit: %s %s %s (%d bars)", exchange, symbol or token, interval, len(df))
+            return df
+        except Exception:
+            cache_path.unlink(missing_ok=True)  # corrupt cache — delete and re-fetch
+
     fmt = "%Y-%m-%d %H:%M"
     start = datetime.strptime(from_date, fmt).replace(tzinfo=IST)
-    end = datetime.strptime(to_date, fmt).replace(tzinfo=IST)
+    end   = datetime.strptime(to_date,   fmt).replace(tzinfo=IST)
 
     all_candles: list[dict] = []
     cursor = start
     while cursor < end:
         chunk_end = min(cursor + timedelta(days=60), end)
-        from_str = cursor.strftime(fmt)
-        to_str = chunk_end.strftime(fmt)
+        from_str  = cursor.strftime(fmt)
+        to_str    = chunk_end.strftime(fmt)
         _log.info("Fetching candles %s -> %s", from_str, to_str)
-        try:
-            batch = get_candles(session, exchange, token, interval, from_str, to_str)
-            all_candles.extend(batch)
-        except Exception as exc:
-            _log.warning("Candle fetch failed for chunk %s->%s: %s", from_str, to_str, exc)
+
+        # Retry each chunk with exponential backoff
+        last_exc: Exception | None = None
+        for attempt in range(4):
+            try:
+                batch = get_candles(session, exchange, token, interval, from_str, to_str)
+                all_candles.extend(batch)
+                last_exc = None
+                break
+            except Exception as exc:
+                last_exc = exc
+                wait = 2 ** attempt  # 1s, 2s, 4s, 8s
+                _log.warning(
+                    "Candle fetch failed for chunk %s->%s (attempt %d/4): %s — retrying in %ds",
+                    from_str, to_str, attempt + 1, exc, wait,
+                )
+                time.sleep(wait)
+
+        if last_exc is not None:
+            _log.warning("Chunk %s->%s failed after 4 attempts — skipping", from_str, to_str)
+
         cursor = chunk_end + timedelta(minutes=1)
+        time.sleep(0.35)  # rate-limit between chunks
 
     if not all_candles:
         raise RuntimeError("No candles returned for the requested date range.")
@@ -417,6 +474,13 @@ def _fetch_all_candles(
     df = candles_to_dataframe(all_candles)
     df = df[~df.index.duplicated(keep="last")].sort_index()
     _log.info("Total candles fetched: %d", len(df))
+
+    if use_cache:
+        try:
+            cache_path.write_bytes(pickle.dumps(df, protocol=pickle.HIGHEST_PROTOCOL))
+        except Exception as exc:
+            _log.debug("Could not write candle cache: %s", exc)
+
     return df
 
 
@@ -534,6 +598,7 @@ def _compute_screener_selection_per_day(
 def _trade_record(
     entry_time, exit_time, entry_price, exit_price, qty,
     gross_pnl, charges, exit_reason, capital_after, direction,
+    mae=0.0, mfe=0.0,
 ) -> dict:
     return {
         "entry_time": entry_time,
@@ -547,6 +612,8 @@ def _trade_record(
         "net_pnl": round(gross_pnl - charges, 2),
         "exit_reason": exit_reason,
         "capital_after": round(capital_after, 2),
+        "mae": round(mae, 2),
+        "mfe": round(mfe, 2),
     }
 
 
@@ -592,6 +659,8 @@ def _run_all_day_by_day(
     actual_start: date,
     sl_points: float,
     tp_points: float,
+    sl_atr_mult: float,
+    tp_atr_mult: float,
     max_qty: int,
     max_risk_pct: float,
     squareoff_hour: int,
@@ -605,6 +674,9 @@ def _run_all_day_by_day(
     tsl_activation_gap: float,
     journal: BacktestJournal | None,
     allocator=None,
+    slippage_pct: float = 0.0,
+    regime_filter=None,
+    index_prepared_df: pd.DataFrame | None = None,
 ) -> dict[str, list[dict]]:
     """
     Processes all symbols day-by-day in chronological order.
@@ -613,6 +685,19 @@ def _run_all_day_by_day(
     """
     pool = capital
     sym_capital: dict[str, float] = {sym: 0.0 for sym in strategy_instances}
+
+    # Slippage: adverse price adjustment (higher entry for longs, lower for shorts)
+    slip_mult = slippage_pct / 100.0
+
+    def _slip_entry(price: float, direction: str) -> float:
+        if slip_mult <= 0:
+            return price
+        return price * (1 + slip_mult) if direction == "LONG" else price * (1 - slip_mult)
+
+    def _slip_exit(price: float, direction: str) -> float:
+        if slip_mult <= 0:
+            return price
+        return price * (1 - slip_mult) if direction == "LONG" else price * (1 + slip_mult)
 
     states: dict[str, dict] = {
         symbol: {
@@ -625,6 +710,8 @@ def _run_all_day_by_day(
             "tsl": None,
             "pending_entry": None,
             "pending_exit": False,
+            "high_since_entry": 0.0,
+            "low_since_entry": 0.0,
             "trades": [],
         }
         for symbol in strategy_instances
@@ -655,6 +742,10 @@ def _run_all_day_by_day(
         state = states[symbol]
         meta = symbols_meta[symbol]
 
+        # Apply adverse slippage to exit (SL/TP already have fixed prices;
+        # slippage represents market impact on actual fill)
+        exit_price = _slip_exit(exit_price, state["direction"])
+
         if state["direction"] == "LONG":
             gross_pnl = (exit_price - state["entry_price"]) * state["entry_qty"]
             buy_price, sell_price = state["entry_price"], exit_price
@@ -673,11 +764,23 @@ def _run_all_day_by_day(
         pool += net_pnl
         sym_capital[symbol] += net_pnl
 
+        # Compute MAE/MFE from tracked intra-trade extremes
+        entry_p = state["entry_price"]
+        hi = state["high_since_entry"]
+        lo = state["low_since_entry"]
+        if state["direction"] == "LONG":
+            mae = max(0.0, entry_p - lo)
+            mfe = max(0.0, hi - entry_p)
+        else:
+            mae = max(0.0, hi - entry_p)
+            mfe = max(0.0, entry_p - lo)
+
         state["trades"].append(
             _trade_record(
                 state["entry_time"], bar_time, state["entry_price"], exit_price,
                 state["entry_qty"], gross_pnl, ch.total_charges, exit_reason,
                 sym_capital[symbol], state["direction"],
+                mae=mae, mfe=mfe,
             )
         )
 
@@ -685,6 +788,7 @@ def _run_all_day_by_day(
             journal.log_exit(
                 bar_time, symbol, state["direction"], exit_price, state["entry_qty"],
                 exit_reason, gross_pnl, ch.total_charges, net_pnl, pool,
+                mae=mae, mfe=mfe,
             )
 
         state["direction"] = "FLAT"
@@ -694,6 +798,8 @@ def _run_all_day_by_day(
         state["sl_price"] = 0.0
         state["tp_price"] = 0.0
         state["pending_exit"] = False
+        state["high_since_entry"] = 0.0
+        state["low_since_entry"] = 0.0
         if state["tsl"] is not None:
             state["tsl"].reset()
             state["tsl"] = None
@@ -734,6 +840,18 @@ def _run_all_day_by_day(
         day_halted = False
         day_start_pool = pool
         n_active = len(selected_today)
+
+        # Update market regime filter for today using index bars up to this date
+        regime_blocked = False
+        regime_reason = ""
+        if regime_filter is not None and regime_filter.enabled and index_prepared_df is not None:
+            idx_mask = index_prepared_df.index.date <= trade_date
+            idx_slice = index_prepared_df[idx_mask]
+            regime_filter.update_from_df(idx_slice)
+            regime_blocked_result, regime_reason = regime_filter.allows_entry()
+            regime_blocked = not regime_blocked_result
+            if journal and regime_blocked:
+                journal._echo(f"  [REGIME]  CHOPPY — entries blocked ({regime_reason})")
 
         # Per-symbol capital allocation
         picks_today = daily_picks.get(trade_date, []) if daily_picks else []
@@ -777,7 +895,7 @@ def _run_all_day_by_day(
             bar_close = float(row["close"])
             atr_value = (
                 float(prepared["atr"].iloc[bar_idx])
-                if tsl_enabled and tsl_mode == "atr" and "atr" in prepared.columns
+                if "atr" in prepared.columns and pd.notna(prepared["atr"].iloc[bar_idx])
                 else 0.0
             )
 
@@ -792,37 +910,52 @@ def _run_all_day_by_day(
                 can_trade = (
                     sym_alloc > 0
                     and not day_halted
+                    and not regime_blocked
                     and not (max_trades_per_day > 0 and trades_today >= max_trades_per_day)
                 )
                 if can_trade:
-                    qty = _risk_sized_qty(sym_alloc, bar_open, max_risk_pct, sl_points, max_qty)
+                    # Compute effective SL/TP — ATR-based if configured, else fixed
+                    eff_sl = (atr_value * sl_atr_mult) if (sl_atr_mult > 0 and atr_value > 0) else sl_points
+                    eff_tp = (atr_value * tp_atr_mult) if (tp_atr_mult > 0 and atr_value > 0) else tp_points
+                    qty = _risk_sized_qty(sym_alloc, bar_open, max_risk_pct, eff_sl, max_qty)
                     if qty > 0:
-                        state["direction"] = state["pending_entry"]
-                        state["entry_price"] = bar_open
+                        entry_dir = state["pending_entry"]
+                        entry_price = _slip_entry(bar_open, entry_dir)
+                        state["direction"] = entry_dir
+                        state["entry_price"] = entry_price
                         state["entry_qty"] = qty
                         state["entry_time"] = ts
                         if state["direction"] == "LONG":
-                            state["sl_price"] = bar_open - sl_points
-                            state["tp_price"] = bar_open + tp_points
+                            state["sl_price"] = entry_price - eff_sl
+                            state["tp_price"] = entry_price + eff_tp
                         else:
-                            state["sl_price"] = bar_open + sl_points
-                            state["tp_price"] = bar_open - tp_points
+                            state["sl_price"] = entry_price + eff_sl
+                            state["tp_price"] = entry_price - eff_tp
                         if tsl_enabled:
                             tsl_obj = TrailingSL(
                                 mode=tsl_mode, value=tsl_value, activation_gap=tsl_activation_gap
                             )
                             tsl_obj.arm(
-                                bar_open,
+                                entry_price,
                                 "long" if state["direction"] == "LONG" else "short",
                                 atr=atr_value,
                             )
                             state["tsl"] = tsl_obj
+                        state["high_since_entry"] = entry_price
+                        state["low_since_entry"] = entry_price
                         if journal:
                             journal.log_entry(
-                                ts, symbol, state["direction"], bar_open, qty,
+                                ts, symbol, state["direction"], entry_price, qty,
                                 state["sl_price"], state["tp_price"], sym_alloc,
                             )
                 state["pending_entry"] = None
+
+            # Update MAE/MFE tracking with this bar's extremes
+            if state["direction"] != "FLAT":
+                if bar_high > state["high_since_entry"]:
+                    state["high_since_entry"] = bar_high
+                if bar_low < state["low_since_entry"]:
+                    state["low_since_entry"] = bar_low
 
             # SL / TP / TSL / squareoff
             if state["direction"] == "LONG":
@@ -1105,8 +1238,10 @@ def main() -> None:
     top_n = int(screener_cfg.get("top_n", 5)) if screener_enabled and multi else len(symbols_list)
     per_sym_capital = capital / max(top_n, 1)
 
-    sl_points = float(risk_cfg["sl_points"])
-    tp_points = float(risk_cfg["tp_points"])
+    sl_points = float(risk_cfg.get("sl_points", 0))
+    tp_points = float(risk_cfg.get("tp_points", 0))
+    sl_atr_mult = float(risk_cfg.get("sl_atr_multiplier", 0))
+    tp_atr_mult = float(risk_cfg.get("tp_atr_multiplier", 0))
     max_qty = int(risk_cfg["max_qty"])
     max_risk_pct = float(risk_cfg["max_risk_pct"])
     daily_loss_limit = float(risk_cfg.get("daily_loss_limit", 0))
@@ -1155,7 +1290,9 @@ def main() -> None:
     print(f"\nBacktest: {sym_desc} | {interval} | {strategy_name}")
     print(f"Period  : {args.from_date} -> {args.to_date}  (fetching {warmup_days} extra days warmup before start)")
     print(f"Capital : Rs{capital:,.0f}" + (f"  (~Rs{per_sym_capital:,.0f}/symbol if {top_n} active)" if multi else ""))
-    print(f"Risk    : SL=Rs{sl_points}  TP=Rs{tp_points}  MaxQty={max_qty}  {tsl_desc}")
+    sl_desc = f"SL={sl_atr_mult}×ATR" if sl_atr_mult > 0 else f"SL=Rs{sl_points}"
+    tp_desc = f"TP={tp_atr_mult}×ATR" if tp_atr_mult > 0 else f"TP=Rs{tp_points}"
+    print(f"Risk    : {sl_desc}  {tp_desc}  MaxQty={max_qty}  {tsl_desc}")
     print(f"Limits  : {risk_desc}")
 
     # Login
@@ -1174,11 +1311,16 @@ def main() -> None:
 
         valid_symbols = []
         for sym_info in symbols_list:
-            token = master.get_token(sym_info["exchange"], sym_info["symbol"])
-            if token:
-                valid_symbols.append({**sym_info, "token": token})
-            else:
-                print(f"  Warning: {sym_info['symbol']} not found on {sym_info['exchange']} — skipping")
+            exchange = sym_info["exchange"]
+            symbol   = sym_info["symbol"]
+            canonical = master.resolve_symbol(exchange, symbol)
+            if canonical is None:
+                print(f"  Warning: {symbol} not found on {exchange} — skipping")
+                continue
+            if canonical != symbol:
+                print(f"  Symbol resolved: {symbol} → {canonical}")
+            token = master.get_token(exchange, canonical)
+            valid_symbols.append({**sym_info, "symbol": canonical, "token": token})
 
         if not valid_symbols:
             print("No valid symbols found.", file=sys.stderr)
@@ -1197,11 +1339,11 @@ def main() -> None:
             print(f"\nFetching daily candles for {len(valid_symbols)} symbols (screener look-back)...")
             daily_dfs: dict[str, pd.DataFrame] = {}
             for sym_info in valid_symbols:
-                time.sleep(0.35)
                 try:
                     daily_df = _fetch_all_candles(
                         session, sym_info["exchange"], sym_info["token"],
                         "ONE_DAY", from_daily_ext, to_daily,
+                        symbol=sym_info["symbol"],
                     )
                     daily_dfs[sym_info["symbol"]] = daily_df
                 except Exception as exc:
@@ -1223,11 +1365,11 @@ def main() -> None:
         print(f"  (includes {warmup_days} warmup days before {args.from_date})")
         intraday_dfs: dict[str, pd.DataFrame] = {}
         for sym_info in valid_symbols:
-            time.sleep(0.35)
             symbol = sym_info["symbol"]
             try:
                 df = _fetch_all_candles(
-                    session, sym_info["exchange"], sym_info["token"], interval, from_date, to_date
+                    session, sym_info["exchange"], sym_info["token"], interval, from_date, to_date,
+                    symbol=symbol,
                 )
                 intraday_dfs[symbol] = df
                 print(f"  {symbol}: {len(df)} bars total ({warmup_days}d warmup + requested range)")
@@ -1256,7 +1398,8 @@ def main() -> None:
             strategy_instances[symbol] = strategy
 
             prepared = strategy.prepare_dataframe(intraday_dfs[symbol].copy())
-            if tsl_enabled and tsl_mode == "atr" and "atr" not in prepared.columns:
+            # Always compute ATR for dynamic SL/TP and TSL
+            if "atr" not in prepared.columns:
                 prepared["atr"] = compute_atr(
                     prepared["high"], prepared["low"], prepared["close"], tsl_atr_period
                 )
@@ -1295,6 +1438,34 @@ def main() -> None:
         print(f"Journal: {journal_path}\n")
 
         allocator = get_allocator(cfg)
+
+        # Market regime filter for backtest
+        regime_cfg = cfg.get("regime_filter", {})
+        regime_obj = None
+        index_prepared_df = None
+        if regime_cfg.get("enabled", False):
+            from utils.market_regime import MarketRegimeFilter
+            regime_obj = MarketRegimeFilter(regime_cfg)
+            idx_sym = regime_cfg.get("index_symbol", "NIFTY")
+            idx_exch = regime_cfg.get("index_exchange", "NSE")
+            idx_token = regime_cfg.get("index_token", "99926000")
+            idx_interval = regime_cfg.get("interval", "FIFTEEN_MINUTE")
+            print(f"Fetching index data ({idx_sym}) for regime filter...")
+            try:
+                index_df = _fetch_all_candles(
+                    session, idx_exch, idx_token, idx_interval, from_date, to_date,
+                    symbol=idx_sym,
+                )
+                if index_df is not None and len(index_df) > 0:
+                    index_prepared_df = index_df
+                    print(f"  {idx_sym}: {len(index_df)} bars for regime filter")
+                else:
+                    print(f"  Warning: No index data — regime filter disabled for this run")
+                    regime_obj = None
+            except Exception as exc:
+                print(f"  Warning: Index fetch failed ({exc}) — regime filter disabled")
+                regime_obj = None
+
         all_symbol_trades = _run_all_day_by_day(
             strategy_instances=strategy_instances,
             prepared_dfs=prepared_dfs,
@@ -1306,6 +1477,8 @@ def main() -> None:
             actual_start=actual_start,
             sl_points=sl_points,
             tp_points=tp_points,
+            sl_atr_mult=sl_atr_mult,
+            tp_atr_mult=tp_atr_mult,
             max_qty=max_qty,
             max_risk_pct=max_risk_pct,
             squareoff_hour=sq_h,
@@ -1319,6 +1492,9 @@ def main() -> None:
             tsl_activation_gap=tsl_activation_gap,
             journal=journal,
             allocator=allocator,
+            slippage_pct=float(risk_cfg.get("slippage_pct", 0.0)),
+            regime_filter=regime_obj,
+            index_prepared_df=index_prepared_df,
         )
 
         # Collect results

@@ -28,17 +28,22 @@
     "rsi_long_threshold": 55,
     "rsi_short_threshold": 45,
     "rsi_exit_long": 50,
-    "rsi_exit_short": 50
+    "rsi_exit_short": 50,
+    "volume_period": 20,
+    "volume_spike": 1.5
   },
   "risk": {
     "capital": 100000,
-    "max_risk_pct": 10.0,
-    "daily_loss_limit": 1000,
+    "max_risk_pct": 2.0,
+    "daily_loss_limit": 2000,
     "sl_points": 5,
     "tp_points": 10,
+    "sl_atr_multiplier": 1.5,
+    "tp_atr_multiplier": 3.0,
     "max_qty": 1000,
     "max_trades_per_day": 10,
     "max_consecutive_losses": 3,
+    "slippage_pct": 0.05,
     "trailing_sl": {
       "enabled": true,
       "mode": "atr",
@@ -60,7 +65,9 @@
       "enabled": false,
       "bot_token": "",
       "chat_id": "",
-      "timeout_sec": 10
+      "timeout_sec": 10,
+      "commands_enabled": true,
+      "poll_interval_sec": 3.0
     }
   },
   "screener": {
@@ -71,7 +78,7 @@
     "top_n": 5,
     "lookback_days": 45,
     "min_price": 100,
-    "max_price": 2000,
+    "max_price": 50000,
     "min_avg_volume": 500000,
     "min_atr": 3,
     "max_atr": 60,
@@ -84,12 +91,51 @@
     "vol_expansion_min": 1.2
   },
   "allocation": {
-    "strategy": "rank_decay",
+    "strategy": "equal_weight",
     "rank_decay_factor": 0.75,
     "kelly_win_rate": 0.5,
     "kelly_avg_win": 100,
     "kelly_avg_loss": 80,
     "kelly_max_frac": 0.5,
     "kelly_fraction": 0.5
+  },
+  "regime_filter": {
+    "enabled": true,
+    "index_symbol": "NIFTY",
+    "index_exchange": "NSE",
+    "index_token": "99926000",
+    "adx_period": 14,
+    "adx_threshold": 20.0,
+    "atr_period": 14,
+    "atr_range_min": 0.5,
+    "lookback_bars": 50,
+    "interval": "FIFTEEN_MINUTE",
+    "update_interval_sec": 300
+  },
+  "ai": {
+    "enabled": false,
+    "provider": "gemini",
+    "model": "gemini-2.5-pro",
+    "temperature": 0.3,
+    "timeout_sec": 30,
+    "pre_market_time": "08:50",
+    "mid_day_time": "12:30",
+    "post_market_time": "15:30",
+    "lessons_lookback_days": 7,
+    "news": {
+      "enabled": true,
+      "fetch_timeout_sec": 10,
+      "max_headlines": 5
+    },
+    "guardrails": {
+      "sl_atr_min": 0.5,
+      "sl_atr_max": 3.0,
+      "tp_atr_min": 1.0,
+      "tp_atr_max": 5.0,
+      "risk_pct_min": 0.5,
+      "risk_pct_max": 3.0,
+      "max_param_delta_per_day": 0.5,
+      "require_audit_log": true
+    }
   }
 }

@@ -189,11 +189,14 @@ class MarketFeed:
 
         # Pending subscriptions (exchange_label, exchangeType, tokens, mode)
         self._subscriptions: List[Tuple[str, int, List[str], int]] = []
+        self._sub_lock       = threading.Lock()  # guards _subscriptions and _ws
 
         self._ws             = None
         self._thread: Optional[threading.Thread] = None
         self._running        = False
         self._correlation_id = "bot_feed_001"
+        self._last_tick_time = 0.0  # Track last tick for gap detection (#21)
+        self._gap_warned     = False
 
     def subscribe(
         self,
@@ -224,7 +227,8 @@ class MarketFeed:
             ], mode=WSMode.SNAP_QUOTE)
         """
         for (label, exch_type, tokens) in instruments:
-            self._subscriptions.append((label, exch_type, tokens, mode))
+            with self._sub_lock:
+                self._subscriptions.append((label, exch_type, tokens, mode))
             _log.info(
                 "Registered subscription: %s tokens=%s mode=%d", label, tokens, mode
             )
@@ -234,8 +238,10 @@ class MarketFeed:
         Build the token_list structure expected by SmartWebSocketV2.subscribe().
         Groups subscriptions by exchangeType.
         """
+        with self._sub_lock:
+            subs = list(self._subscriptions)
         groups: dict = {}
-        for (_, exch_type, tokens, _) in self._subscriptions:
+        for (_, exch_type, tokens, _) in subs:
             if exch_type not in groups:
                 groups[exch_type] = []
             groups[exch_type].extend(tokens)
@@ -243,9 +249,11 @@ class MarketFeed:
 
     def _get_mode(self) -> int:
         """Return the highest-priority mode across all subscriptions."""
-        if not self._subscriptions:
+        with self._sub_lock:
+            subs = list(self._subscriptions)
+        if not subs:
             return WSMode.SNAP_QUOTE
-        return max(s[3] for s in self._subscriptions)
+        return max(s[3] for s in subs)
 
     def start(self) -> None:
         """
@@ -273,9 +281,11 @@ class MarketFeed:
         Safe to call even if feed is not running.
         """
         self._running = False
-        if self._ws:
+        with self._sub_lock:
+            ws = self._ws
+        if ws:
             try:
-                self._ws.close_connection()
+                ws.close_connection()
             except Exception:
                 pass
         _log.info("MarketFeed stopped")
@@ -329,12 +339,14 @@ class MarketFeed:
     def _connect(self) -> None:
         """Create and connect a SmartWebSocketV2 instance."""
         # Explicitly close any previous instance before creating a new one
-        if self._ws is not None:
+        with self._sub_lock:
+            old_ws = self._ws
+            self._ws = None
+        if old_ws is not None:
             try:
-                self._ws.close_connection()
+                old_ws.close_connection()
             except Exception:
                 pass
-            self._ws = None
 
         tokens = self._session.tokens
         if not tokens:
@@ -357,6 +369,7 @@ class MarketFeed:
         # ── Intercept raw library callbacks before they are swallowed ─────────
         import types as _types
         _429_detected = threading.Event()
+        _429_detected.clear()  # ensure clean state for each connection attempt
         _orig_internal_on_error = ws._on_error.__func__
         _orig_internal_on_close = ws._on_close.__func__
 
@@ -395,6 +408,19 @@ class MarketFeed:
         def _on_data(wsapp, message):
             try:
                 tick = parse_tick(message) if self._parse_prices else message
+                # Detect tick gaps from reconnection (#21)
+                now = time.monotonic()
+                if self._last_tick_time > 0:
+                    gap = now - self._last_tick_time
+                    if gap > 10.0 and not self._gap_warned:
+                        _log.warning(
+                            "Tick gap detected: %.1fs since last tick — TSL may have missed price moves",
+                            gap,
+                        )
+                        self._gap_warned = True
+                    elif gap <= 5.0:
+                        self._gap_warned = False
+                self._last_tick_time = now
                 self._on_tick(tick)
             except Exception as e:
                 _log.warning("Error processing tick: %s", e)
@@ -414,7 +440,8 @@ class MarketFeed:
         ws.on_error = _on_error
         ws.on_close = _on_close
 
-        self._ws = ws
+        with self._sub_lock:
+            self._ws = ws
         ws.connect()   # blocking until connection closes
 
         if _429_detected.is_set():

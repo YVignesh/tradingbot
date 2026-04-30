@@ -69,6 +69,8 @@ class TrailingSL:
         """
         if direction not in ("long", "short"):
             raise ValueError(f"direction must be 'long' or 'short', got {direction!r}")
+        if entry_price <= 0:
+            raise ValueError(f"entry_price must be > 0, got {entry_price}")
         if self._mode == "atr" and atr <= 0:
             raise ValueError("atr must be > 0 when mode == 'atr'")
 
